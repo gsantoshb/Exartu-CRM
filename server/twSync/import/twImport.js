@@ -228,6 +228,15 @@ var createContactable = function (type, data, externalId, hierId) {
     externalId: externalId
   };
 
+  // Active Status
+  var hierFilter = Utils.filterByHiers(hierId);
+  var activeStatus = LookUps.findOne({
+    lookUpCode: Enums.lookUpTypes.active.status.lookUpCode,
+    isDefault: true,
+    $or: hierFilter
+  });
+  contactable.activeStatus = activeStatus._id;
+
   contactable[type] = {statusNote: ''};
 
   if (type == 'Employee' || type == 'Contact') {
@@ -258,7 +267,6 @@ var createContactable = function (type, data, externalId, hierId) {
   }
 
   // Contact Methods
-  var hierFilter = Utils.filterByHiers(hierId);
   // Phone contact method
   if (data.phoneNumber) {
     var phoneCM = LookUps.findOne({
