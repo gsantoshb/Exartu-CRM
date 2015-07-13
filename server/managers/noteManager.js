@@ -154,7 +154,7 @@ NoteManager = {
         }
       }
     })
-    return({_id: note._id, msg: note.msg, dateCreated: note.dateCreated, links: linksInfo});
+    return({_id: note._id, msg: note.msg, dateCreated: note.dateCreated, remindDate: note.remindDate, links: linksInfo});
   }
 };
 
