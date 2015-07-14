@@ -162,7 +162,7 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
 
   mailListener.on("server:disconnected", function () {
     console.log("imapDisconnected");
-    cb(null,'OK');
+    mailListener.start();
 
   });
 
