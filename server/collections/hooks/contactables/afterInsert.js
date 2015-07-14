@@ -103,29 +103,32 @@ Contactables.after.insert(function (userId, doc) {
 
 // TW Enterprise sync
 Contactables.after.insert(function (userId, doc) {
-  // Sync only when an account has been set up for the document hier
-  var hier = Hierarchies.findOne(doc.hierId);
-  if (hier && hier.enterpriseAccount) {
-    // Set up account info for the helper
-    var accountInfo = {
-      hierId: hier._id,
-      username: hier.enterpriseAccount.username,
-      password: hier.enterpriseAccount.password,
-      accessToken: hier.enterpriseAccount.accessToken,
-      tokenType: hier.enterpriseAccount.tokenType
-    };
+  // Skip contactables with the skip flag set
+  if (!doc.skipTwSync) {
+    // Sync only when an account has been set up for the document hier
+    var hier = Hierarchies.findOne(doc.hierId);
+    if (hier && hier.enterpriseAccount) {
+      // Set up account info for the helper
+      var accountInfo = {
+        hierId: hier._id,
+        username: hier.enterpriseAccount.username,
+        password: hier.enterpriseAccount.password,
+        accessToken: hier.enterpriseAccount.accessToken,
+        tokenType: hier.enterpriseAccount.tokenType
+      };
 
-    var data = {};
+      var data = {};
 
-    // Add Employee
-    if (doc.Employee) {
-      data.firstName = doc.person.firstName;
-      data.lastName = doc.person.lastName;
+      // Add Employee
+      if (doc.Employee) {
+        data.firstName = doc.person.firstName;
+        data.lastName = doc.person.lastName;
 
-      if (doc.Employee.taxID)
-        data.ssn = doc.Employee.taxID.replace(/-/g,'');
+        if (doc.Employee.taxID)
+          data.ssn = doc.Employee.taxID.replace(/-/g,'');
 
-      TwApi.addEmployee(doc._id, data, accountInfo);
+        TwApi.addEmployee(doc._id, data, accountInfo);
+      }
     }
   }
 });

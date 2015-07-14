@@ -122,8 +122,9 @@
                     </span>
             </div>
         </div><!-- /.search-list -->
+        {{> noteTabSort}}
 
-        {{> fastPagination name="notes" useKeys="true" containerClass="magic-pager"}}
+        {{> fastPagination name="notesView" useKeys="true" containerClass="magic-pager"}}
 
         <!-- /.list-actions-cell -->
     </div><!-- .list-actions -->
@@ -135,7 +136,7 @@
             <div class="list-header notes-list-header">
                 <div class="list-header-cell notes-list-header-title">{{_ "Title"}}</div>
                 <div class="list-header-cell notes-list-header-linked">{{_ "Linked"}}</div>
-                <div class="list-header-cell notes-list-header-edit">{{_ "Last Edit"}}</div>
+                <div class="list-header-cell notes-list-header-edit">{{_ "Remind date"}}</div>
             </div><!-- /.list-header -->
 
             <div class="list-item-section">
@@ -149,7 +150,7 @@
 </template>
 
 <template name="notesTabItem">
-    <li >
+    <li>
         {{#with getCtx}}
             {{>noteItem noteRecord}}
         {{/with}}
@@ -182,5 +183,41 @@
             {{/each}}
             <a class="btn-custom-3" id="toggleAddNoteModal"><i class="fa fa-plus"></i> {{_ "Link item"}}</a>
         </div><!-- /.add-note-options-body -->
+    </div>
+</template>
+
+
+<template name="noteTabSort">
+    <div class="list-actions-cell order-list">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                {{_ "Sort"}}
+                {{#with selectedSort}}
+                    <strong>{{displayName}}</strong>
+                    {{#if isAscSort .}}
+                        <i class="fa fa-sort-amount-asc"> </i>
+                    {{else}}
+                        <i class="fa fa-sort-amount-desc"> </i>
+                    {{/if}}
+                {{/with}}
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                {{#each sortFields}}
+                    <li>
+                        <a class="sort-field" href="#">
+                            {{_ displayName}}
+                            {{#if isFieldSelected .}}
+                                {{#if isAscSort .}}
+                                    <i class="fa fa-sort-amount-asc"> </i>
+                                {{else}}
+                                    <i class="fa fa-sort-amount-desc"> </i>
+                                {{/if}}
+                            {{/if}}
+                        </a>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
     </div>
 </template>

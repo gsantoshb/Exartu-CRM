@@ -8,6 +8,7 @@ var ro=new ReactiveVar({});
 var selectedSort = new ReactiveVar();
 var tourIndex;
 var notePreview = new ReactiveVar(false);
+var showRemindDate = new ReactiveVar(false);
 var loadNoteQueryFromURL = function (params) {
   // Search string
 
@@ -150,7 +151,6 @@ Template.notesBox.helpers({
     return Meteor.users.find({}, {sort: {'emails.address': 1}});
   },
   notes: function () {
-    console.log('options', options);
     return NotesView.find(rq.get(), ro.get());
   },
   filters: function () {
@@ -171,6 +171,12 @@ Template.notesBox.helpers({
   },
   filteringRemindDate: function () {
     return noteQuery.remindDate.value;
+  },
+  showRemindDate: function () {
+    return showRemindDate.get();
+  },
+  showRemindDate: function () {
+    return Session.get('showNotesRemindDate');
   }
 });
 
@@ -199,6 +205,8 @@ Template.notesBox.events({
   },
   'click #filterRemindDate': function (e, ctx) {
     noteQuery.remindDate.value = ! noteQuery.remindDate.value;
+
+    Session.set('showNotesRemindDate', noteQuery.remindDate.value);
 
     if (noteQuery.remindDate.value){
       selectedSort.set({field: 'remindDate', value: 1});

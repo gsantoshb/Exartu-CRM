@@ -85,7 +85,7 @@ Meteor.methods({
     var loggedUser = Meteor.user();
     if (! loggedUser) return;
 
-    if (! RoleManager.bUserIsClientAdmin(loggedUser)){
+    if (! RoleManager.bUserIsAdmin(loggedUser)){
       throw new Meteor.Error(403, 'Not admin');
     }
 
