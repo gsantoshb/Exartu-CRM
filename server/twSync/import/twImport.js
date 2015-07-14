@@ -226,7 +226,9 @@ var createContactable = function (type, data, externalId, userId, hierId) {
     skipTwSync: true,
     objNameArray: ['contactable', type],
     contactMethods: [],
-    externalId: externalId
+    externalId: externalId,
+    userId: userId,
+    hierId: hierId
   };
 
   // Active Status
