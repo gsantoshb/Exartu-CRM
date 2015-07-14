@@ -1,4 +1,4 @@
-var allTasks = [];
+var allNotes = [];
 var mineQuery = {};
 var showMineOnly = true;
 var showToday = true;
@@ -32,7 +32,7 @@ Meteor.autorun(function () {
 
     handler && handler.stop();
     init = false;
-    handler = Meteor.subscribe("calendarTasks", start, end, showMineOnly, function () {
+    handler = Meteor.subscribe("calendarNotes", start, end, showMineOnly, function () {
         rerender();
         loadingCount = false;
         loadingDep.changed();
@@ -43,7 +43,7 @@ Meteor.autorun(function () {
 Template.agendaBox.created=function() {
     var calendarDiv = $('.fc');
     startEndDep.changed();
-    observe = CalendarTasks.find({}).observe({
+    var observe = CalendarNotes.find({}).observe({
       //TODO: to make it completly reactive it need the add and remove
       changed: function (newDocument, oldDocument) {
         var calendarDiv = $('.fc');
@@ -52,8 +52,8 @@ Template.agendaBox.created=function() {
         });
 
         event.title = newDocument.msg;
-        event.start = newDocument.begin;
-        event.end = newDocument.end;
+        event.start = newDocument.remindDate;
+        event.end = newDocument.remindDate;
         calendarDiv.fullCalendar('updateEvent', event);
         renderDay();
 
@@ -96,22 +96,22 @@ var renderDay = function(){
     $('.calendar-widget').append('<ul class="list-type-8"></ul>');
 
   _.each(events, function(item){
-    var event = Tasks.findOne({_id: item.id});
-    html = '<li><a class="item-icon item-icon-tasks item-icon-sm" id="'+item.id+'" href="#"><i class="ico-tasks" id="'+item.id+'"></i></a><div class="item-content"><div class="title"><a href="#" id="'+item.id+'">';
+    var event = Notes.findOne({_id: item.id});
+    html = '<li><a class="item-icon item-icon-notes item-icon-sm" id="'+item.id+'" href="#"><i class="icon-pencil-3" id="'+item.id+'"></i></a><div class="item-content"><div class="title"><a href="#" id="'+item.id+'">';
     html += item.title;
 
-    if(event && event.assign && event.assign.length){
-      var user = Meteor.users.findOne({_id:event.assign[0]});
-      if(user){
-        var name = (user.username ? user.username : user.emails[0].address);
-        html += '<p class="desc">'+name+'</p>';
-      }
-      else{
-        html += '<p class="desc"><i>unassigned</i></p>';
-      }
-    }
-    else
-      html += '<p class="desc">unassigned</p>';
+    //if(event && event.assign && event.assign.length){
+    //  var user = Meteor.users.findOne({_id:event.assign[0]});
+    //  if(user){
+    //    var name = (user.username ? user.username : user.emails[0].address);
+    //    html += '<p class="desc">'+name+'</p>';
+    //  }
+    //  else{
+    //    html += '<p class="desc"><i>unassigned</i></p>';
+    //  }
+    //}
+    //else
+    //  html += '<p class="desc">unassigned</p>';
 
     html += '</a></div></div></li>';
     $('.calendar-widget .list-type-8').append(html);
@@ -132,8 +132,8 @@ Template.agendaBox.helpers({
             header:false,
             timeFormat:'HH:mm',
             events: function (start, end, timezone, callback) {
-                callback(_.map(CalendarTasks.find({}).fetch(), function (t) {
-                        return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:""  } ;
+                callback(_.map(CalendarNotes.find({}).fetch(), function (t) {
+                        return {id: t._id,title: t.msg, start: t.remindDate, end: t.remindDate, description:""  } ;
                 }));
             },
             viewRender: function (view, element) {
@@ -217,21 +217,21 @@ Template.agendaBox.helpers({
             loading: function(bool) {
                 var calendarDiv = $('.fc');
                 if (bool){
-                    calendarDiv.find('.tasks-navi .current').hide();
+                    calendarDiv.find('.notes-navi .current').hide();
                 }
                 else{
-                    calendarDiv.find('.tasks-navi .current').show();
+                    calendarDiv.find('.notes-navi .current').show();
                 }
             }
         }
     },
-    taskCount: {
+    notesCount: {
         title:function(){
             loadingDep.depend();
             if(loadingCount){
                 return ""
             }
-            return "tasks";
+            return "notes";
         },
 
 
@@ -241,7 +241,7 @@ Template.agendaBox.helpers({
             if(loadingCount){
                 return "loading..."
             }
-            return CalendarTasks.find({}).count();
+            return CalendarNotes.find({}).count();
         }
     },
 
@@ -291,9 +291,9 @@ Template.agendaBox.helpers({
 
 Template.agendaBox.events = {
     'click .list-type-8': function(e){
-       var task = CalendarTasks.findOne({_id: e.target.id});
-       if(task){
-         Utils.showModal('addEditTask', {taskId: task._id});
+       var note = CalendarNotes.findOne({_id: e.target.id});
+       if(note){
+         Utils.showModal('addEditNote', note);
        }
       loadingDep.changed();
     },
