@@ -100,21 +100,7 @@ Meteor.publish('editTask', function(id) {
   self.ready();
 });
 
-Meteor.publish('calendarTasks', function(start, end, mineOnly) {
-  var self = this;
-  var taskCursor;
-  //var Auxend = new Date(end.setDate(end.getDate()+1));
-  if(mineOnly) {
-    taskCursor = Tasks.find({$and: [{userId: this.userId}, {$and: [{begin: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]});
-  }
-  else{
-    taskCursor = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({$and: [{$and: [{begin: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]}))
 
-  }
-  Mongo.Collection._publishCursor(taskCursor, self, 'calendarTasks');
-// _publishCursor doesn't call this for us in case we do this more than once.
-  self.ready();
-});
 
 Tasks.allow({
     update: function () {
