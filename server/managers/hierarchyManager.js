@@ -156,7 +156,7 @@ HierarchyManager = {
       TwApi.syncEmployees(accountInfo);
     }, 500);
   },
-  syncTwContactablesIntoAida: function (hierId) {
+  syncTwContactablesIntoAida: function (userId, hierId) {
     // Check the hier has an Enterprise account set up
     var hier = Hierarchies.findOne({_id: hierId, enterpriseAccount: {$exists: true}, 'enterpriseAccount.username': {$exists: true}});
     if (!hier) throw new Error("Hierarchy invalid. Make sure TW Enterprise is set up");
@@ -176,7 +176,9 @@ HierarchyManager = {
       tokenType: hier.enterpriseAccount.tokenType
     };
 
-    Meteor.setTimeout(TwImport.importContactables(accountInfo), 500);
+    Meteor.setTimeout(function () {
+      TwImport.importContactables(userId, accountInfo);
+    }, 500);
   }
 };
 

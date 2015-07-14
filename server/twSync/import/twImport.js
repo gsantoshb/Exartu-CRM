@@ -1,17 +1,17 @@
 
 TwImport = {
-  importContactables: function (accountInfo) {
-    var hierId = Utils.getUserHierId(Meteor.userId());
+  importContactables: function (userId, accountInfo) {
+    var hierId = Utils.getUserHierId(userId);
     var apiHelper = new TwApiHelper(accountInfo);
 
     // Import Employees
-    importEmployees(apiHelper);
+    importEmployees(userId, apiHelper);
 
     // Import Clients
-    importClients(apiHelper);
+    importClients(userId, apiHelper);
 
     // Import Contacts
-    importContacts(apiHelper);
+    importContacts(userId, apiHelper);
 
     // Remove the skipTwSync flag from contactable
     var hierFilter = Utils.filterByHiers(hierId);
@@ -22,7 +22,7 @@ TwImport = {
   }
 };
 
-var importEmployees = function (apiHelper) {
+var importEmployees = function (userId, apiHelper) {
   console.log('Importing TW Employees...');
 
   // Get all employees
@@ -32,12 +32,12 @@ var importEmployees = function (apiHelper) {
       // Insert each employee when necessary
       _.each(result, function (twEmp) {
         // Check if the employee is already in the database
-        var employee = Utils.filterCollectionByUserHier2(Meteor.userId(), Contactables.find({externalId: twEmp.aIdent.toString()}, {fields: {_id: 1}})).fetch();
+        var employee = Utils.filterCollectionByUserHier2(userId, Contactables.find({externalId: twEmp.aIdent.toString()}, {fields: {_id: 1}})).fetch();
         if (!employee.length) {
           console.log('Importing Employee', twEmp.aIdent);
 
           // Create the employee to insert
-          employee = createContactable('Employee', twEmp, twEmp.aIdent.toString(), apiHelper.hierId);
+          employee = createContactable('Employee', twEmp, twEmp.aIdent.toString(), userId, apiHelper.hierId);
 
           // Insert the employee in the db
           var empId = ContactableManager.create(employee);
@@ -68,7 +68,7 @@ var importEmployees = function (apiHelper) {
             }
 
             // Add notes
-            importNotes(apiHelper, 'Employee', twEmp.aIdent.toString(), empId);
+            importNotes(userId, apiHelper, 'Employee', twEmp.aIdent.toString(), empId);
 
             // Add Tags
             importTags(apiHelper, 'Employee', twEmp.aIdent.toString(), empId);
@@ -90,7 +90,7 @@ var importEmployees = function (apiHelper) {
   }
 };
 
-var importClients = function (apiHelper) {
+var importClients = function (userId, apiHelper) {
   console.log('Importing TW Clients...');
 
   // Get all clients
@@ -100,12 +100,12 @@ var importClients = function (apiHelper) {
       // Insert each client when necessary
       _.each(result, function (twClient) {
         // Check if the client is already in the database
-        var client = Utils.filterCollectionByUserHier2(Meteor.userId(), Contactables.find({externalId: twClient.customerId.toString()}, {fields: {_id: 1}})).fetch();
+        var client = Utils.filterCollectionByUserHier2(userId, Contactables.find({externalId: twClient.customerId.toString()}, {fields: {_id: 1}})).fetch();
         if (!client.length) {
           console.log('Importing Client', twClient.customerId);
 
           // Create the client to insert
-          client = createContactable('Client', twClient, twClient.customerId.toString(), apiHelper.hierId);
+          client = createContactable('Client', twClient, twClient.customerId.toString(), userId, apiHelper.hierId);
 
           // Insert the client in the db
           var clientId = ContactableManager.create(client);
@@ -155,7 +155,7 @@ var importClients = function (apiHelper) {
   }
 };
 
-var importContacts = function (apiHelper) {
+var importContacts = function (userId, apiHelper) {
   console.log('Importing TW Contacts...');
 
   // Get all contacts
@@ -165,12 +165,12 @@ var importContacts = function (apiHelper) {
       // Insert each contact when necessary
       _.each(result, function (twContact) {
         // Check if the contact is already in the database
-        var contact = Utils.filterCollectionByUserHier2(Meteor.userId(), Contactables.find({externalId: twContact.id.toString()}, {fields: {_id: 1}})).fetch();
+        var contact = Utils.filterCollectionByUserHier2(userId, Contactables.find({externalId: twContact.id.toString()}, {fields: {_id: 1}})).fetch();
         if (!contact.length) {
           console.log('Importing Contact', twContact.id);
 
           // Create the contact to insert
-          contact = createContactable('Contact', twContact, twContact.id.toString(), apiHelper.hierId);
+          contact = createContactable('Contact', twContact, twContact.id.toString(), userId, apiHelper.hierId);
 
           // Insert the contact in the db
           var contactId = ContactableManager.create(contact);
@@ -220,7 +220,7 @@ var importContacts = function (apiHelper) {
   }
 };
 
-var createContactable = function (type, data, externalId, hierId) {
+var createContactable = function (type, data, externalId, userId, hierId) {
   var contactable = {
     skipTwSync: true,
     objNameArray: ['contactable', type],
@@ -253,7 +253,7 @@ var createContactable = function (type, data, externalId, hierId) {
 
     // Client ID
     if (data.customerId && contactable.Contact) {
-      var customer = Utils.filterCollectionByUserHier2(Meteor.userId(), Contactables.find({externalId: data.customerId.toString()}, {fields: {_id: 1}})).fetch();
+      var customer = Utils.filterCollectionByUserHier2(userId, Contactables.find({externalId: data.customerId.toString()}, {fields: {_id: 1}})).fetch();
       if (customer.length == 1) contactable.Contact.client = customer[0]._id;
     }
   } else if (type == 'Client') {
@@ -307,7 +307,7 @@ var createContactable = function (type, data, externalId, hierId) {
   return contactable;
 };
 
-var importNotes = function (apiHelper, type, aident, contactableId) {
+var importNotes = function (userId, apiHelper, type, aident, contactableId) {
   try {
     var result = apiHelper.post('/' + type + '/' + aident + '/messages', {});
     if (result) {
@@ -320,7 +320,7 @@ var importNotes = function (apiHelper, type, aident, contactableId) {
             contactableId: contactableId,
             dateCreated: new Date(twNote.date),
             hierId: apiHelper.hierId,
-            userId: Meteor.userId(),
+            userId: userId,
             displayToEmployee: false
           };
 
