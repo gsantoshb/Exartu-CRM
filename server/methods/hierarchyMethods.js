@@ -54,7 +54,7 @@ Meteor.methods({
   },
   syncTwContactablesIntoAida: function () {
     try {
-      return HierarchyManager.syncTwContactablesIntoAida(Meteor.user().currentHierId);
+      return HierarchyManager.syncTwContactablesIntoAida(Meteor.userId(), Meteor.user().currentHierId);
     } catch (err) {
       throw new Meteor.Error(err.message);
     }
