@@ -69,6 +69,11 @@ Template.notesTabAdd.events({
   'change #show-remind-date-checkbox': function (e, ctx) {
     clickedCheckboxOrButton = true;
     showRemindDate.set(e.target.checked);
+    
+    // default to 'next weeks'
+    if (e.target.checked && !detectedSpan.get()){
+      detectedSpan.set(timeSpanDictionary.nextWeek);
+    }
   },
   'click .time-span': function () {
     clickedCheckboxOrButton = true;
