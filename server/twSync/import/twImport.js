@@ -83,10 +83,10 @@ var importEmployees = function (userId, apiHelper) {
     // Mark the sync failed
     Hierarchies.update({_id: apiHelper.hierId}, {$set: {
       'enterpriseAccount.contactablesSync': false,
-      'enterpriseAccount.contactablesSyncError': "TW Import failed getting employees"
+      'enterpriseAccount.contactablesSyncError': "TW Import failed importing employees. " + ex.message
     }});
 
-    throw new Error("TW Import failed getting employees");
+    throw new Error("TW Import failed importing employees. " + ex.message);
   }
 };
 
@@ -148,10 +148,11 @@ var importClients = function (userId, apiHelper) {
     // Mark the sync failed
     Hierarchies.update({_id: apiHelper.hierId}, {$set: {
       'enterpriseAccount.contactablesSync': false,
-      'enterpriseAccount.contactablesSyncError': "TW Import failed getting clients"
+      'enterpriseAccount.contactablesSyncError': "TW Import failed importing clients. " + ex.message
     }});
 
-    throw new Error("TW Import failed getting clients");
+    throw new Error("TW Import failed importing clients. " + ex.message);
+
   }
 };
 
@@ -213,10 +214,10 @@ var importContacts = function (userId, apiHelper) {
     // Mark the sync failed
     Hierarchies.update({_id: apiHelper.hierId}, {$set: {
       'enterpriseAccount.contactablesSync': false,
-      'enterpriseAccount.contactablesSyncError': "TW Import failed getting contacts"
+      'enterpriseAccount.contactablesSyncError': "TW Import failed importing contacts. " + ex.message
     }});
 
-    throw new Error("TW Import failed getting contacts");
+    throw new Error("TW Import failed importing contacts. " + ex.message);
   }
 };
 
