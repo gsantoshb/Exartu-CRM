@@ -3,7 +3,7 @@
 Addresses.after.insert(function (userId, address) { syncAddress(address); });
 Addresses.after.update(function (userId, address, fieldNames, modifier) { syncAddress(address); });
 var syncAddress = function (address) {
-  var contactable = Contactables.findOne(address.linkId, {fields:{_id: 1, hierId: 1, externalId: 1, Employee: 1}});
+  var contactable = Contactables.findOne(address.linkId, {fields:{_id: 1, hierId: 1, externalId: 1, Employee: 1, skipTwSync: 1}});
 
   // Skip contactables with the skip flag set
   if (contactable && !contactable.skipTwSync) {
