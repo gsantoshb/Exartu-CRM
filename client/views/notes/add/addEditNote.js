@@ -40,7 +40,7 @@ Template.addEditNote.events({
   'click .pushOneMonth': function () {
     pushDays = 30;
   },
-  'click .save-task': function(){
+  'click .save-note': function(){
     pushDays = 0;
   }
 })
