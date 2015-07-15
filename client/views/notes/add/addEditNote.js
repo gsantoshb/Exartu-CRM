@@ -26,7 +26,7 @@ Template.addEditNote.helpers({
   },
   remindDate: function () {
   // Use either the task begin date or a new date
-  return note.get() ? note.get().remindDate : new Date();
+  return note.get() ? note.get().remindDate : "";
   }
 });
 

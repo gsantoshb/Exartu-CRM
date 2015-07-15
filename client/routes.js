@@ -131,11 +131,6 @@ Router.map(function () {
     path: '/inbox/:_id',
     controller: 'ConversationController'
   });
-
-  this.route('tasks', {
-    path: '/tasks/:_id?',
-    controller: 'TasksController'
-  });
   this.route('notes', {
     path: '/notes/:_id?',
     controller: 'NotesController'
