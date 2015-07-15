@@ -24,7 +24,7 @@ Notes.after.insert(function (userId, doc) {
 // Activities
 Notes.after.insert(function (userId, doc) {
   var obj = {
-    userId: userId,
+    userId: userId || doc.userId,
     hierId: doc.hierId,
     type: Enums.activitiesType.noteAdd,
     entityId: doc._id,

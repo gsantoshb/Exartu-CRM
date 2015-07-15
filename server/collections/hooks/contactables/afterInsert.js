@@ -16,7 +16,7 @@ Contactables.after.insert(function (userId, doc) {
     data.displayName = doc.organization.organizationName;
   }
   var obj = {
-    userId: userId,
+    userId: userId || doc.userId,
     hierId: doc.hierId,
     type: Enums.activitiesType.contactableAdd,
     entityId: doc._id,
