@@ -57,7 +57,9 @@ var importEmployees = function (userId, apiHelper) {
                   linkId: empId,
                   address: twEmp.address,
                   city: twEmp.city,
-                  country: 'United States'
+                  country: 'United States',
+                  userId: userId,
+                  hierId: apiHelper.hierId
                 };
 
                 // Add optional fields
@@ -129,7 +131,9 @@ var importClients = function (userId, apiHelper) {
                   linkId: clientId,
                   address: twClient.street1,
                   city: twClient.city,
-                  country: 'United States'
+                  country: 'United States',
+                  userId: userId,
+                  hierId: apiHelper.hierId
                 };
 
                 // Add optional fields
@@ -199,7 +203,9 @@ var importContacts = function (userId, apiHelper) {
                   linkId: contactId,
                   address: twContact.street1,
                   city: twContact.city,
-                  country: 'United States'
+                  country: 'United States',
+                  userId: userId,
+                  hierId: apiHelper.hierId
                 };
 
                 // Add optional fields
