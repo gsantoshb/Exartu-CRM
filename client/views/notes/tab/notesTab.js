@@ -468,6 +468,16 @@ timeSpanDictionary = {
       return moment().add(3, 'h').toDate();
     }
   },
+  tomorrowMorning: {
+    regex: /\b(tomorrow\smorning|early\stomorrow)\b/i,
+    label: '',
+    getTime: function () {
+      var date = moment().add(1, 'd');
+      date.hour(10);
+      date.minutes(0);
+      return date.toDate();
+    }
+  },
   tomorrow: {
     regex: /\b(tomorrow)\b/i,
     label: 'Tomorrow',
@@ -482,11 +492,25 @@ timeSpanDictionary = {
       return moment().add(2, 'd').toDate();
     }
   },
+  inThreeDays: {
+    regex: /\b(next\sfew\sdays)\b/i,
+    label: '',
+    getTime: function () {
+      return moment().add(3, 'd').toDate();
+    }
+  },
   nextWeek: {
     regex: /\b(next\sweek|in\sa\sweek)\b/i,
     label: 'Next week',
     getTime: function () {
       return moment().add(1, 'w').toDate();
+    }
+  },
+  inTwoWeeks: {
+    regex: /\b(near\sfuture)\b/i,
+    label: '',
+    getTime: function () {
+      return moment().add(2, 'w').toDate();
     }
   },
   nextMonth: {
@@ -498,6 +522,19 @@ timeSpanDictionary = {
   }
 };
 
+// week days mornings
+_.each(moment.weekdays(), function (dayName, dayIndex) {
+  timeSpanDictionary[dayName.toLowerCase() + 'Morning'] = {
+    regex: new RegExp('\\b('+ dayName.toLowerCase() + '\\smorning)\\b'),
+    label: null,
+    getTime: function () {
+      var date = moment().day(dayIndex);
+      date.hour(10);
+      date.minutes(0);
+      return date.toDate();
+    }
+  }
+});
 // week days
 _.each(moment.weekdays(), function (dayName, dayIndex) {
   timeSpanDictionary[dayName.toLowerCase()] = {
@@ -508,6 +545,7 @@ _.each(moment.weekdays(), function (dayName, dayIndex) {
     }
   }
 });
+
 
 
 
