@@ -794,27 +794,27 @@ Utils.sortFetchOptions=function(lkpcursor) {
     });
 }
 
-Utils.classifyTags=function(task) {
-    var now = moment(new Date())
-    if (task.completed == undefined) {
-        task.completed = null;
-    }
-    if (now.isBefore(task.begin)) {
-        task.state = Enums.taskState.future;
-    } else {
-        if (task.completed) {
-            task.state = Enums.taskState.completed;
-        } else {
-            if (now.isBefore(task.end ) || task.end==null) {
-                task.state = Enums.taskState.pending;
-            } else {
-                task.state = Enums.taskState.overDue;
-            }
-
-        }
-    }
-    return task;
-}
+//Utils.classifyTags=function(task) {
+//    var now = moment(new Date())
+//    if (task.completed == undefined) {
+//        task.completed = null;
+//    }
+//    if (now.isBefore(task.begin)) {
+//        task.state = Enums.taskState.future;
+//    } else {
+//        if (task.completed) {
+//            task.state = Enums.taskState.completed;
+//        } else {
+//            if (now.isBefore(task.end ) || task.end==null) {
+//                task.state = Enums.taskState.pending;
+//            } else {
+//                task.state = Enums.taskState.overDue;
+//            }
+//
+//        }
+//    }
+//    return task;
+//}
 Utils.classifyNote=function(note) {
     if (!note.remindDate) return null;
 

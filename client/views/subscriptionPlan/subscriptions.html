@@ -110,20 +110,6 @@
                 <li class="list-group-item"><i class="icon-ok text-danger"></i>  <!--<div class="row">-->
                     <div class="row">
                         <div class="col-lg-6 col-md-6">
-                            <strong> Tasks </strong>
-                        </div>
-                        <div class="col-lg-6 col-md-6">
-                            {{#if isFree}}
-                                {{tasksCount}}/{{collections.Tasks.limit}}
-                            {{else}}
-                                {{collections.Tasks.limit}}
-                            {{/if}}
-                        </div>
-                    </div>
-                </li>
-                <li class="list-group-item"><i class="icon-ok text-danger"></i>  <!--<div class="row">-->
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6">
                             <strong> Resume parser </strong>
                         </div>
                         <div class="col-lg-6 col-md-6">
@@ -202,21 +188,6 @@
                         {{else}}
                         {{storageLimit}} MB
                         {{/if}}
-                    </div>
-                </div>
-            </li>
-            <li class="list-group-item"><i class="icon-ok text-danger"></i>  <!--<div class="row">-->
-                <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <strong> Tasks </strong>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        {{#if isEnterprise}}
-                        {{tasksCount}}/{{collections.Tasks.limit}}
-                        {{else}}
-                        {{collections.Tasks.limit}}
-                        {{/if}}
-                        per month
                     </div>
                 </div>
             </li>
@@ -305,22 +276,6 @@
                             <!--{{else}}-->
                             <!--{{storageLimit}} MB-->
                             <!--{{/if}}-->
-                        </div>
-                    </div>
-                </li>
-                <li class="list-group-item"><i class="icon-ok text-danger"></i>  <!--<div class="row">-->
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6">
-                            <strong> Tasks </strong>
-                        </div>
-                        <div class="col-lg-6 col-md-6">
-                            <i class="icon-infinity"></i>
-                            <!--{{#if isEnterprise}}-->
-                                <!--{{tasksCount}}/{{collections.Tasks.limit}}-->
-                            <!--{{else}}-->
-                                <!--{{collections.Tasks.limit}}-->
-                            <!--{{/if}}-->
-                            <!--per month-->
                         </div>
                     </div>
                 </li>

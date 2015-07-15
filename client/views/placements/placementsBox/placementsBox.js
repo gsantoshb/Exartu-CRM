@@ -169,7 +169,7 @@ Template.placementsBox.rendered = function(){
           Meteor.call('setVisitedTour', "tourActivities", tourIndex, function(err,cb){
           })
           if(e===18){
-            Router.go("/tasks");
+            Router.go("/notes");
           }
 
         }
