@@ -14,6 +14,7 @@ Migrations.add({
         Notes.insert({
           msg : task.msg,
           remindDate : task.begin,
+          dateCreated : task.dateCreated,
           links : task.links,
           hierId : task.hierId,
           userId : task.userId,
