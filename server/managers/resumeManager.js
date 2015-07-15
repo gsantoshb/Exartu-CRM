@@ -394,7 +394,7 @@ var extractInformation = function (parseResult) {
               duties: description,
               start: startDate,
               end: endDate,
-              dateCreated: Date.new()
+              dateCreated: new Date()
             })
           });
 
@@ -413,19 +413,8 @@ var extractInformation = function (parseResult) {
 
 Meteor.methods({
   resumeParserMethod: function(data){
-    var result = ResumeManager.parse(data);
-    if (result instanceof Meteor.Error)
-      throw result;
-    if ((!result.person.firstName) || (!result.person.lastName)) {
-      return null;
-    }
-    var employeeId = ContactableManager.create(result);
-    if (result.location) {
-      result.location.linkId = employeeId;
-      result.location.hierId = Meteor.user()._id;
-      result.location.addressTypeId = LookUpManager.getAddressTypeDefaultId();
-      AddressManager.addEditAddress(result.location);
-    }
+    var employeeId = ContactableManager.createFromResume(data);
+
     if (employeeId) {
       var bufferStream = new stream.PassThrough();
       // Write your buffer
@@ -450,9 +439,10 @@ Meteor.methods({
         extension: data.extension,
         dateCreated: new Date()
       };
+
+      Resumes.insert(resume);
     }
 
-    Resumes.insert(resume);
     return employeeId;
   }
 })

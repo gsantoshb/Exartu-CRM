@@ -1,36 +1,4 @@
-
-  hierarchyListener = {};
-
-EmailManager = {
-  sendEmail: function (to, subject, content, isHTML) {
-    var from = Meteor.user();
-    if (!from.emails)
-      return null;
-    from = from.emails[0].address;
-    if (!subject)
-      subject = '';
-    send(to, from, subject, content, isHTML);
-  },
-  sendMultiplesEmail: function(email, recipients){
-    if (!email) throw new Error('Email is required');
-    if (!recipients || recipients.length < 1) throw new Error('At least one recipient is required');
-
-    _.each(recipients, function (recipient) {
-      // Get the contactable
-      var contactable = Contactables.findOne({_id: recipient.contactableId});
-      if (contactable) {
-        // Send the email
-        EmailManager.sendEmail(recipient.email, email.subject, email.text, true);
-
-        NoteManager.addNote({
-          msg: email.text,
-          links: [{type: Enums.linkTypes.contactable.value, id: contactable._id}],
-          isEmail: true
-        })
-      }
-    });
-  }
-};
+hierarchyListener = {};
 
 var send = function (to, from, subject, content, isHTML) {
   check([to, from, subject, content], [String]);
@@ -48,16 +16,48 @@ var send = function (to, from, subject, content, isHTML) {
   Email.send(email);
 };
 
-var emailListener =  Meteor.wrapAsync(function (email, pass, host, port, hierId, cb) {
+EmailManager = {
+  sendEmail: function (to, subject, content, isHTML) {
+    var from = Meteor.user();
+    if (!from.emails)
+      return null;
+    from = from.emails[0].address;
+    if (!subject)
+      subject = '';
+    send(to, from, subject, content, isHTML);
+  },
+  sendMultiplesEmail: function (email, recipients) {
+    if (!email) throw new Error('Email is required');
+    if (!recipients || recipients.length < 1) throw new Error('At least one recipient is required');
+
+    _.each(recipients, function (recipient) {
+      // Get the contactable
+      var contactable = Contactables.findOne({_id: recipient.contactableId});
+      if (contactable) {
+        // Send the email
+        EmailManager.sendEmail(recipient.email, email.subject, email.text, true);
+
+        NoteManager.addNote({
+          msg: email.text,
+          links: [{type: Enums.linkTypes.contactable.value, id: contactable._id}],
+          isEmail: true
+        })
+      }
+    });
+  },
+  send: send
+};
+
+var emailListener = Meteor.wrapAsync(function (email, pass, host, port, hierId, cb) {
 
   var hierarchy = Hierarchies.findOne({_id: hierId});
   //set by default a minimum date
-  var date ='April 1, 1962';
+  var date = 'April 1, 1962';
   //console.log(date);
-  if(!hierarchy){
+  if (!hierarchy) {
     throw new Error('hierarchy not found');
   }
-  else{
+  else {
     date = hierarchy.mailSubscription.date || date;
   }
 
@@ -72,7 +72,7 @@ var emailListener =  Meteor.wrapAsync(function (email, pass, host, port, hierId,
     fetchUnreadOnStart: true,
     mailbox: "INBOX", // mailbox to monitor
     markSeen: false, // all fetched email willbe marked as seen and not fetched next time
-    searchFilter:['ALL', ['SINCE', date]]
+    searchFilter: ['ALL', ['SINCE', date]]
   });
 
 
@@ -80,7 +80,7 @@ var emailListener =  Meteor.wrapAsync(function (email, pass, host, port, hierId,
 
   mailListener.on("server:connected", function () {
     console.log("imapConnected");
-    cb(null,'OK');
+    cb(null, 'OK');
     hierarchyListener[hierId] = mailListener;
   });
 
@@ -89,7 +89,7 @@ var emailListener =  Meteor.wrapAsync(function (email, pass, host, port, hierId,
     //console.log("emailParsed1", mail);
     var dateMail = new Date(mail.date);
     var lastDate = new Date(date);
-    if(dateMail>lastDate) {
+    if (dateMail > lastDate) {
       var contactable = ContactableManager.getContactableByMail(mail.from[0].address, hierId);
       if (contactable) {
         //console.log("from", mail.from[0].address);
@@ -132,33 +132,33 @@ var emailListener =  Meteor.wrapAsync(function (email, pass, host, port, hierId,
 
 });
 
-var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, port, cb) {
 
-    //set by default a minimum date
+EmailManager.emailListenerResumeParser = function (email, pass, host, port) {
 
-    //console.log(date);
+  //set by default a minimum date
 
-    //find all news emails for hierId hierarchy:
-    var mailListener = new MailListener({
-      username: email,//"lidnele4321@hotmail.com"
-      password: pass, //"ram123.R"
-      host: host,//"imap-mail.outlook.com"
-      port: port, //993 (imap port)
-      tls: true,
-      fetchUnreadOnStart: true,
-      mailbox: "INBOX", // mailbox to monitor
-      markSeen: false, // all fetched email willbe marked as seen and not fetched next time
-      searchFilter:['UNSEEN']
-    });
+  //console.log(date);
+
+  //find all news emails for hierId hierarchy:
+  var mailListener = new MailListener({
+    username: email,//"lidnele4321@hotmail.com"
+    password: pass, //"ram123.R"
+    host: host,//"imap-mail.outlook.com"
+    port: port, //993 (imap port)
+    tls: true,
+    fetchUnreadOnStart: true,
+    mailbox: "INBOX", // mailbox to monitor
+    markSeen: false, // all fetched email willbe marked as seen and not fetched next time
+    searchFilter: ['UNSEEN']
+  });
 
 
-    mailListener.start();
+  mailListener.start();
 
-    mailListener.on("server:connected", function () {
-      console.log("imapConnected");
-      cb(null,'OK');
+  mailListener.on("server:connected", function () {
+    console.log("imapConnected");
 
-    });
+  });
 
   mailListener.on("server:disconnected", function () {
     console.log("imapDisconnected");
@@ -169,7 +169,7 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
   mailListener.on("mail", function (mail, seqno, attributes) {
     // do something with mail object including attachments
     //console.log("emailParsed1", mail);
-    mailListener.imap.setFlags('*', 'SEEN',function(err){
+    mailListener.imap.setFlags('*', 'SEEN', function (err) {
       console.log(err);
     })
     var to = mail.to[0].address;
@@ -183,13 +183,13 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
         if (hier.resumeParserUser === undefined) {
           var userId = UserManager.registerAccount({
             name: 'resumeParserService',
-            email: 'resumeParserService' + hier.configuration.webName + '@aida.com',
+            email: 'resumes-' + hier.configuration.webName + '@aidacreative.com',
             currentHierId: hier._id,
             password: Random.id(8),
             language: null,
             phone: '0000000'
           }, true);
-          Meteor.users.update({_id:userId},{$set:{inactive:true}});
+          Meteor.users.update({_id: userId}, {$set: {inactive: true}});
           user = Meteor.users.findOne({_id: userId});
           Hierarchies.update({_id: hier._id}, {$set: {resumeParserUser: user._id}});
         }
@@ -203,28 +203,27 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
         var successParsed = false;
         _.each(mail.attachments, function (a) {
           var splitName = a.fileName.split(".");
-          var extension = splitName[splitName.length -1];
+          var extension = splitName[splitName.length - 1];
           var ret = connection.call('resumeParserMethod', {
             fileData: a.content.toString('base64'),
             contentType: a.contentType,
             extension: extension,
             fileName: a.fileName
-          }, function (err, res) {
-
           });
           if (ret) {
             successParsed = true;
             var text = "";
-            if(mail.text){
+            if (mail.text) {
               text = mail.text;
             }
-            console.log("text", text);
-            if(!text.match(/(\w)+/i)){
+            if (!text.match(/(\w)+/i)) {
               text = 'Email text empty';
             }
-            var note = { msg: text,
-               links: [ { id: ret, type: Enums.linkTypes.contactable.value } ],
-               contactableId: ret };
+            var note = {
+              msg: text,
+              links: [{id: ret, type: Enums.linkTypes.contactable.value}],
+              contactableId: ret
+            };
             connection.call('addContactableNote', note)
 
           }
@@ -236,60 +235,51 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
 
 
         if (successParsed) {
-          mailListener.imap.move("*", "parsed");
+          mailListener.imap.move(seqno, "parsed");
         }
         else {
-          mailListener.imap.move("*", "failToParse");
+          //error parsing
+          mailListener.imap.move(seqno, "failToParse");
+          EmailManager.send(mail.from[0].address, to, "Error parsing resumee", "Error creating the employee from resumee, please check the attached file is correct.", false);
         }
       } else {
-        mailListener.imap.move("*", "failToParse");
+        //no hierarchy found
+        mailListener.imap.move(seqno, "failToParse");
+        EmailManager.send(mail.from[0].address, to, "Resumee parser email", "Please check the email address is correct.", false);
       }
     } else {
-      mailListener.imap.move("*", "failToParse");
-    }//console.log("mail: ", mail);
-    //var note = {};
-    //note.msg = mail.subject + ". " + mail.text;
-    //note.hierId = hierId;
-    //note.userId = contactable.userId;
-    //note.links = [{id: contactable._id, type: Enums.linkTypes.contactable.value}];
-    //NoteManager.addNote(note);
-    //}
-    //actualize lastDate
+      //no hierarchy provided
+      mailListener.imap.move(seqno, "failToParse");
+      EmailManager.send(mail.from[0].address, to, "Resumee parser email", "Please check the email address is correct.", false);
 
-    //Hierarchies.update({_id: hierId}, {$set: {'mailSubscription.date': mail.date}});
-    //date = mail.date;
-
-
-    //else{
-    //  console.log("sali por el else");
-    //}
+    }
   });
 
-    mailListener.on("error", function (err) {
-      //console.log(err);
-      cb(err);
-    });
-    mailListener.on("mail:arrived", function (id) {
-      console.log("new mail arrived with id:" + id);
-    });
-
-    mailListener.on("mail:parsed", function (mail) {
-      // do something with mail object including attachments
-      //console.log("emailParsed2", mail.attachments);
-      // mail processing code goes here
-    });
-    //save the hierarchy listener into the hash
-
+  mailListener.on("error", function (err) {
+    console.log(err);
+    //cb(err);
+  });
+  mailListener.on("mail:arrived", function (id) {
+    console.log("new mail arrived with id:" + id);
   });
 
-var listListener = function(){
+  mailListener.on("mail:parsed", function (mail) {
+    // do something with mail object including attachments
+    //console.log("emailParsed2", mail.attachments);
+    // mail processing code goes here
+  });
+  //save the hierarchy listener into the hash
+
+};
+
+var listListener = function () {
   return _.keys(hierarchyListener);
 }
 
 Meteor.methods({
   emailListener: emailListener,
   listListener: listListener,
-  emailListenerResumeParser: emailListenerResumeParser
+  emailListenerResumeParser: EmailManager.emailListenerResumeParser
 });
 
 

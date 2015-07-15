@@ -124,14 +124,5 @@ Meteor.startup(function () {
     });
   });
 
-  Meteor.call('emailListenerResumeParser', ExartuConfig.ResumeParserEmail, ExartuConfig.ResumeParserEmailPassword,  "imap.gmail.com",993, function (err, result) {
-    if(err){
-      console.log(err);
-      throw new Error('something wrong happened on hierarchies mail subscriptions');
-
-    }
-    else{
-
-    }
-  });
+  EmailManager.emailListenerResumeParser(ExartuConfig.ResumeParserEmail, ExartuConfig.ResumeParserEmailPassword,  "imap.gmail.com", 993);
 });

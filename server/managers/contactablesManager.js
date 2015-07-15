@@ -20,8 +20,8 @@ ContactableManager = {
     create: function (contactable) {
         return Contactables.insert(contactable);
     },
-    createFromResume: function (stream) {
-        var result = ResumeManager.parse(stream);
+    createFromResume: function (data) {
+        var result = ResumeManager.parse(data);
         if (result instanceof Meteor.Error)
             throw result;
         if ((!result.person.firstName) || (!result.person.lastName)) {
