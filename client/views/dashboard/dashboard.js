@@ -109,9 +109,6 @@ Template.dashboard.rendered = function() {
               Router.go("/placements");
             }
             if (e === 18) {
-              Router.go("/tasks");
-            }
-            if (e === 22) {
               Router.go("/notes");
             }
           }

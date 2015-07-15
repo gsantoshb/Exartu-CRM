@@ -3,8 +3,66 @@ var currentUrl;
 var noteId;
 var links;
 var pushDays = 0;
-
+var showRemindDate = new ReactiveVar(false);
+var updatingRemindDate = new ReactiveVar(false);
 var addDisabled = new ReactiveVar(false);
+var clickedCheckboxOrButton = false;
+var detectedSpan = new ReactiveVar();
+var text = new ReactiveVar('');
+
+var getMatchingTimeSpan = function (text) {
+  var result;
+  _.any(timeSpanDictionary, function (span, key) {
+    if (span.regex.test(text)) {
+      result = span;
+      return true;
+    }
+  });
+  return result;
+};
+
+var setSelectedTimeSpan = function (newVal) {
+  //hack to force dateTimePicker to re-render with the new value
+  if (detectedSpan.curValue != newVal){
+    updatingRemindDate.set(true);
+    setTimeout(function () {
+      updatingRemindDate.set(false);
+    }, 100);
+  }
+
+  detectedSpan.set(newVal);
+};
+
+var timeSpanDictionary = {
+  later: {
+    regex: /\b(later|later\stoday|today)\b/i,
+    label: 'In two hours',
+    getTime: function () {
+      return moment().add(2, 'h').toDate();
+    }
+  },
+  tomorrow: {
+    regex: /\b(tomorrow)\b/i,
+    label: 'Tomorrow',
+    getTime: function () {
+      return moment().add(1, 'd').toDate();
+    }
+  },
+  nextDays: {
+    regex: /\b(next\sdays|couple\sof\sdays|soon)\b/i,
+    label: 'In two days',
+    getTime: function () {
+      return moment().add(2, 'd').toDate();
+    }
+  },
+  nextWeek: {
+    regex: /\b(next\sweek\b)/i,
+    label: 'Next week',
+    getTime: function () {
+      return moment().add(1, 'w').toDate();
+    }
+  }
+};
 
 Template.addEditNote.helpers({
   addDisabled: function () {
@@ -26,7 +84,35 @@ Template.addEditNote.helpers({
   },
   remindDate: function () {
   // Use either the task begin date or a new date
-  return note.get() ? note.get().remindDate : "";
+    if(note.get() && note.get().remindDate){
+      return note.get().remindDate;
+    }
+    else if( detectedSpan.get()){
+      return  detectedSpan.get().getTime();
+    }
+  },
+  showRemindDate: function(){
+    return showRemindDate.get() || (note.get() && note.get().remindDate);
+  },
+  isEditing: function(){
+    return note.get();
+  },
+  timeSpans: function () {
+    return _.toArray(timeSpanDictionary);
+  },
+  updatingRemindDate: function () {
+    return updatingRemindDate.get();
+  },
+  isSelectedSpan: function () {
+    return this == detectedSpan.get();
+  },
+  containRemaindDate: function(){
+    if(note.get() && note.get().remindDate){
+      return note.get().remindDate;
+    }
+    else{
+      return false;
+    }
   }
 });
 
@@ -42,6 +128,31 @@ Template.addEditNote.events({
   },
   'click .save-note': function(){
     pushDays = 0;
+  },
+  'change #show-remind-date-checkbox': function (e, ctx) {
+    clickedCheckboxOrButton = true;
+    showRemindDate.set(e.target.checked);
+
+    // default to 'next weeks'
+    if (e.target.checked && !detectedSpan.get()){
+      detectedSpan.set(timeSpanDictionary.nextWeek);
+    }
+
+    if(!e.target.checked){
+      if(note.get()) {
+        var newNote = note.get();
+        newNote.remindDate = undefined;
+        note.set(newNote);
+      }
+    }
+
+  },
+  'click .time-span': function () {
+    clickedCheckboxOrButton = true;
+    setSelectedTimeSpan(this);
+  },
+  'keyup #noteMsg': function (e, ctx) {
+    text.set(e.target.value);
   }
 })
 
@@ -77,6 +188,14 @@ Template.addEditNote.created = function () {
       window.history.replaceState(null, null, url)
     }, 500);
   }
+  Meteor.autorun(function () {
+    // if the user selected a time span or clicked the checkbox then i don't have to find a span in the text
+    if (clickedCheckboxOrButton)
+      return;
+    var s = getMatchingTimeSpan(text.get());
+    setSelectedTimeSpan(s);
+    showRemindDate.set(!! s);
+  })
 };
 
 Template.addEditNote.destroyed = function () {
@@ -86,6 +205,10 @@ Template.addEditNote.destroyed = function () {
   else {
     history.replaceState(null, 'edit', currentUrl);
   }
+  text.set('');
+  showRemindDate.set(false);
+  detectedSpan.set(undefined);
+  clickedCheckboxOrButton = false;
 };
 
 AutoForm.hooks({
