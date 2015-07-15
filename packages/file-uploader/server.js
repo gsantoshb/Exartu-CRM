@@ -51,8 +51,11 @@ FileUploader.createEndpoint = function(route, options) {
               _.extend(metadata, {fileSize:data.file.size, idProgressBar: data.idProgressBar});
               var connection = DDP.connect(Meteor.absoluteUrl());
               var result = connection.call(route, data.userId, data.file.path, metadata);
+              connection.close();
               this.response.end(JSON.stringify(result? result.content : undefined));
             } catch(err) {
+              connection && connection.close();
+
               this.response.statusCode = 500;
               this.response.end('Oh no! Something has gone wrong' + err);
             }
