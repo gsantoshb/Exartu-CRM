@@ -339,6 +339,10 @@ var importNotes = function (userId, apiHelper, type, aident, contactableId) {
             displayToEmployee: false
           };
 
+          if (twNote.dateDue && Date.parse(twNote.dateDue)) {
+            note.remindDate = new Date(twNote.dateDue);
+          }
+
           // Insert note
           return Notes.insert(note);
         }
