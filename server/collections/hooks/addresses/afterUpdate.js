@@ -21,7 +21,7 @@ Addresses.after.update(function (userId, address, fieldNames, modifier) {
 
 // TW Enterprise sync
 Addresses.after.update(function (userId, address, fieldNames, modifier) {
-  var contactable = Contactables.findOne(address.linkId, {fields:{_id: 1, hierId: 1, externalId: 1, Employee: 1}});
+  var contactable = Contactables.findOne(address.linkId, {fields:{_id: 1, hierId: 1, externalId: 1, Employee: 1, skipTwSync: 1}});
 
   // Skip contactables with the skip flag set
   if (contactable && !contactable.skipTwSync) {

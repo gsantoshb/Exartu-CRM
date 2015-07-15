@@ -40,38 +40,42 @@ var importEmployees = function (userId, apiHelper) {
           employee = createContactable('Employee', twEmp, twEmp.aIdent.toString(), userId, apiHelper.hierId);
 
           // Insert the employee in the db
-          var empId = ContactableManager.create(employee);
-          if (empId) {
-            // Address
-            if (twEmp.address && twEmp.city) {
-              // Address type
-              var hierFilter = Utils.filterByHiers(apiHelper.hierId);
-              var addressType = LookUps.findOne({
-                lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
-                $or: hierFilter
-              });
+          try {
+            var empId = ContactableManager.create(employee);
+            if (empId) {
+              // Address
+              if (twEmp.address && twEmp.city) {
+                // Address type
+                var hierFilter = Utils.filterByHiers(apiHelper.hierId);
+                var addressType = LookUps.findOne({
+                  lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
+                  $or: hierFilter
+                });
 
-              var address = {
-                addressTypeId: addressType._id,
-                linkId: empId,
-                address: twEmp.address,
-                city: twEmp.city,
-                country: 'United States'
-              };
+                var address = {
+                  addressTypeId: addressType._id,
+                  linkId: empId,
+                  address: twEmp.address,
+                  city: twEmp.city,
+                  country: 'United States'
+                };
 
-              // Add optional fields
-              if (twEmp.address2) address.address2 = twEmp.address2;
-              if (twEmp.state) address.state = twEmp.state;
-              if (twEmp.zip) address.postalCode = twEmp.zip;
+                // Add optional fields
+                if (twEmp.address2) address.address2 = twEmp.address2;
+                if (twEmp.state) address.state = twEmp.state;
+                if (twEmp.zip) address.postalCode = twEmp.zip;
 
-              AddressManager.addEditAddress(address);
+                AddressManager.addEditAddress(address);
+              }
+
+              // Add notes
+              importNotes(userId, apiHelper, 'Employee', twEmp.aIdent.toString(), empId);
+
+              // Add Tags
+              importTags(apiHelper, 'Employee', twEmp.aIdent.toString(), empId);
             }
-
-            // Add notes
-            importNotes(userId, apiHelper, 'Employee', twEmp.aIdent.toString(), empId);
-
-            // Add Tags
-            importTags(apiHelper, 'Employee', twEmp.aIdent.toString(), empId);
+          } catch (ex) {
+            console.log('Error Inserting Employee', twEmp.aIdent, ex.message);
           }
 
         } else {
@@ -108,35 +112,39 @@ var importClients = function (userId, apiHelper) {
           client = createContactable('Client', twClient, twClient.customerId.toString(), userId, apiHelper.hierId);
 
           // Insert the client in the db
-          var clientId = ContactableManager.create(client);
-          if (clientId) {
-            // Address
-            if (twClient.street1 && twClient.city) {
-              // Address type
-              var hierFilter = Utils.filterByHiers(apiHelper.hierId);
-              var addressType = LookUps.findOne({
-                lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
-                $or: hierFilter
-              });
+          try {
+            var clientId = ContactableManager.create(client);
+            if (clientId) {
+              // Address
+              if (twClient.street1 && twClient.city) {
+                // Address type
+                var hierFilter = Utils.filterByHiers(apiHelper.hierId);
+                var addressType = LookUps.findOne({
+                  lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
+                  $or: hierFilter
+                });
 
-              var address = {
-                addressTypeId: addressType._id,
-                linkId: clientId,
-                address: twClient.street1,
-                city: twClient.city,
-                country: 'United States'
-              };
+                var address = {
+                  addressTypeId: addressType._id,
+                  linkId: clientId,
+                  address: twClient.street1,
+                  city: twClient.city,
+                  country: 'United States'
+                };
 
-              // Add optional fields
-              if (twClient.street2) address.address2 = twClient.street2;
-              if (twClient.state) address.state = twClient.state;
-              if (twClient.zip) address.postalCode = twClient.zip;
+                // Add optional fields
+                if (twClient.street2) address.address2 = twClient.street2;
+                if (twClient.state) address.state = twClient.state;
+                if (twClient.zip) address.postalCode = twClient.zip;
 
-              AddressManager.addEditAddress(address);
+                AddressManager.addEditAddress(address);
+              }
+
+              // Add notes
+              importNotes(apiHelper, 'Customer', twClient.customerId.toString(), clientId);
             }
-
-            // Add notes
-            importNotes(apiHelper, 'Customer', twClient.customerId.toString(), clientId);
+          } catch (ex) {
+            console.log('Error Inserting Client', twEmp.aIdent, ex.message);
           }
 
         } else {
@@ -174,35 +182,39 @@ var importContacts = function (userId, apiHelper) {
           contact = createContactable('Contact', twContact, twContact.id.toString(), userId, apiHelper.hierId);
 
           // Insert the contact in the db
-          var contactId = ContactableManager.create(contact);
-          if (contactId) {
-            // Address
-            if (twContact.street1 && twContact.city) {
-              // Address type
-              var hierFilter = Utils.filterByHiers(apiHelper.hierId);
-              var addressType = LookUps.findOne({
-                lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
-                $or: hierFilter
-              });
+          try {
+            var contactId = ContactableManager.create(contact);
+            if (contactId) {
+              // Address
+              if (twContact.street1 && twContact.city) {
+                // Address type
+                var hierFilter = Utils.filterByHiers(apiHelper.hierId);
+                var addressType = LookUps.findOne({
+                  lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
+                  $or: hierFilter
+                });
 
-              var address = {
-                addressTypeId: addressType._id,
-                linkId: contactId,
-                address: twContact.street1,
-                city: twContact.city,
-                country: 'United States'
-              };
+                var address = {
+                  addressTypeId: addressType._id,
+                  linkId: contactId,
+                  address: twContact.street1,
+                  city: twContact.city,
+                  country: 'United States'
+                };
 
-              // Add optional fields
-              if (twContact.street2) address.address2 = twContact.street2;
-              if (twContact.state) address.state = twContact.state;
-              if (twContact.zip) address.postalCode = twContact.zip;
+                // Add optional fields
+                if (twContact.street2) address.address2 = twContact.street2;
+                if (twContact.state) address.state = twContact.state;
+                if (twContact.zip) address.postalCode = twContact.zip;
 
-              AddressManager.addEditAddress(address);
+                AddressManager.addEditAddress(address);
+              }
+
+              // Add notes
+              importNotes(apiHelper, 'Contacts', twContact.id.toString(), contactId);
             }
-
-            // Add notes
-            importNotes(apiHelper, 'Contacts', twContact.id.toString(), contactId);
+          } catch (ex) {
+            console.log('Error Inserting Contact', twEmp.aIdent, ex.message);
           }
 
         } else {
