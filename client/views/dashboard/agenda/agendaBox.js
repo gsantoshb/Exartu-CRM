@@ -100,19 +100,6 @@ var renderDay = function(){
     html = '<li><a class="item-icon item-icon-notes item-icon-sm" id="'+item.id+'" href="#"><i class="icon-pencil-3" id="'+item.id+'"></i></a><div class="item-content"><div class="title"><a href="#" id="'+item.id+'">';
     html += item.title;
 
-    //if(event && event.assign && event.assign.length){
-    //  var user = Meteor.users.findOne({_id:event.assign[0]});
-    //  if(user){
-    //    var name = (user.username ? user.username : user.emails[0].address);
-    //    html += '<p class="desc">'+name+'</p>';
-    //  }
-    //  else{
-    //    html += '<p class="desc"><i>unassigned</i></p>';
-    //  }
-    //}
-    //else
-    //  html += '<p class="desc">unassigned</p>';
-
     html += '</a></div></div></li>';
     $('.calendar-widget .list-type-8').append(html);
   });
@@ -163,7 +150,7 @@ Template.agendaBox.helpers({
                     }
                     else{
                         //console.log('adding circle Y for date : '+currentDate);
-                        dayCell.find('.day-tasks').append('<i class="fa fa-circle"></i>');
+                        //dayCell.find('.day-tasks').append('<i class="fa fa-circle"></i>');
                     }
                 }
                 else{
