@@ -157,11 +157,6 @@ Template.job_nav.helpers({
             },
             {id: 'description', displayName: 'Description', template: 'job_description'},
             {
-                id: 'tasks', displayName: 'Tasks', template: 'job_tasks', info: function () {
-                return JobCounter.findOne('tasks').count;
-            }
-            },
-            {
                 id: 'placements', displayName: 'Placements', template: 'job_placements', info: function () {
                 return JobCounter.findOne('placements').count;
             }

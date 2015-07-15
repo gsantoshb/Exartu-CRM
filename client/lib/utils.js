@@ -715,8 +715,14 @@ Utils.getContactMethodTypes_MobilePhone = function () {
 };
 
 Utils.extendContactableDisplayName = function (contactable) {
+
     if (contactable.person)
+      if(contactable.person.middleName) {
         contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
+      }
+       else{
+        contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName;
+      }
     if (contactable.organization) {
         contactable.displayName = contactable.organization.organizationName;
     }
@@ -794,26 +800,36 @@ Utils.sortFetchOptions=function(lkpcursor) {
     });
 }
 
-Utils.classifyTags=function(task) {
-    var now = moment(new Date())
-    if (task.completed == undefined) {
-        task.completed = null;
-    }
-    if (now.isBefore(task.begin)) {
-        task.state = Enums.taskState.future;
-    } else {
-        if (task.completed) {
-            task.state = Enums.taskState.completed;
-        } else {
-            if (now.isBefore(task.end ) || task.end==null) {
-                task.state = Enums.taskState.pending;
-            } else {
-                task.state = Enums.taskState.overDue;
-            }
+//Utils.classifyTags=function(task) {
+//    var now = moment(new Date())
+//    if (task.completed == undefined) {
+//        task.completed = null;
+//    }
+//    if (now.isBefore(task.begin)) {
+//        task.state = Enums.taskState.future;
+//    } else {
+//        if (task.completed) {
+//            task.state = Enums.taskState.completed;
+//        } else {
+//            if (now.isBefore(task.end ) || task.end==null) {
+//                task.state = Enums.taskState.pending;
+//            } else {
+//                task.state = Enums.taskState.overDue;
+//            }
+//
+//        }
+//    }
+//    return task;
+//}
+Utils.classifyNote=function(note) {
+    if (!note.remindDate) return null;
 
-        }
+    var now = moment(new Date());
+    if (now.isBefore(note.remindDate)) {
+       return Enums.noteState.upcoming;
+    } else {
+        return Enums.noteState.overDue;
     }
-    return task;
 }
 
 Utils.getUserDisplayName = function(id){

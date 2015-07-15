@@ -230,6 +230,22 @@ Meteor.publish(null, function () {
   }
 });
 
+Meteor.publish('calendarNotes', function(start, end, mineOnly) {
+  var self = this;
+  var noteCursor;
+  //var Auxend = new Date(end.setDate(end.getDate()+1));
+  if(mineOnly) {
+    noteCursor = Notes.find({$and: [{userId: this.userId}, {$and: [{remindDate:{$exists:true}},{remindDate: {$gte: start}}, {remindDate: {$lte: end}}]}, {inactive: {$ne: true}}]});
+  }
+  else{
+    noteCursor = Utils.filterCollectionByUserHier.call({userId: this.userId}, Notes.find({$and: [{$and: [{remindDate:{$exists:true}},{remindDate: {$gte: start}}, {remindDate: {$lte: end}}]}, {inactive: {$ne: true}}]}))
+
+  }
+  Mongo.Collection._publishCursor(noteCursor, self, 'calendarNotes');
+// _publishCursor doesn't call this for us in case we do this more than once.
+  self.ready();
+});
+
 
 // Indexes
 Notes._ensureIndex({hierId: 1});

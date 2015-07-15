@@ -120,12 +120,6 @@
                     <span class="i-container"><i class="ico-placements"></i></span>
                 </a>
             </li>
-            <li class="tasks {{getActiveClass 'tasks' null}}" id="tourActivitiestasks">
-                <a href="/tasks">
-                    <span>{{_ "Tasks"}}</span>
-                    <span class="i-container"><i class="icon icon-check-4"></i></span>
-                </a>
-            </li>
             <li class="notes {{getActiveClass 'notes' null}}" id="tourActivitiesnotes">
                 <a href="/notes">
                     <span>{{_ "Notes"}}</span>
@@ -167,7 +161,7 @@
 
 
         </ul>
-        <div class="no-tablet" style="position: absolute;top: 383px;width: 100%;">
+        <div class="no-tablet lastEntries-pinged">
             <div class="navbar-lastEntries" style="padding-top:3px;" id="pingeds">
                 {{#each lastEntryPinged}}
 

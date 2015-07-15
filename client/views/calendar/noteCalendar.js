@@ -1,4 +1,4 @@
-var allTasks = [];
+var allNotes = [];
 var mineQuery = {};
 var showMineOnly = true;
 var showToday = true;
@@ -92,7 +92,7 @@ var info = new Utils.ObjectDefinition({
 });
 
 CalendarController = RouteController.extend({
-  template: 'taskCalendar'
+  template: 'noteCalendar'
 });
 
 var startEndDep = new Deps.Dependency();
@@ -114,7 +114,7 @@ Meteor.autorun(function () {
   handler && handler.stop();
 
   init = false;
-  handler = Meteor.subscribe("calendarTasks", start, end, showMineOnly , function () {
+  handler = Meteor.subscribe("calendarNotes", start, end, showMineOnly , function () {
     rerender();
     loadingCount = false;
     loadingDep.changed();
@@ -122,13 +122,13 @@ Meteor.autorun(function () {
 
 });
 
-Template.taskCalendar.created=function() {
+Template.noteCalendar.created=function() {
   var calendarDiv = $('.fc');
 
    getParamsUrl(Router.current().params.query);
    startEndDep.changed();
 
-   observe = CalendarTasks.find({}).observe({
+   var observe = CalendarNotes.find({}).observe({
 
     added: function (document) {
 
@@ -138,46 +138,27 @@ Template.taskCalendar.created=function() {
 
 
       switch (document.state) {
-        case Enums.taskState.future:
+        case Enums.noteState.upcoming:
           calendarDiv.fullCalendar('renderEvent', {
             id: document._id,
             title: document.msg,
-            start: document.begin,
-            end: document.end,
+            start: document.remindDate,
+            end: document.remindDate,
             description: "",
             className: 'item-label-2 label-future pointer'
           });
           break;
-        case Enums.taskState.completed:
+        case Enums.noteState.overDue:
           calendarDiv.fullCalendar('renderEvent', {
             id: document._id,
             title: document.msg,
-            start: document.begin,
-            end: document.end,
-            description: "",
-            className: 'item-label-2 label-completed pointer'
-          });
-          break;
-        case Enums.taskState.overDue:
-          calendarDiv.fullCalendar('renderEvent', {
-            id: document._id,
-            title: document.msg,
-            start: document.begin,
-            end: document.end,
+            start: document.remindDate,
+            end: document.remindDate,
             description: "",
             className: 'item-label-2 label-overDue pointer'
           });
           break;
-        case Enums.taskState.pending:
-          calendarDiv.fullCalendar('renderEvent', {
-            id: document._id,
-            title: document.msg,
-            start: document.begin,
-            end: document.end,
-            description: "",
-            className: 'item-label-2 label-pending pointer'
-          });
-          break;
+
       }
 
 
@@ -205,23 +186,16 @@ Template.taskCalendar.created=function() {
       });
 
       switch (newDocument.state) {
-        case Enums.taskState.future:
+        case Enums.noteState.upcoming:
           event.className = 'item-label-2 label-future pointer';
           break;
-        case Enums.taskState.completed:
-          event.className = 'item-label-2 label-completed pointer';
-          break;
-        case Enums.taskState.overDue:
+        case Enums.noteState.overDue:
           event.className = 'item-label-2 label-overDue pointer';
           break;
-        case Enums.taskState.pending:
-          event.className = 'item-label-2 label-pending pointer';
-          break;
-
       }
       event.title = newDocument.msg;
-      event.start = newDocument.begin;
-      event.end = newDocument.end;
+      event.start = newDocument.remindDate;
+      event.end = newDocument.remindDate;
 
 
       calendarDiv.fullCalendar('updateEvent', event);
@@ -231,7 +205,7 @@ Template.taskCalendar.created=function() {
 
 };
 
-Template.taskCalendar.destroyed=function() {
+Template.noteCalendar.destroyed=function() {
   //handler.stop();
   //observe.stop();
 };
@@ -244,7 +218,7 @@ var rerender = _.debounce(function () {
   init = true;
 },650);
 
-Template.taskCalendar.helpers({
+Template.noteCalendar.helpers({
 
   options: function () {
     return {
@@ -254,10 +228,10 @@ Template.taskCalendar.helpers({
       nextDayThreshold: "00:00:00",
       eventLimit: true,
       eventClick: function (calEvent, jsEvent, view) {
-        task = _.find(CalendarTasks.find({}).fetch(), function (t) {
+        note = _.find(CalendarNotes.find({}).fetch(), function (t) {
           return t._id == calEvent.id;
         });
-        Utils.showModal('addEditTask', {taskId: task._id});
+        Utils.showModal('addEditNote',note);
       },
       header:false,
       timeFormat:'HH:mm',
@@ -275,22 +249,16 @@ Template.taskCalendar.helpers({
 
 
       events: function (start, end, timezone, callback) {
-        callback(_.map(CalendarTasks.find({}).fetch(), function (t) {
-            switch(t.state) {
-                        case Enums.taskState.future:
-                             return {id: t._id,title: t.msg, start: t.begin, end: t.begin, description:"", className:'item-label-2 label-future  pointer'  } ;
-                             break;
-                        case Enums.taskState.completed:
-                            return {id: t._id,title: t.msg, start: t.begin, end: t.begin, description:"", className:'item-label-2 label-completed  pointer'  } ;
-                             break;
-                        case Enums.taskState.overDue:
-                            return {id: t._id, title: t.msg, start: t.begin, end: t.begin, description:"", className:'item-label-2 label-overDue  pointer'  } ;
-                            break;
-                        case Enums.taskState.pending:
-                            return {id: t._id, title: t.msg, start: t.begin, end: t.begin, description:"", className:'item-label-2 label-pending  pointer'  };
-                            break;
-           }
 
+        callback(_.map(CalendarNotes.find({}).fetch(), function (t) {
+            switch(t.state) {
+                        case Enums.noteState.upcoming:
+                            return {id: t._id,title: t.msg, start: t.remindDate, end: t.remindDate, description:"", className:'item-label-2 label-future  pointer'  } ;
+                            break;
+                        case Enums.noteState.overDue:
+                            return {id: t._id, title: t.msg, start: t.remindDate, end: t.remindDate, description:"", className:'item-label-2 label-overDue  pointer'  } ;
+                            break;
+            }
         }));
       },
       viewRender: function (view, element) {
@@ -332,13 +300,13 @@ Template.taskCalendar.helpers({
       }
     }
   },
-  taskCount: {
+  noteCount: {
     title:function(){
       loadingDep.depend();
       if(loadingCount){
         return ""
       }
-      return "tasks";
+      return "notes";
       },
 
 
@@ -349,7 +317,7 @@ Template.taskCalendar.helpers({
         return "loading..."
       }
 
-      return CalendarTasks.find({}).count();
+      return CalendarNotes.find({}).count();
     }
    },
 
@@ -401,9 +369,9 @@ Template.taskCalendar.helpers({
 });
 
 
-Template.taskCalendar.events = {
-  'click #button-addTask': function () {
-     Utils.showModal('addEditTask');
+Template.noteCalendar.events = {
+  'click #button-addNote': function () {
+     Utils.showModal('addEditNote');
   },
   'click #show-mineOnly': function () {
     showMineOnly = !showMineOnly;

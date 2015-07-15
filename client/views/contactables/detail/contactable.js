@@ -551,16 +551,6 @@ Template.contactable_nav.helpers({
         info: function () {
           return ContactableCounter.findOne('contactablesFiles').count + Resumes.find({employeeId: contactable._id}).count();
         }
-      },
-      {
-        id: 'tasks',
-        mobileDisplayName: 'Tasks',
-        displayName: 'Tasks',
-        template: 'contactable_tasks',
-        icon: 'icon-note-paper-1',
-        info: function () {
-          return ContactableCounter.findOne('tasks').count;
-        }
       }
     ];
 

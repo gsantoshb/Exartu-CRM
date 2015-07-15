@@ -146,8 +146,8 @@ Template.placement_nav.helpers({
     tabs = [
 //      {id: 'activities', displayName: 'Activities', template: 'entityActivities'},
       {id: 'details', displayName: 'Details', template: 'placement_details'},
-      {id: 'notes', displayName: 'Notes', template: 'placement_notes'},
-      {id: 'tasks', displayName: 'Tasks', template: 'placement_tasks'}
+      {id: 'notes', displayName: 'Notes', template: 'placement_notes'}
+
     ];
 
     return tabs;

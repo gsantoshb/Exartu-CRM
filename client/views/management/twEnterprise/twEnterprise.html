@@ -66,23 +66,23 @@
 
                     <!-- Employee Sync -->
                     {{#if hasAccount}}
-                        {{#unless isEmpSync}}
+                        {{#unless isImporting}}
                             <!-- Error message -->
-                            {{#if empSyncError}}
+                            {{#if importingError}}
                                 <div class="alert alert-danger">
                                     <i class="fa fa-times-circle fa-fw fa-lg"></i>
-                                    {{empSyncError}}
+                                    {{importingError}}
                                 </div>
                             {{/if}}
 
-                            <!-- Sync button -->
-                            <button type="button" class="btn btn-default empSync">
-                                <i class="fa fa-refresh"></i> Sync Existing Employees
+                            <!-- Import button -->
+                            <button type="button" class="btn btn-default importContactables">
+                                <i class="fa fa-refresh"></i> Import Active Contactables
                             </button>
                         {{else}}
                             <!-- Submitting feedback -->
                             <div class="progress progress-striped active">
-                                <div style="width: 100%;" class="progress-bar progress-bar-info">{{_ "Syncing Employees"}}...</div>
+                                <div style="width: 100%;" class="progress-bar progress-bar-info">{{_ "Importing Active Contactables"}}...</div>
                             </div>
                         {{/unless}}
                     {{/if}}

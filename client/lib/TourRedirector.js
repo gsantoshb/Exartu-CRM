@@ -22,9 +22,6 @@ if(Meteor.user()) {
       Router.go("/placements");
     }
     else if (cb < 22) {
-      Router.go("/tasks");
-    }
-    else if (cb < 27) {
       Router.go("/notes");
     }
 

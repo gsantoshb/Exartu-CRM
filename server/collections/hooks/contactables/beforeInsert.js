@@ -7,7 +7,7 @@ Contactables.before.insert(function (userId, doc) {
   }
 
   if (doc.Employee && doc.Employee.taxID) {
-    if (!ContactableManager.isTaxIdUnused(doc.Employee.taxID, user.hierId)) {
+    if (!ContactableManager.isTaxIdUnused(doc.Employee.taxID, user.hierId || doc.hierId)) {
       throw new Meteor.Error(500, 'TaxId already in use');
     }
   }

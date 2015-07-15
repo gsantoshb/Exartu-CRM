@@ -179,9 +179,9 @@
     {{> contactableContactsBox}}
 </template>
 
-<template name="contactable_tasks">
-    {{> tasksBox}}
-</template>
+<!--<template name="contactable_tasks">-->
+    <!--{{> tasksBox}}-->
+<!--</template>-->
 
 <template name="contactable_details">
     <div class="box-type-1-content">
@@ -192,10 +192,14 @@
         {{#if Contact}}
             {{> contactClientInfo client=Contact.client path='Contact.client' collection=collection}}
         {{/if}}
+        {{#if Employee}}
+          {{>workInterest}}
+        {{/if}}
         {{>addressList}}
         {{> contactable_contacts}}
         {{>tagsBox}}
         {{>hotListMembershipsBox}}
+
 
 
 

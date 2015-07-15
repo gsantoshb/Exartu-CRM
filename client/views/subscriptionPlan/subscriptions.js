@@ -45,23 +45,11 @@ Template.freePlanSubscription.helpers({
   },
   usersCount: function () {
     return Meteor.users.find().count();
-  },
-  tasksCount: function () {
-    return Tasks.find().count();
   }
 });
 
 
 Template.enterprisePlanSubscription.helpers({
-  tasksCount: function () {
-    var firstDayOfMonth = new Date;
-    firstDayOfMonth.setDate(1);
-    return Tasks.find({
-      dateCreated: {
-        $gt: firstDayOfMonth
-      }
-    }).count();
-  },
   plan: function () {
     return SubscriptionPlan.getPlan(SubscriptionPlan.plansEnum.enterprise);
   },

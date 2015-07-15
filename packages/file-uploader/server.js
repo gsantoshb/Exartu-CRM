@@ -4,7 +4,14 @@ FileUploader.createEndpoint = function(route, options) {
   var endpointMethod = {};
   endpointMethod[route] = function (userId, path, metadata) {
     this.setUserId(userId);
-    return options && options.onUpload && options.onUpload(fs.createReadStream(path), metadata);
+    if (options && options.onUpload){
+      if (options.createStream === false){
+        options.onUpload(path, metadata);
+      }else{
+        options.onUpload(fs.createReadStream(path), metadata);
+      }
+    }
+
   };
   Meteor.methods(endpointMethod);
 
@@ -44,8 +51,11 @@ FileUploader.createEndpoint = function(route, options) {
               _.extend(metadata, {fileSize:data.file.size, idProgressBar: data.idProgressBar});
               var connection = DDP.connect(Meteor.absoluteUrl());
               var result = connection.call(route, data.userId, data.file.path, metadata);
+              connection.close();
               this.response.end(JSON.stringify(result? result.content : undefined));
             } catch(err) {
+              connection && connection.close();
+
               this.response.statusCode = 500;
               this.response.end('Oh no! Something has gone wrong' + err);
             }

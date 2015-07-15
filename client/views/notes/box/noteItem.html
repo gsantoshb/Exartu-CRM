@@ -51,26 +51,20 @@
                     </div>
                 {{/if}}
             </div>
-            <div class="list-item-cell notes-list-item-edit">
-                <i class="fa fa-clock-o"></i>&nbsp;
-                {{formattedDate dateCreated "lll"}}
-            </div>
-            <div class="list-item-cell item-overflow notes-item-overflow">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                          <span class="ico-more">
-                            <span class="dot-1"></span>
-                            <span class="dot-2"></span>
-                            <span class="dot-3"></span>
-                          </span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li class="arrow"></li>
-                        <li><a class="editNote pointer"><i class="fa fa-edit"></i> Edit</a></li>
-                        <!--<li><a class="deleteNoteRecord pointer"><i class="fa fa-trash-o"></i></a></li>-->
-                    </ul>
+            {{#if showRemindDate}}
+                <div class="list-item-cell notes-list-item-edit {{#if isOverDue}}text-danger{{/if}}">
+                    {{#if remindDate}}
+                        {{getNoteState}}&nbsp;-&nbsp;
+                        <i class="fa fa-clock-o"></i>&nbsp;
+                        {{formattedDate remindDate "fromNow"}}
+                    {{/if}}
                 </div>
-            </div>
+            {{else}}
+                <div class="list-item-cell notes-list-item-edit">
+                    <i class="fa fa-clock-o"></i>&nbsp;
+                    {{formattedDate dateCreated "lll"}}
+                </div>
+            {{/if}}
         </div>
     </div>
 

@@ -24,7 +24,7 @@ Notes.after.insert(function (userId, doc) {
 // Activities
 Notes.after.insert(function (userId, doc) {
   var obj = {
-    userId: userId,
+    userId: userId || doc.userId,
     hierId: doc.hierId,
     type: Enums.activitiesType.noteAdd,
     entityId: doc._id,
@@ -112,5 +112,6 @@ Notes.after.insert(function (userId, doc) {
   newNote.hierId = doc.hierId;
   newNote.userId = doc.userId;
   newNote.dateCreated = doc.dateCreated;
+  newNote.remindDate = doc.remindDate;
   NotesView.insert(newNote);
 });

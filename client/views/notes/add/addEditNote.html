@@ -9,15 +9,68 @@
                 {{#autoForm schema=schema id="addEditNoteForm" doc=getNote}}
                     <div class="modal-body">
                         <div>
-                           {{> afQuickField name="msg" rows=4 style="max-width:100%" placeholder="Add note here..." class="form-control msg add-note-txt input-lg"}}
+                           {{> afQuickField name="msg" rows=4 style="max-width:100%" placeholder="Add note here..." class="form-control msg add-note-txt input-lg"  id="noteMsg"}}
+                        </div>
+
+                        <div class="add-note-options">
+                            <div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="show-remind-date-checkbox" checked="{{showRemindDate}}"> Remind me
+                                    </label>
+                                </div>
+                                {{#if showRemindDate}}
+                                    {{#if isEditing}}
+
+                                    {{else}}
+                                    <div>
+                                        {{#each timeSpans}}
+                                            {{#if label}}
+                                            <a class="btn {{#if isSelectedSpan}} btn-primary {{else}} btn-default {{/if}} time-span" style="margin: 0;display: inline-block">{{label}}</a>
+                                            {{/if}}
+                                        {{/each}}
+                                    </div>
+                                    {{/if}}
+                                    <!--<div class="form-group col-lg-6 {{#if afFieldIsInvalid name='remindDate'}}has-error{{/if}}" style="padding: 5px 0;">-->
+                                        {{#if updatingRemindDate}}
+                                            <div style="height: 34px"></div>
+                                        {{else}}
+                                            <div class="form-group {{#if afFieldIsInvalid name='remindDate'}}has-error{{/if}}">
+                                                <label class="control-label">{{_ "Remind date"}}</label>
+
+                                                {{> afDateTimePicker name='remindDate' value=remindDate placeholder="Remind Date" format="D, MM dd, yyyy hh:ii" startView="year"  id="remindDateInput" }}
+                                            </div>
+                                        {{/if}}
+                                    <!--</div>-->
+                                {{/if}}
+                            </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
 
-                        <button class="btn btn-success accept " disabled="{{addDisabled}}">{{_ "Save"}}</button>
+
+
+                    <div class="modal-footer">
+                    {{#if isEditing}}
+                        {{#if containRemaindDate}}
+                        <button type="submit" class="btn btn-info pull-left pushOneDay" >
+                            {{_ "Push 1 day"}}
+                        </button>
+                        <button type="submit" class="btn btn-info pull-left pushOneWeek">
+                            {{_ "week"}}
+                        </button>
+                        <button type="submit" class="btn btn-info pull-left pushOneMonth">
+                            {{_ "month"}}
+                        </button>
+                        {{/if}}
+                   {{/if}}
+                        <button class="btn btn-success accept save-note " disabled="{{addDisabled}}">{{_ "Save"}}</button>
                         <a href="#" class="btn" data-dismiss="modal">{{_ "Close"}}</a>
                     </div>
-                {{/autoForm}}
+
+
+{{/autoForm}}
+
+
             </div>
         </div>
     </div>
