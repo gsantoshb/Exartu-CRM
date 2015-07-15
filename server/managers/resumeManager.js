@@ -1,4 +1,5 @@
-var stream = Meteor.npmRequire('stream')
+var stream = Meteor.npmRequire('stream');
+var fs = Meteor.npmRequire('fs');
 Meteor.startup(function () {
   if (!ExartuConfig.ResumeParserURL) {
     console.error('ResumeParserURL not set');
@@ -10,8 +11,16 @@ Meteor.startup(function () {
 
 ResumeManager = {
   parse: function (data) {
+
+
     var form = new FormData();
-    //If data is string, create a buffer and post file as text plain
+
+    // handle a path
+    if (_.isString(data)){
+      var stream = fs.createReadStream(data);
+      form.append("file", stream);
+    }
+
     if (data.fileData) {
       var fileData = new Buffer(data.fileData, 'base64');
       form.append("file", fileData, {
@@ -385,7 +394,7 @@ var extractInformation = function (parseResult) {
               duties: description,
               start: startDate,
               end: endDate,
-              dateCreated: Date.new()
+              dateCreated: new Date()
             })
           });
 
@@ -404,19 +413,8 @@ var extractInformation = function (parseResult) {
 
 Meteor.methods({
   resumeParserMethod: function(data){
-    var result = ResumeManager.parse(data);
-    if (result instanceof Meteor.Error)
-      throw result;
-    if ((!result.person.firstName) || (!result.person.lastName)) {
-      return null;
-    }
-    var employeeId = ContactableManager.create(result);
-    if (result.location) {
-      result.location.linkId = employeeId;
-      result.location.hierId = Meteor.user()._id;
-      result.location.addressTypeId = LookUpManager.getAddressTypeDefaultId();
-      AddressManager.addEditAddress(result.location);
-    }
+    var employeeId = ContactableManager.createFromResume(data);
+
     if (employeeId) {
       var bufferStream = new stream.PassThrough();
       // Write your buffer
@@ -441,9 +439,10 @@ Meteor.methods({
         extension: data.extension,
         dateCreated: new Date()
       };
+
+      Resumes.insert(resume);
     }
 
-    Resumes.insert(resume);
     return employeeId;
   }
 })

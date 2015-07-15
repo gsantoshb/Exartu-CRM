@@ -339,13 +339,17 @@ var importNotes = function (userId, apiHelper, type, aident, contactableId) {
             displayToEmployee: false
           };
 
+          if (twNote.dateDue && Date.parse(twNote.dateDue)) {
+            note.remindDate = new Date(twNote.dateDue);
+          }
+
           // Insert note
           return Notes.insert(note);
         }
       });
     }
   } catch (ex) {
-    console.log('Error importing notes for', type, aident);
+    console.log('Error importing notes for', type, aident, ex.message);
   }
 };
 
@@ -360,6 +364,6 @@ var importTags = function (apiHelper, type, aident, contactableId) {
       Contactables.update({_id: contactableId}, {$set: {tags: tags}});
     }
   } catch (ex) {
-    console.log('Error importing tags for', type, aident);
+    console.log('Error importing tags for', type, aident, ex.message);
   }
 };

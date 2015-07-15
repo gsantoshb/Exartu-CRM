@@ -31,7 +31,9 @@
                     {{#if showRemindDate}}
                         <div>
                             {{#each timeSpans}}
-                                <a class="btn {{#if isSelectedSpan}} btn-primary {{else}} btn-default {{/if}} time-span" style="margin: 0;display: inline-block">{{label}}</a>
+                                {{#if label}}
+                                    <a class="btn {{#if isSelectedSpan}} btn-primary {{else}} btn-default {{/if}} time-span" style="margin: 0;display: inline-block">{{label}}</a>
+                                {{/if}}
                             {{/each}}
                         </div>
 
@@ -39,7 +41,7 @@
                             {{#if updatingRemindDate}}
                                 <div style="height: 34px"></div>
                             {{else}}
-                                {{> afDateTimePicker name='remindDate' placeholder="Remind Date" format="mm/dd/yyyy hh:ii" todayHighlight=true value=getRemindDate id="remindDateInput"}}
+                                {{> afDateTimePicker name='remindDate' placeholder="Remind Date" format="DD mm/dd/yyyy hh:ii" todayHighlight=true value=getRemindDate id="remindDateInput"}}
                             {{/if}}
                         </div>
                     {{/if}}
@@ -124,7 +126,7 @@
         </div><!-- /.search-list -->
         {{> noteTabSort}}
 
-        {{> fastPagination name="notesView" useKeys="true" containerClass="magic-pager"}}
+        {{> fastPagination name="notesView" containerClass="magic-pager"}}
 
         <!-- /.list-actions-cell -->
     </div><!-- .list-actions -->

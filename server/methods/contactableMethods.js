@@ -309,7 +309,7 @@ Meteor.methods({
 });
 
 FileUploader.createEndpoint('uploadResume', {
-  onUpload: function (stream, metadata) {
+  onUpload: function (path, metadata) {
 
     var progressId = Meteor.uuid();
     var userId = Meteor.userId();
@@ -323,7 +323,7 @@ FileUploader.createEndpoint('uploadResume', {
 
     _.defer(Meteor.bindEnvironment(function () {
       try {
-          var employee = ContactableManager.createFromResume(stream);
+          var employee = ContactableManager.createFromResume(path);
       } catch (e) {
         console.log("Problem creating the employee", e);
       }
@@ -335,7 +335,7 @@ FileUploader.createEndpoint('uploadResume', {
         }
       });
 
-      stream = fs.createReadStream(stream.path);
+      var stream = fs.createReadStream(path);
       try {
         var resumeId = S3Storage.upload(stream);
       } catch (e) {
@@ -365,7 +365,8 @@ FileUploader.createEndpoint('uploadResume', {
   },
   onDownload: function (fileId) {
     return S3Storage.download(fileId);
-  }
+  },
+  createStream: false
 });
 
 FileUploader.createEndpoint('uploadContactablesFiles', {

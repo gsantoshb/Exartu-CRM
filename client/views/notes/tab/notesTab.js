@@ -459,13 +459,13 @@ var getMatchingTimeSpan = function (text) {
 };
 
 // all the time span that we can recognize
-// the Label is used to display the button in the UI
-var timeSpanDictionary = {
+// the Label is used to display the button in the UI (if no label, no button)
+timeSpanDictionary = {
   later: {
     regex: /\b(later|later\stoday|today)\b/i,
-    label: 'In two hours',
+    label: 'In three hours',
     getTime: function () {
-      return moment().add(2, 'h').toDate();
+      return moment().add(3, 'h').toDate();
     }
   },
   tomorrow: {
@@ -476,21 +476,38 @@ var timeSpanDictionary = {
     }
   },
   nextDays: {
-    regex: /\b(next\sdays|couple\sof\sdays|soon)\b/i,
+    regex: /\b(next\sdays|couple\sof\sdays|soon|upcoming\sdays|in\sthe\scoming\sdays|this\sweek)\b/i,
     label: 'In two days',
     getTime: function () {
       return moment().add(2, 'd').toDate();
     }
   },
   nextWeek: {
-    regex: /\b(next\sweek\b)/i,
+    regex: /\b(next\sweek|in\sa\sweek)\b/i,
     label: 'Next week',
     getTime: function () {
       return moment().add(1, 'w').toDate();
     }
+  },
+  nextMonth: {
+    regex: /\b(next\smonth|in\sa\smonth)\b/i,
+    label: 'Next month',
+    getTime: function () {
+      return moment().add(1, 'M').toDate();
+    }
   }
 };
 
+// week days
+_.each(moment.weekdays(), function (dayName, dayIndex) {
+  timeSpanDictionary[dayName.toLowerCase()] = {
+    regex: new RegExp('\\b('+ dayName.toLowerCase() + ')\\b'),
+    label: null,
+    getTime: function () {
+      return moment().day(dayIndex).toDate();
+    }
+  }
+});
 
 
 
