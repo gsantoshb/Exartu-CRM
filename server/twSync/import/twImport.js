@@ -145,7 +145,7 @@ var importClients = function (userId, apiHelper) {
               }
 
               // Add notes
-              importNotes(apiHelper, 'Customer', twClient.customerId.toString(), clientId);
+              importNotes(userId, apiHelper, 'Customer', twClient.customerId.toString(), clientId);
             }
           } catch (ex) {
             console.log('Error Inserting Client', twEmp.aIdent, ex.message);
@@ -217,7 +217,7 @@ var importContacts = function (userId, apiHelper) {
               }
 
               // Add notes
-              importNotes(apiHelper, 'Contacts', twContact.id.toString(), contactId);
+              importNotes(userId, apiHelper, 'Contacts', twContact.id.toString(), contactId);
             }
           } catch (ex) {
             console.log('Error Inserting Contact', twEmp.aIdent, ex.message);
