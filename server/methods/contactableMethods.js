@@ -309,7 +309,7 @@ Meteor.methods({
 });
 
 FileUploader.createEndpoint('uploadResume', {
-  onUpload: function (stream, metadata) {
+  onUpload: function (path, metadata) {
 
     var progressId = Meteor.uuid();
     var userId = Meteor.userId();

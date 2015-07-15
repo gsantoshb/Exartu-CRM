@@ -4,7 +4,14 @@ FileUploader.createEndpoint = function(route, options) {
   var endpointMethod = {};
   endpointMethod[route] = function (userId, path, metadata) {
     this.setUserId(userId);
-    return options && options.onUpload && options.onUpload(fs.createReadStream(path), metadata);
+    if (options && options.onUpload){
+      if (options.createStream === false){
+        options.onUpload(path, metadata);
+      }else{
+        options.onUpload(fs.createReadStream(path), metadata);
+      }
+    }
+
   };
   Meteor.methods(endpointMethod);
 
