@@ -32,7 +32,7 @@ Router.map(function () {
   });
   this.route('calendar', {
         path: '/calendar',
-        template: 'taskCalendar',
+        template: 'noteCalendar',
         controller: 'CalendarController'
   });
 
@@ -130,11 +130,6 @@ Router.map(function () {
   this.route('conversation', {
     path: '/inbox/:_id',
     controller: 'ConversationController'
-  });
-
-  this.route('tasks', {
-    path: '/tasks/:_id?',
-    controller: 'TasksController'
   });
   this.route('notes', {
     path: '/notes/:_id?',

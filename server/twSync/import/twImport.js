@@ -1,17 +1,17 @@
 
 TwImport = {
-  importContactables: function (accountInfo) {
-    var hierId = Utils.getUserHierId(Meteor.userId());
+  importContactables: function (userId, accountInfo) {
+    var hierId = Utils.getUserHierId(userId);
     var apiHelper = new TwApiHelper(accountInfo);
 
     // Import Employees
-    importEmployees(apiHelper);
+    importEmployees(userId, apiHelper);
 
     // Import Clients
-    importClients(apiHelper);
+    importClients(userId, apiHelper);
 
     // Import Contacts
-    importContacts(apiHelper);
+    importContacts(userId, apiHelper);
 
     // Remove the skipTwSync flag from contactable
     var hierFilter = Utils.filterByHiers(hierId);
@@ -22,7 +22,7 @@ TwImport = {
   }
 };
 
-var importEmployees = function (apiHelper) {
+var importEmployees = function (userId, apiHelper) {
   console.log('Importing TW Employees...');
 
   // Get all employees
@@ -32,46 +32,50 @@ var importEmployees = function (apiHelper) {
       // Insert each employee when necessary
       _.each(result, function (twEmp) {
         // Check if the employee is already in the database
-        var employee = Utils.filterCollectionByUserHier2(Meteor.userId(), Contactables.find({externalId: twEmp.aIdent.toString()}, {fields: {_id: 1}})).fetch();
+        var employee = Utils.filterCollectionByUserHier2(userId, Contactables.find({externalId: twEmp.aIdent.toString()}, {fields: {_id: 1}})).fetch();
         if (!employee.length) {
           console.log('Importing Employee', twEmp.aIdent);
 
           // Create the employee to insert
-          employee = createContactable('Employee', twEmp, twEmp.aIdent.toString(), apiHelper.hierId);
+          employee = createContactable('Employee', twEmp, twEmp.aIdent.toString(), userId, apiHelper.hierId);
 
           // Insert the employee in the db
-          var empId = ContactableManager.create(employee);
-          if (empId) {
-            // Address
-            if (twEmp.address && twEmp.city) {
-              // Address type
-              var hierFilter = Utils.filterByHiers(apiHelper.hierId);
-              var addressType = LookUps.findOne({
-                lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
-                $or: hierFilter
-              });
+          try {
+            var empId = ContactableManager.create(employee);
+            if (empId) {
+              // Address
+              if (twEmp.address && twEmp.city) {
+                // Address type
+                var hierFilter = Utils.filterByHiers(apiHelper.hierId);
+                var addressType = LookUps.findOne({
+                  lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
+                  $or: hierFilter
+                });
 
-              var address = {
-                addressTypeId: addressType._id,
-                linkId: empId,
-                address: twEmp.address,
-                city: twEmp.city,
-                country: 'United States'
-              };
+                var address = {
+                  addressTypeId: addressType._id,
+                  linkId: empId,
+                  address: twEmp.address,
+                  city: twEmp.city,
+                  country: 'United States'
+                };
 
-              // Add optional fields
-              if (twEmp.address2) address.address2 = twEmp.address2;
-              if (twEmp.state) address.state = twEmp.state;
-              if (twEmp.zip) address.postalCode = twEmp.zip;
+                // Add optional fields
+                if (twEmp.address2) address.address2 = twEmp.address2;
+                if (twEmp.state) address.state = twEmp.state;
+                if (twEmp.zip) address.postalCode = twEmp.zip;
 
-              AddressManager.addEditAddress(address);
+                AddressManager.addEditAddress(address);
+              }
+
+              // Add notes
+              importNotes(userId, apiHelper, 'Employee', twEmp.aIdent.toString(), empId);
+
+              // Add Tags
+              importTags(apiHelper, 'Employee', twEmp.aIdent.toString(), empId);
             }
-
-            // Add notes
-            importNotes(apiHelper, 'Employee', twEmp.aIdent.toString(), empId);
-
-            // Add Tags
-            importTags(apiHelper, 'Employee', twEmp.aIdent.toString(), empId);
+          } catch (ex) {
+            console.log('Error Inserting Employee', twEmp.aIdent, ex.message);
           }
 
         } else {
@@ -83,14 +87,14 @@ var importEmployees = function (apiHelper) {
     // Mark the sync failed
     Hierarchies.update({_id: apiHelper.hierId}, {$set: {
       'enterpriseAccount.contactablesSync': false,
-      'enterpriseAccount.contactablesSyncError': "TW Import failed getting employees"
+      'enterpriseAccount.contactablesSyncError': "TW Import failed importing employees. " + ex.message
     }});
 
-    throw new Error("TW Import failed getting employees");
+    throw new Error("TW Import failed importing employees. " + ex.message);
   }
 };
 
-var importClients = function (apiHelper) {
+var importClients = function (userId, apiHelper) {
   console.log('Importing TW Clients...');
 
   // Get all clients
@@ -100,43 +104,47 @@ var importClients = function (apiHelper) {
       // Insert each client when necessary
       _.each(result, function (twClient) {
         // Check if the client is already in the database
-        var client = Utils.filterCollectionByUserHier2(Meteor.userId(), Contactables.find({externalId: twClient.customerId.toString()}, {fields: {_id: 1}})).fetch();
+        var client = Utils.filterCollectionByUserHier2(userId, Contactables.find({externalId: twClient.customerId.toString()}, {fields: {_id: 1}})).fetch();
         if (!client.length) {
           console.log('Importing Client', twClient.customerId);
 
           // Create the client to insert
-          client = createContactable('Client', twClient, twClient.customerId.toString(), apiHelper.hierId);
+          client = createContactable('Client', twClient, twClient.customerId.toString(), userId, apiHelper.hierId);
 
           // Insert the client in the db
-          var clientId = ContactableManager.create(client);
-          if (clientId) {
-            // Address
-            if (twClient.street1 && twClient.city) {
-              // Address type
-              var hierFilter = Utils.filterByHiers(apiHelper.hierId);
-              var addressType = LookUps.findOne({
-                lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
-                $or: hierFilter
-              });
+          try {
+            var clientId = ContactableManager.create(client);
+            if (clientId) {
+              // Address
+              if (twClient.street1 && twClient.city) {
+                // Address type
+                var hierFilter = Utils.filterByHiers(apiHelper.hierId);
+                var addressType = LookUps.findOne({
+                  lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
+                  $or: hierFilter
+                });
 
-              var address = {
-                addressTypeId: addressType._id,
-                linkId: clientId,
-                address: twClient.street1,
-                city: twClient.city,
-                country: 'United States'
-              };
+                var address = {
+                  addressTypeId: addressType._id,
+                  linkId: clientId,
+                  address: twClient.street1,
+                  city: twClient.city,
+                  country: 'United States'
+                };
 
-              // Add optional fields
-              if (twClient.street2) address.address2 = twClient.street2;
-              if (twClient.state) address.state = twClient.state;
-              if (twClient.zip) address.postalCode = twClient.zip;
+                // Add optional fields
+                if (twClient.street2) address.address2 = twClient.street2;
+                if (twClient.state) address.state = twClient.state;
+                if (twClient.zip) address.postalCode = twClient.zip;
 
-              AddressManager.addEditAddress(address);
+                AddressManager.addEditAddress(address);
+              }
+
+              // Add notes
+              importNotes(apiHelper, 'Customer', twClient.customerId.toString(), clientId);
             }
-
-            // Add notes
-            importNotes(apiHelper, 'Customer', twClient.customerId.toString(), clientId);
+          } catch (ex) {
+            console.log('Error Inserting Client', twEmp.aIdent, ex.message);
           }
 
         } else {
@@ -148,14 +156,15 @@ var importClients = function (apiHelper) {
     // Mark the sync failed
     Hierarchies.update({_id: apiHelper.hierId}, {$set: {
       'enterpriseAccount.contactablesSync': false,
-      'enterpriseAccount.contactablesSyncError': "TW Import failed getting clients"
+      'enterpriseAccount.contactablesSyncError': "TW Import failed importing clients. " + ex.message
     }});
 
-    throw new Error("TW Import failed getting clients");
+    throw new Error("TW Import failed importing clients. " + ex.message);
+
   }
 };
 
-var importContacts = function (apiHelper) {
+var importContacts = function (userId, apiHelper) {
   console.log('Importing TW Contacts...');
 
   // Get all contacts
@@ -165,43 +174,47 @@ var importContacts = function (apiHelper) {
       // Insert each contact when necessary
       _.each(result, function (twContact) {
         // Check if the contact is already in the database
-        var contact = Utils.filterCollectionByUserHier2(Meteor.userId(), Contactables.find({externalId: twContact.id.toString()}, {fields: {_id: 1}})).fetch();
+        var contact = Utils.filterCollectionByUserHier2(userId, Contactables.find({externalId: twContact.id.toString()}, {fields: {_id: 1}})).fetch();
         if (!contact.length) {
           console.log('Importing Contact', twContact.id);
 
           // Create the contact to insert
-          contact = createContactable('Contact', twContact, twContact.id.toString(), apiHelper.hierId);
+          contact = createContactable('Contact', twContact, twContact.id.toString(), userId, apiHelper.hierId);
 
           // Insert the contact in the db
-          var contactId = ContactableManager.create(contact);
-          if (contactId) {
-            // Address
-            if (twContact.street1 && twContact.city) {
-              // Address type
-              var hierFilter = Utils.filterByHiers(apiHelper.hierId);
-              var addressType = LookUps.findOne({
-                lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
-                $or: hierFilter
-              });
+          try {
+            var contactId = ContactableManager.create(contact);
+            if (contactId) {
+              // Address
+              if (twContact.street1 && twContact.city) {
+                // Address type
+                var hierFilter = Utils.filterByHiers(apiHelper.hierId);
+                var addressType = LookUps.findOne({
+                  lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
+                  $or: hierFilter
+                });
 
-              var address = {
-                addressTypeId: addressType._id,
-                linkId: contactId,
-                address: twContact.street1,
-                city: twContact.city,
-                country: 'United States'
-              };
+                var address = {
+                  addressTypeId: addressType._id,
+                  linkId: contactId,
+                  address: twContact.street1,
+                  city: twContact.city,
+                  country: 'United States'
+                };
 
-              // Add optional fields
-              if (twContact.street2) address.address2 = twContact.street2;
-              if (twContact.state) address.state = twContact.state;
-              if (twContact.zip) address.postalCode = twContact.zip;
+                // Add optional fields
+                if (twContact.street2) address.address2 = twContact.street2;
+                if (twContact.state) address.state = twContact.state;
+                if (twContact.zip) address.postalCode = twContact.zip;
 
-              AddressManager.addEditAddress(address);
+                AddressManager.addEditAddress(address);
+              }
+
+              // Add notes
+              importNotes(apiHelper, 'Contacts', twContact.id.toString(), contactId);
             }
-
-            // Add notes
-            importNotes(apiHelper, 'Contacts', twContact.id.toString(), contactId);
+          } catch (ex) {
+            console.log('Error Inserting Contact', twEmp.aIdent, ex.message);
           }
 
         } else {
@@ -213,19 +226,21 @@ var importContacts = function (apiHelper) {
     // Mark the sync failed
     Hierarchies.update({_id: apiHelper.hierId}, {$set: {
       'enterpriseAccount.contactablesSync': false,
-      'enterpriseAccount.contactablesSyncError': "TW Import failed getting contacts"
+      'enterpriseAccount.contactablesSyncError': "TW Import failed importing contacts. " + ex.message
     }});
 
-    throw new Error("TW Import failed getting contacts");
+    throw new Error("TW Import failed importing contacts. " + ex.message);
   }
 };
 
-var createContactable = function (type, data, externalId, hierId) {
+var createContactable = function (type, data, externalId, userId, hierId) {
   var contactable = {
     skipTwSync: true,
     objNameArray: ['contactable', type],
     contactMethods: [],
-    externalId: externalId
+    externalId: externalId,
+    userId: userId,
+    hierId: hierId
   };
 
   // Active Status
@@ -253,7 +268,7 @@ var createContactable = function (type, data, externalId, hierId) {
 
     // Client ID
     if (data.customerId && contactable.Contact) {
-      var customer = Utils.filterCollectionByUserHier2(Meteor.userId(), Contactables.find({externalId: data.customerId.toString()}, {fields: {_id: 1}})).fetch();
+      var customer = Utils.filterCollectionByUserHier2(userId, Contactables.find({externalId: data.customerId.toString()}, {fields: {_id: 1}})).fetch();
       if (customer.length == 1) contactable.Contact.client = customer[0]._id;
     }
   } else if (type == 'Client') {
@@ -307,7 +322,7 @@ var createContactable = function (type, data, externalId, hierId) {
   return contactable;
 };
 
-var importNotes = function (apiHelper, type, aident, contactableId) {
+var importNotes = function (userId, apiHelper, type, aident, contactableId) {
   try {
     var result = apiHelper.post('/' + type + '/' + aident + '/messages', {});
     if (result) {
@@ -320,7 +335,7 @@ var importNotes = function (apiHelper, type, aident, contactableId) {
             contactableId: contactableId,
             dateCreated: new Date(twNote.date),
             hierId: apiHelper.hierId,
-            userId: Meteor.userId(),
+            userId: userId,
             displayToEmployee: false
           };
 

@@ -26,7 +26,7 @@ Template.addEditNote.helpers({
   },
   remindDate: function () {
   // Use either the task begin date or a new date
-  return note.get() ? note.get().remindDate : new Date();
+  return note.get() ? note.get().remindDate : "";
   }
 });
 
@@ -40,7 +40,7 @@ Template.addEditNote.events({
   'click .pushOneMonth': function () {
     pushDays = 30;
   },
-  'click .save-task': function(){
+  'click .save-note': function(){
     pushDays = 0;
   }
 })
