@@ -9,6 +9,7 @@ var addDisabled = new ReactiveVar(false);
 var clickedCheckboxOrButton = false;
 var detectedSpan = new ReactiveVar();
 var text = new ReactiveVar('');
+var unsetRemindDate = false;
 
 var getMatchingTimeSpan = function (text) {
   var result;
@@ -153,10 +154,14 @@ Template.addEditNote.events({
   },
   'keyup #noteMsg': function (e, ctx) {
     text.set(e.target.value);
+  },
+  'click .completed-note': function(){
+    unsetRemindDate = true;
   }
 })
 
 Template.addEditNote.created = function () {
+  unsetRemindDate = false;
   var self = this;
   currentUrl = window.location.pathname;
 
@@ -209,6 +214,7 @@ Template.addEditNote.destroyed = function () {
   showRemindDate.set(false);
   detectedSpan.set(undefined);
   clickedCheckboxOrButton = false;
+
 };
 
 AutoForm.hooks({
@@ -227,6 +233,10 @@ AutoForm.hooks({
           else{
             insertDoc.remindDate.setDate(new Date() + pushDays);
           }
+        }
+        if(unsetRemindDate){
+          insertDoc.remindDate = null;
+          showRemindDate.set(false);
         }
 
         var cb = function (err, res) {
