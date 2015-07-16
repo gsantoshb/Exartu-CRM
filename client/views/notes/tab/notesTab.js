@@ -173,7 +173,7 @@ var query = new Utils.ObjectDefinition({
 Template.notesTabList.created = function () {
   var self = this;
 
-  Meteor.autorun(function () {
+  self.autorun(function () {
       searchQuery = {};
       if (responsesOnly && hotlist) //means only get responses to a hotlist send
       {
@@ -257,14 +257,17 @@ Template.notesTabList.created = function () {
       }
     });
 
-  Meteor.autorun(function () {
-    // if the user selected a time span or clicked the checkbox then i don't have to find a span in the text
-    if (clickedCheckboxOrButton)
-      return;
-    var s = getMatchingTimeSpan(text.get());
-    setSelectedTimeSpan(s);
-    showRemindDate.set(!! s);
-  })
+  var contactable = Contactables.findOne(Session.get('entityId'));
+  if (contactable && (contactable.Client || contactable.Contact)){
+    self.autorun(function () {
+      // if the user selected a time span or clicked the checkbox then i don't have to find a span in the text
+      if (clickedCheckboxOrButton)
+        return;
+      var s = getMatchingTimeSpan(text.get());
+      setSelectedTimeSpan(s);
+      showRemindDate.set(!! s);
+    })
+  }
 };
 Template.notesTabList.destroyed = function () {
   query.searchString.value = '';
