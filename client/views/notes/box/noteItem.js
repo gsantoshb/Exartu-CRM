@@ -84,6 +84,14 @@ Template.noteItem.events({
 
     });
     e.stopPropagation();
+  },
+  'click .set-completed': function(e, ctx){
+    var note = this;
+    note.remindDate = null;
+    Meteor.call('updateNote', note, function(err, res){
+
+    });
+    e.stopPropagation();
   }
 
 });
