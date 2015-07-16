@@ -36,8 +36,8 @@
                 {{formattedDate dateCreated "fromNow"}}
             </div>
         </div>
-        <div class="list-item-details notes-list-item-details">
-            <div class="list-item-cell notes-list-item-linked">
+        <div class="list-item-details notes-list-item-details" >
+            <div class="list-item-cell notes-list-item-linked" style="margin-left:-20px">
                 {{#if hasLinks}}
                     <div id="link-{{_id}}">
                         {{#each links}}
@@ -52,8 +52,8 @@
                 {{/if}}
             </div>
             {{#if showRemindDate}}
-                <div class="list-item-cell notes-list-item-edit {{#if isOverDue}}text-danger{{/if}}" style="padding-top:0px;margin-bottom:10px">
-                    <ul>
+                <div class="list-item-cell notes-list-item-edit {{#if isOverDue}}text-danger{{/if}}" style="margin-left:-20px;padding-top:0px;margin-bottom:10px">
+                    <ul style="padding-left: 0px">
                     <li>
                     {{#if remindDate}}
                         {{getNoteState}}&nbsp;-&nbsp;
