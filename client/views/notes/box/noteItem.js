@@ -58,5 +58,32 @@ Template.noteItem.events({
         }
       }
     });
+  },
+  'click .pushOneDay': function(e,ctx){
+    var note = this;
+    note.remindDate.setDate(note.remindDate.getDate() + 1);
+    Meteor.call('updateNote', note, function(err, res){
+
+    });
+    e.stopPropagation();
+
+
+  },
+  'click .pushOneWeek': function(e,ctx){
+    var note = this;
+    note.remindDate.setDate(note.remindDate.getDate() + 7);
+    Meteor.call('updateNote', note, function(err, res){
+
+    });
+    e.stopPropagation();
+  },
+  'click .pushOneMonth': function(e,ctx){
+    var note = this;
+    note.remindDate.setDate(note.remindDate.getDate() + 30);
+    Meteor.call('updateNote', note, function(err, res){
+
+    });
+    e.stopPropagation();
   }
+
 });
