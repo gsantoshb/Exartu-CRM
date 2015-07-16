@@ -22,6 +22,23 @@ var listViewMode = new ReactiveVar(true);
 var userSelected = new ReactiveVar(null);
 var searchString = new ReactiveVar('');
 
+var loadFilterFromUrl = function(){
+  var params = Router.current().params.query;
+  if(params.userId){
+    userSelected.set(params.userId);
+  }
+}
+
+var updateUrl = function(){
+  var urlQuery = new URLQuery();
+
+  if (userSelected.get()) {
+    urlQuery.addParam('userId', userSelected.get());
+  }
+
+  urlQuery.apply();
+}
+
 var getSelectedActivityFilters = function(){
   var filters = [];
   $('.activityFilter-option').each(function() {
@@ -69,8 +86,10 @@ DashboardController = RouteController.extend({
 });
 
 Template.dashboard.created = function () {
+  loadFilterFromUrl();
   this.autorun(function () {
     subscribe();
+
   });
 };
 
@@ -256,6 +275,7 @@ Template.dashboard_filters.helpers({
 
 Template.dashboard_filters.events({
   'change select': function (e) {
-    userSelected.set(e.target.value)
+    userSelected.set(e.target.value);
+    updateUrl();
   }
 });
