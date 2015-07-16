@@ -144,7 +144,7 @@ Template.notesBox.helpers({
     return NotesHandler.totalCount();
   },
   users: function () {
-    return Meteor.users.find({}, {sort: {'emails.address': 1}});
+    return Meteor.users.find({inactive: {$ne: true}}, {sort: {'emails.address': 1}});
   },
   notes: function () {
     return NotesView.find();
