@@ -715,8 +715,10 @@ Utils.getContactMethodTypes_MobilePhone = function () {
 };
 
 Utils.extendContactableDisplayName = function (contactable) {
-    if (contactable.person)
-        contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
+    if (contactable.person) {
+      contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName;
+      if (contactable.person.middleName) contactable.displayName += ' ' + contactable.person.middleName;
+    }
     if (contactable.organization) {
         contactable.displayName = contactable.organization.organizationName;
     }
