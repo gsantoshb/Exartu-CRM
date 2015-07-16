@@ -133,11 +133,17 @@ var setSortField = function(field) {
 /**
  * Callbacks
  */
+var lastUser = null;
 Template.placementsBox.created = function(){
-    //if(!PlacementHandler){
-    //    PlacementHandler = SubscriptionHandlers.PlacementHandler;
-    //};
-    query = query || loadqueryFromURL(Router.current().params.query);
+    // If the user logout and login with other user the filter was keeping the 'old' activeStatus, causing the list to be empty.
+    // So if the user changed I force it to get the filter from the url, fixing the problem.
+    // If the user hasn't changed proceed as usual to keep the filters between navigation as it used to.
+    if (lastUser != Meteor.userId()){
+        lastUser = Meteor.userId();
+        query = loadqueryFromURL(Router.current().params.query);
+    }else{
+        query = query || loadqueryFromURL(Router.current().params.query);
+    }
 
     var entityId = Session.get('entityId');
     entityType = Utils.getEntityTypeFromRouter();
