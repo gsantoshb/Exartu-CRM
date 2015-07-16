@@ -91,7 +91,7 @@ Template.notesTab.created = function () {
 
   responsesOnly = (this.data && this.data.responseOnly);
 
-  Session.set('showNotesRemindDate', true);
+  Session.set('showNotesRemindDate', false);
 };
 Template.notesTab.destroyed = function () {
   Session.set('showNotesRemindDate', false);
