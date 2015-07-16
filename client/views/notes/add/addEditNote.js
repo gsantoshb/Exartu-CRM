@@ -9,6 +9,7 @@ var addDisabled = new ReactiveVar(false);
 var clickedCheckboxOrButton = false;
 var detectedSpan = new ReactiveVar();
 var text = new ReactiveVar('');
+var unsetRemindDate = false;
 
 var getMatchingTimeSpan = function (text) {
   var result;
@@ -32,37 +33,37 @@ var setSelectedTimeSpan = function (newVal) {
 
   detectedSpan.set(newVal);
 };
-
-var timeSpanDictionary = {
-  later: {
-    regex: /\b(later|later\stoday|today)\b/i,
-    label: 'In two hours',
-    getTime: function () {
-      return moment().add(2, 'h').toDate();
-    }
-  },
-  tomorrow: {
-    regex: /\b(tomorrow)\b/i,
-    label: 'Tomorrow',
-    getTime: function () {
-      return moment().add(1, 'd').toDate();
-    }
-  },
-  nextDays: {
-    regex: /\b(next\sdays|couple\sof\sdays|soon)\b/i,
-    label: 'In two days',
-    getTime: function () {
-      return moment().add(2, 'd').toDate();
-    }
-  },
-  nextWeek: {
-    regex: /\b(next\sweek\b)/i,
-    label: 'Next week',
-    getTime: function () {
-      return moment().add(1, 'w').toDate();
-    }
-  }
-};
+//
+//var timeSpanDictionary = {
+//  later: {
+//    regex: /\b(later|later\stoday|today)\b/i,
+//    label: 'In two hours',
+//    getTime: function () {
+//      return moment().add(2, 'h').toDate();
+//    }
+//  },
+//  tomorrow: {
+//    regex: /\b(tomorrow)\b/i,
+//    label: 'Tomorrow',
+//    getTime: function () {
+//      return moment().add(1, 'd').toDate();
+//    }
+//  },
+//  nextDays: {
+//    regex: /\b(next\sdays|couple\sof\sdays|soon)\b/i,
+//    label: 'In two days',
+//    getTime: function () {
+//      return moment().add(2, 'd').toDate();
+//    }
+//  },
+//  nextWeek: {
+//    regex: /\b(next\sweek\b)/i,
+//    label: 'Next week',
+//    getTime: function () {
+//      return moment().add(1, 'w').toDate();
+//    }
+//  }
+//};
 
 Template.addEditNote.helpers({
   addDisabled: function () {
@@ -153,10 +154,14 @@ Template.addEditNote.events({
   },
   'keyup #noteMsg': function (e, ctx) {
     text.set(e.target.value);
+  },
+  'click .completed-note': function(){
+    unsetRemindDate = true;
   }
 })
 
 Template.addEditNote.created = function () {
+  unsetRemindDate = false;
   var self = this;
   currentUrl = window.location.pathname;
 
@@ -209,6 +214,7 @@ Template.addEditNote.destroyed = function () {
   showRemindDate.set(false);
   detectedSpan.set(undefined);
   clickedCheckboxOrButton = false;
+
 };
 
 AutoForm.hooks({
@@ -227,6 +233,10 @@ AutoForm.hooks({
           else{
             insertDoc.remindDate.setDate(new Date() + pushDays);
           }
+        }
+        if(unsetRemindDate){
+          insertDoc.remindDate = null;
+          showRemindDate.set(false);
         }
 
         var cb = function (err, res) {

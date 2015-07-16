@@ -1,0 +1,109 @@
+<template name="workInterest">
+
+    <section class="box-type-2">
+        <div class="box-type-2-content">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="box-options">
+                        <a class="action-btn" id="edit-workInterest-method-mode" href="#"><i class="fa fa-pencil"></i></a>
+                    </div>
+                    <h3>{{_ "Work interest"}}</h3>
+                    </div><!-- /.col-md-2 -->
+                <div class="col-md-10">
+               {{#autoForm schema="schemaEditContactableWorkInterest" doc=contactable id="workInterestAutoform"}}
+                 <div class="col-md-10">
+                 <div class="row">
+                 {{#with contactable }}
+                 <div class="col-md-6">
+                   <ul class="list-type-5">
+                      <div class="row">
+                        <li>
+                            <div class="left-part">{{_ "Transportation"}}</div>
+                            <div class="right-part">
+                                {{#if editMode}}
+                                    {{> afFieldInput name='hasTransportation' type='text' label=false}}
+                                {{else}}
+                                    <span>{{hasTransportation}}</span>
+                                {{/if}}
+                            </div>
+                        </li>
+                          <li>
+                              <div class="left-part">{{_ "Date available"}}</div>
+                              <div class="right-part">
+                                  {{#if editMode}}
+                                      <div style="width:80%">
+                                          {{> afB3DatePicker name='dateAvailable' value=dateAvailable format="D, MM dd, yyyy " startView="year" }}
+                                      </div>
+                                  {{else}}
+                                      <span>{{#if dateAvailable}}{{formattedDate dateAvailable}}{{else}}none{{/if}}</span>
+                                  {{/if}}
+                              </div>
+                          </li>
+                          <li>
+                              <div class="left-part">{{_ "Available days"}}</div>
+                              <div class="right-part">
+                                  {{#if editMode}}
+                                      {{> afQuickField label=false noselect=true name="availableStartDate" options="allowed"}}
+                                  {{else}}
+                                      <span>{{availableStartDate}}</span>
+                                  {{/if}}
+                              </div>
+                          </li><work></work>
+                          <li>
+                              <div class="left-part">{{_ "Available shift"}}</div>
+                              <div class="right-part">
+                                  {{#if editMode}}
+                                      {{> afQuickField label=false noselect=true name="availableShifts" options="allowed"}}
+                                  {{else}}
+                                      <span>{{availableShifts}}</span>
+                                  {{/if}}
+                              </div>
+                          </li>
+                          <li>
+                              <div class="left-part">{{_ "Desired Pay"}}</div>
+                              <div class="right-part">
+                                  {{#if editMode}}
+                                      {{> afFieldInput  name='desiredPay' id="desiredPay" style="width:80%" type="number" class="form-control"}}
+                                      {{#if afFieldIsInvalid name='desiredPay'}}
+                                          <span class="help-block">{{afFieldMessage name='desiredPay'}}</span>
+                                      {{/if}}
+                                  {{else}}
+                                      <span>{{desiredPay}}</span>
+                                  {{/if}}
+                              </div>
+                          </li>
+                          <li>
+                              <div class="left-part">{{_ "Preferred work location "}}</div>
+                              <div class="right-part">
+                                  {{#if editMode}}
+                                      {{> afQuickField label=false name="preferredWorkLocation" type="googleplace" opts=optsGoogleplace}}
+                                  {{else}}
+                                      {{#if preferredWorkLocation}}
+                                          <span>{{preferredLocationDisplayName}}</span>
+                                      {{/if}}
+                                  {{/if}}
+                              </div>
+                          </li>
+                      </div>
+                   </ul>
+                 </div>
+                 {{/with}}
+
+                </div>
+                </div>
+                   {{#if editMode }}
+                       <div class="col-md-12">
+                           <div class="box-header-2">
+                               <a id="cancel-details" class="btn btn-default">{{_ "Cancel"}}</a>
+                               <button id="save-details" class="btn btn-success pull-right">{{_ "Save"}} </button>
+                           </div>
+                       </div>
+                   {{/if}}
+                 {{/autoForm}}
+            </div>
+
+            </div>
+            </div>
+    </section>
+
+</template>

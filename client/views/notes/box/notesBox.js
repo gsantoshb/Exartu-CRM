@@ -2,9 +2,7 @@ var entityType = null;
 var isEntitySpecific = false;
 var NotesHandler, noteQuery, status;
 var searchStringQuery = {};
-var q={};
-var rq=new ReactiveVar({});
-var ro=new ReactiveVar({});
+var q = {};
 var selectedSort = new ReactiveVar();
 var tourIndex;
 var notePreview = new ReactiveVar(false);
@@ -136,8 +134,6 @@ Template.notesBox.created = function () {
       delete options.sort;
     }
 
-    rq.set(q);
-    ro.set(options);
     NotesHandler.setFilter(q);
     NotesHandler.setOptions(options);
   })
@@ -151,7 +147,7 @@ Template.notesBox.helpers({
     return Meteor.users.find({}, {sort: {'emails.address': 1}});
   },
   notes: function () {
-    return NotesView.find(rq.get(), ro.get());
+    return NotesView.find();
   },
   filters: function () {
     return noteQuery;

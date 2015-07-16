@@ -47,7 +47,6 @@ var getLocationTagValue = function (locationField, locationFields) {
   return value;
 };
 
-
 var searchFields = ['displayName', 'publicJobTitle'];
 
 var setSortField = function (field) {
@@ -148,20 +147,29 @@ var loadqueryFromURL = function (params) {
   });
 };
 
+var lastUser = null;
 Template.jobsBox.created = function () {
   if (!JobHandler) {
     JobHandler = SubscriptionHandlers.JobHandler;
   }
 
-  // Set up query object with reactive properties
-  query = query || loadqueryFromURL(Router.current().params.query);
+  // If the user logout and login with other user the filter was keeping the 'old' activeStatus, causing the list to be empty.
+  // So if the user changed I force it to get the filter from the url, fixing the problem.
+  // If the user hasn't changed proceed as usual to keep the filters between navigation as it used to.
+  if (lastUser != Meteor.userId()){
+    lastUser = Meteor.userId();
+    query = loadqueryFromURL(Router.current().params.query);
+  }else{
+    query = query || loadqueryFromURL(Router.current().params.query);
+  }
+
   entityId = Session.get('entityId');
 };
 
 Template.jobsBox.destroyed = function(){
-  if(JobHandler){
-    JobHandler.stop();
-    delete JobHandler;
+  if(SubscriptionHandlers.JobHandler){
+    SubscriptionHandlers.JobHandler.stop();
+    delete SubscriptionHandlers.JobHandler;
 
   }
 };
@@ -169,22 +177,6 @@ Template.jobsBox.destroyed = function(){
 
 Template.jobList.created = function () {
   initialized.set(false);
-  /////////////hack/////////
-  searchQuery = {
-
-  };
-  options = {};
-  var urlQuery = new URLQuery();
-  if (Session.get('entityId')) {
-    searchQuery.clientId = Session.get('entityId');
-
-  }
-  var selected = selectedSort.get();
-  options.sort = {};
-  options.sort[selected.field] = selected.value;
-  urlQuery.apply();
-  setSubscription(searchQuery, options);
-  /////////////////////////
 
   // Set up an autorun to filter the job list
   this.autorun(function () {
@@ -306,7 +298,6 @@ Template.jobList.created = function () {
 var setSubscription = function (searchQuery, options) {
    if (SubscriptionHandlers.JobHandler) {
     SubscriptionHandlers.JobHandler.setFilter(searchQuery);
-    SubscriptionHandlers.JobHandler.getFilter();
     SubscriptionHandlers.JobHandler.setOptions(options);
     JobHandler = SubscriptionHandlers.JobHandler;
     searchDep.changed();
@@ -439,7 +430,7 @@ Template.jobFilters.helpers({
   jobsCount: function () {
     searchDep.depend();
     if(JobHandler && !JobHandler.isLoading()) {
-      return SubscriptionHandlers.JobHandler.totalCount();
+      return SubscriptionHandlers.JobHandler && SubscriptionHandlers.JobHandler.totalCount();
     }
     else{
       return 0;

@@ -106,6 +106,7 @@ Template.login.destroyed = function(){
 
 Template.login.created = function(){
   addDisabled.set(false);
+  remindMe = false;
 };
 
 Template.login.helpers({

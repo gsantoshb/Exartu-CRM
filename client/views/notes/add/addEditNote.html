@@ -25,7 +25,9 @@
                                     {{else}}
                                     <div>
                                         {{#each timeSpans}}
+                                            {{#if label}}
                                             <a class="btn {{#if isSelectedSpan}} btn-primary {{else}} btn-default {{/if}} time-span" style="margin: 0;display: inline-block">{{label}}</a>
+                                            {{/if}}
                                         {{/each}}
                                     </div>
                                     {{/if}}
@@ -58,6 +60,9 @@
                         </button>
                         <button type="submit" class="btn btn-info pull-left pushOneMonth">
                             {{_ "month"}}
+                        </button>
+                        <button type="submit" class="btn btn-success pull-left completed-note">
+                            {{_ "Completed"}}
                         </button>
                         {{/if}}
                    {{/if}}
