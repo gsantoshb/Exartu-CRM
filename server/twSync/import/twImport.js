@@ -42,7 +42,7 @@ var importEmployees = function (userId, apiHelper) {
           // Insert the employee in the db
           try {
             var empId = ContactableManager.create(employee);
-            if (empId) {
+            if (empId && Contactables.findOne({_id: empId}, {fields: {_id: 1}})) {
               // Address
               if (twEmp.address && twEmp.city) {
                 // Address type
@@ -116,7 +116,7 @@ var importClients = function (userId, apiHelper) {
           // Insert the client in the db
           try {
             var clientId = ContactableManager.create(client);
-            if (clientId) {
+            if (clientId && Contactables.findOne({_id: clientId}, {fields: {_id: 1}})) {
               // Address
               if (twClient.street1 && twClient.city) {
                 // Address type
@@ -188,7 +188,7 @@ var importContacts = function (userId, apiHelper) {
           // Insert the contact in the db
           try {
             var contactId = ContactableManager.create(contact);
-            if (contactId) {
+            if (contactId && Contactables.findOne({_id: contactId}, {fields: {_id: 1}})) {
               // Address
               if (twContact.street1 && twContact.city) {
                 // Address type

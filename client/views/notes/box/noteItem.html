@@ -52,7 +52,7 @@
                 {{/if}}
             </div>
             {{#if showRemindDate}}
-                <div class="list-item-cell notes-list-item-edit {{#if isOverDue}}text-danger{{/if}}" style="margin-left:-20px;padding-top:0px;margin-bottom:10px">
+                <div class="list-item-cell notes-list-item-edit {{#if isOverDue}}text-danger{{/if}} full-width-xs" style="padding-top:0px;margin-bottom:10px">
                     <ul style="padding-left: 0px">
                     <li>
                     {{#if remindDate}}
@@ -63,16 +63,16 @@
                     </li>
                     <li>
 
-                    <button type="submit" class="btn btn-info pushOneDay btn-sm" style="margin-right:2px" >
+                    <button type="submit" class="btn btn-info pushOneDay btn-sm" style="margin-right:2px" title="Push one day">
                         {{_ "1d"}}
                     </button>
-                    <button type="submit" class="btn btn-info pushOneWeek btn-sm" style="margin-right:2px">
+                    <button type="submit" class="btn btn-info pushOneWeek btn-sm" style="margin-right:2px" title="Push one week">
                         {{_ "1w"}}
                     </button>
-                    <button type="submit" class="btn btn-info pushOneMonth btn-sm" style="margin-right:2px">
+                    <button type="submit" class="btn btn-info pushOneMonth btn-sm" style="margin-right:2px" title="Push one month">
                         {{_ "1m"}}
                     </button>
-                    <button type="submit" class="btn btn-success set-completed btn-sm" style="margin-right:2px">
+                    <button type="submit" class="btn btn-success set-completed btn-sm" style="margin-right:2px" title="Mark as completed">
                         {{_ "C"}}
                     </button>
 

@@ -1897,7 +1897,7 @@ html {
 
 body {
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden; /* "auto" was causing a double scroll bar in the browser */
     /*margin-top: -20px;*/
     /*position: relative;*/
 }

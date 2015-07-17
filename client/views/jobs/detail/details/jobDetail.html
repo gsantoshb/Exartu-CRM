@@ -11,7 +11,7 @@
         
                 <div class="col-md-10">
                     <div class="row">
-                    
+
                         {{#with job }}
                             <div class="col-md-6">
                                 <ul class="list-type-5">
@@ -51,7 +51,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="left-part">{{_ "Rate Quote"}}:</div>
+                                        <div class="left-part">{{_ "Rate quote"}}:</div>
                                         <div class="right-part">
                                             {{#objectProperty property=rateQuote editable=editMode}}
                                                 <input class="form-control" type="text" value="{{value}}">
@@ -106,7 +106,7 @@
                                     </li>
 
                                     <li>
-                                        <div class="left-part">{{_ "Active Status"}}</div>
+                                        <div class="left-part">{{_ "Active status"}}</div>
                                         <div class="right-part">
                                             {{#objectProperty property=activeStatus editable=editMode}}
                                                 {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
@@ -119,7 +119,7 @@
                                     </li>
                                     <li>
                                         <div class="left-part">
-                                            {{_ "Process Status"}}:
+                                            {{_ "Process status"}}:
                                         </div>
                                         <div class="right-part">
                                             {{#objectProperty property=status editable=editMode}}

@@ -165,6 +165,12 @@ EmailManager.emailListenerResumeParser = function (email, pass, host, port) {
     mailListener.start();
 
   });
+    
+    mailListener.on("server:disconnected", function () {
+    console.log("imapDisconnected");
+    mailListener.start();
+
+  });
 
   mailListener.on("mail", function (mail, seqno, attributes) {
     // do something with mail object including attachments

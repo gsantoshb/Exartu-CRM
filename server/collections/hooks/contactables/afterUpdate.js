@@ -319,7 +319,6 @@ Contactables.after.update(function (userId, doc, fields, update) {
     }
   }
   else if (doc.organization) {
-    console.log(update.$set);
     if (update.$set && (update.$set['organization.organizationName'])) {
       NotesView.update({"links.id": doc._id}, {$set: {"links.$.displayName": doc.organization.organizationName}}, {multi: true})
     }
