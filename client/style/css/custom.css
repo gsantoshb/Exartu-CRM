@@ -1,5 +1,9 @@
 /* General style */
-
+@media(max-width: 768px){
+    .full-width-xs {
+        width: 100% !important;
+    }
+}
 .show-grid { margin-bottom: 15px; }
 
 .pointer { cursor: pointer; }
