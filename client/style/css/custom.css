@@ -1902,6 +1902,10 @@ div#activityChart #container text tspan { text-decoration: none !important; font
     }
 }
 
+/* fix agenda alignment */
+.sidebar-right .day-tasks {
+  height: 0;
+}
 
 
 .row-container{
