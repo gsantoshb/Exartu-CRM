@@ -57,7 +57,15 @@ Template.agendaBox.created=function() {
         calendarDiv.fullCalendar('updateEvent', event);
         renderDay();
 
-      }
+      },
+      removed:
+        _.debounce(function (oldDocument) {
+          var calendarDiv = $('.fc');
+          calendarDiv.fullCalendar('removeEvents', function (event) {
+            $('#'+event.id+'_circle').remove();
+            return event.id == oldDocument._id;
+          })
+        }, 500)
     });
 };
 
@@ -145,7 +153,7 @@ Template.agendaBox.helpers({
                     if( dayCell.find('.day-tasks i.fa-circle').length ){
                         if( dayCell.find('.day-tasks i.fa-circle').length < 3 ){
                             //console.log('adding circle X for date : '+currentDate);
-                            dayCell.find('.day-tasks').append('<i class="fa fa-circle"></i>');
+                            dayCell.find('.day-tasks').append('<i id="'+event.id+'_circle" class="fa fa-circle"></i>');
                         }
                     }
                     else{
@@ -154,7 +162,7 @@ Template.agendaBox.helpers({
                     }
                 }
                 else{
-                    dayCell.append('<div class="day-tasks"><i class="fa fa-circle"></i></div>');
+                    dayCell.append('<div class="day-tasks"><i id="'+event.id+'_circle" class="fa fa-circle"></i></div>');
                 }
             },
             dayRender: function(date, cell) {
