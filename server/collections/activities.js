@@ -424,21 +424,6 @@ Meteor.paginatedPublish(ActivityViews, function (id) {
 });
 
 
-// Contactable files
-ContactablesFiles.after.insert(function (userId, doc) {
-  Activities.insert({
-    userId: userId,
-    hierId: doc.hierId,
-    type: Enums.activitiesType.fileAdd,
-    entityId: doc._id,
-    links: [doc.entityId],
-    data: {
-      dateCreated: new Date()
-    }
-  });
-});
-
-
 // Users
 Meteor.startup(function () {
   Meteor.methods({
