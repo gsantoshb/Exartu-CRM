@@ -1902,6 +1902,12 @@ div#activityChart #container text tspan { text-decoration: none !important; font
     }
 }
 
+.magic-pager .pagination>li>a.next-page {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+}
+
+
 /* fix agenda alignment */
 .sidebar-right .day-tasks {
   height: 0;
