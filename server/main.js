@@ -129,17 +129,21 @@ Meteor.startup(function () {
 
 
 });
-MemoryThing={asd:'hoa'};
+var interval = null;
 Meteor.methods({
-  'testworker': function () {
-    MemoryThing.asd = 'method thing';
+  'startworker': function () {
+    interval = Meteor.setInterval(function () {
 
-    Job.push(new TestJob({
-      projectId: 'projectId',
-      cohortInterval: "day",
-      arguments: {asd:'helouuu'}
-    }), function () {
-      console.log('callback', arguments);
-    });
+      console.log('new job');
+      Job.push(new TestJob({
+        projectId: 'projectId',
+        cohortInterval: "day",
+        arguments: {asd:'helouuu'}
+      }));
+    }, 2000);
+
+  },
+  stopworker: function () {
+    clearInterval(interval);
   }
 });
