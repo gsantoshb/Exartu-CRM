@@ -129,9 +129,10 @@ Meteor.startup(function () {
 
 
 });
-
+MemoryThing={asd:'hoa'};
 Meteor.methods({
   'testworker': function () {
+    MemoryThing.asd = 'method thing';
 
     Job.push(new TestJob({
       projectId: 'projectId',
