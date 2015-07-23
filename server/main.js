@@ -125,4 +125,20 @@ Meteor.startup(function () {
   });
 
   EmailManager.emailListenerResumeParser(ExartuConfig.ResumeParserEmail, ExartuConfig.ResumeParserEmailPassword,  "imap.gmail.com", 993);
+
+
+
+});
+
+Meteor.methods({
+  'testworker': function () {
+
+    Job.push(new TestJob({
+      projectId: 'projectId',
+      cohortInterval: "day",
+      arguments: {asd:'helouuu'}
+    }), function () {
+      console.log('callback', arguments);
+    });
+  }
 });

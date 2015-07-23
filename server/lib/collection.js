@@ -1,6 +1,6 @@
 Hierarchies = new Mongo.Collection("hierarchies");
 
-Jobs = new Mongo.Collection("jobs");
+Jobs = new Mongo.Collection("jobs2");
 
 Deals = new Mongo.Collection("deals");
 

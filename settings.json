@@ -1,5 +1,11 @@
 {
   "public": {
 
+  },
+  "cluster": {
+    "count": 2
+  },
+  "workers": {
+    "count": 10
   }
 }
