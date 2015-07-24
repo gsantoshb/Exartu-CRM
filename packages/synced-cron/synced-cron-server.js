@@ -192,7 +192,6 @@ SyncedCron._entryWrapper = function(entry) {
     if (entry.fixIntendedAt){
       intendedAt = entry.fixIntendedAt(intendedAt);
     }
-    console.log('intendedAt', moment(intendedAt).format("hh:mm:ss.SS"));
     var jobHistory = {
       intendedAt: intendedAt,
       name: entry.name,

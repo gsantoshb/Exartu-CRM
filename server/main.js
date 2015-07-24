@@ -124,12 +124,23 @@ Meteor.startup(function () {
     });
   });
 
-  var keepAliveTime = 60000; //one minute
+  var keepAliveTime = 5 * 60 * 1000; //5 minutes
+
+  // Quick explanation:
+  // the SyncedCron will keep calling your job method but, if you have 2 or more servers running
+  // against the same database only one of them will call the job, the other/s will do nothing (useful for heroku's dynos)
+  // Every time the job is called it will check for the status of the mail listener, if the status hasn't been updated recently
+  // this server will run the mail listener and it will keep updating the state, otherwise it will do nothing.
+
+  // Note: The SyncedCron package doesn't actually do wat it says, because it has a huge bug with the intendedAt
+  // that's why we use a local 'hacked' copy with the fixIntendedAt. in this case taking the milliseconds out of the date
+  // fixes it but with others schedules I'm not really sure what will happen
+
   SyncedCron.add({
     name: 'Listen resume parser emails',
     schedule: function(parser) {
       // parser is a later.parse object
-      return parser.text('every 30 seconds');
+      return parser.text('every 1 minute');
     },
     job: function() {
       var state = MailListenerState.findOne();
@@ -139,80 +150,36 @@ Meteor.startup(function () {
       }else {
         // if the value is ok then do nothing, return
         if ((Date.now() - state.timeStamp) < keepAliveTime) {
-          console.log('Its alive!', Date.now() - state.timeStamp);
+          console.log('its alive', (Date.now() - state.timeStamp));
           return;
         }
       }
-      console.log('I\'m Listening!!');
-
-      // else the mailMonitor is down and i should start listening
-      EmailManager.emailListenerResumeParser(ExartuConfig.ResumeParserEmail, ExartuConfig.ResumeParserEmailPassword,  "imap.gmail.com", 993, function (e) {
-        console.log('I\'m down...', e);
-        clearInterval(keepAliveIntervalId);
-      });
-
       // keep alive
       var keepAliveIntervalId = Meteor.setInterval(function () {
-        console.log('I\'m still here!');
+        console.log('im alive');
         MailListenerState.update(state._id, {$set: {timeStamp: new Date().getTime()}});
       }, keepAliveTime/2);
+
+      try {
+        // start listening
+        EmailManager.emailListenerResumeParser(ExartuConfig.ResumeParserEmail, ExartuConfig.ResumeParserEmailPassword,  "imap.gmail.com", 993, function (e) {
+          clearInterval(keepAliveIntervalId);
+        });
+      } catch (e){
+        console.log('exception cached', e);
+        clearInterval(keepAliveIntervalId);
+      }
     },
     fixIntendedAt: function (intendedAt) {
-      var miliseconds = intendedAt.getTime();
-      miliseconds = miliseconds - ( miliseconds % 1000 );
-      return new Date(miliseconds);
+      var milliseconds = intendedAt.getTime();
+      milliseconds = milliseconds - ( milliseconds % 1000 );
+      return new Date(milliseconds);
     }
   });
-
-
   SyncedCron.start();
-
-
-
 });
-
-
-
-// start cron: only one dyno should actually run the cron
-// also if the dyno with the cron goes down other dyno should run it
-
-//var keepAliveTime = 5000;
-//Croner.start('mailListener', 2000, function () {
-//  var state = MailListenerState.findOne();
-//  if (!state){
-//    state = {};
-//    state._id = MailListenerState.insert({timeStamp: new Date().getTime()});
-//  }else {
-//    // if the value is ok then do nothing, return
-//    if ((state.timeStamp - new Date().getTime() ) < keepAliveTime){
-//      return;
-//    }
-//
-//    // else the mailMonitor is down and i should start listening
-//    console.log('I\'m listening now');
-//
-//    // keep alive
-//    Meteor.setInterval(function () {
-//      MailListenerState.update(state._id, {$set: {timeStamp: new Date().getTime()}});
-//    }, keepAliveTime/2);
-//  }
-//});
-
-//
+SyncedCron.config({
+  // Log job run details to console
+  log: false
+});
 MailListenerState = new Mongo.Collection('mailListenerState');
-//CronerCollection = new Mongo.Collection('cronerCollection');
-//Croner = {
-//  start: function (id, interval, fn) {
-//    var cronerData = CronerCollection.findOne(id);
-//    if (!cronerData){
-//      try{
-//        cronerData.insert({_id: id});
-//        var intervalId = Meteor.setInterval(fn, interval);
-//      }catch (e){
-//        consol.log(e);
-//      }
-//    } else {
-//      console.log('croner with id ' + id + ' already started');
-//    }
-//  }
-//}
