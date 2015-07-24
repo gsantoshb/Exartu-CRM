@@ -72,5 +72,5 @@ aldeed:autoform@5.1.2
 joyride
 
 lukemadera:autoform-googleplace
-differential:workers
 coffeescript
+percolate:synced-cron

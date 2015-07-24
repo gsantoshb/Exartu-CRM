@@ -3,9 +3,15 @@
 
   },
   "cluster": {
-    "count": 2
+    "count": 8
   },
   "workers": {
-    "count": 10
+    "count": 10,
+    "monq": {
+    },
+    "cron": {
+      "log": false,
+      "disable": false
+    }
   }
 }

@@ -124,26 +124,95 @@ Meteor.startup(function () {
     });
   });
 
-  EmailManager.emailListenerResumeParser(ExartuConfig.ResumeParserEmail, ExartuConfig.ResumeParserEmailPassword,  "imap.gmail.com", 993);
+  var keepAliveTime = 60000; //one minute
+  SyncedCron.add({
+    name: 'Listen resume parser emails',
+    schedule: function(parser) {
+      // parser is a later.parse object
+      return parser.text('every 30 seconds');
+    },
+    job: function() {
+      var state = MailListenerState.findOne();
+      if (!state){
+        state = {};
+        state._id = MailListenerState.insert({timeStamp: Date.now()});
+      }else {
+        // if the value is ok then do nothing, return
+        if ((Date.now() - state.timeStamp) < keepAliveTime) {
+          console.log('Its alive!', Date.now() - state.timeStamp);
+          return;
+        }
+      }
+      console.log('I\'m Listening!!');
+
+      // else the mailMonitor is down and i should start listening
+      EmailManager.emailListenerResumeParser(ExartuConfig.ResumeParserEmail, ExartuConfig.ResumeParserEmailPassword,  "imap.gmail.com", 993, function (e) {
+        console.log('I\'m down...', e);
+        clearInterval(keepAliveIntervalId);
+      });
+
+      // keep alive
+      var keepAliveIntervalId = Meteor.setInterval(function () {
+        console.log('I\'m still here!');
+        MailListenerState.update(state._id, {$set: {timeStamp: new Date().getTime()}});
+      }, keepAliveTime/2);
+    },
+    fixIntendedAt: function (intendedAt) {
+      var miliseconds = intendedAt.getTime();
+      miliseconds = miliseconds - ( miliseconds % 1000 );
+      return new Date(miliseconds);
+    }
+  });
+
+
+  SyncedCron.start();
 
 
 
 });
-var interval = null;
-Meteor.methods({
-  'startworker': function () {
-    interval = Meteor.setInterval(function () {
 
-      console.log('new job');
-      Job.push(new TestJob({
-        projectId: 'projectId',
-        cohortInterval: "day",
-        arguments: {asd:'helouuu'}
-      }));
-    }, 2000);
 
-  },
-  stopworker: function () {
-    clearInterval(interval);
-  }
-});
+
+// start cron: only one dyno should actually run the cron
+// also if the dyno with the cron goes down other dyno should run it
+
+//var keepAliveTime = 5000;
+//Croner.start('mailListener', 2000, function () {
+//  var state = MailListenerState.findOne();
+//  if (!state){
+//    state = {};
+//    state._id = MailListenerState.insert({timeStamp: new Date().getTime()});
+//  }else {
+//    // if the value is ok then do nothing, return
+//    if ((state.timeStamp - new Date().getTime() ) < keepAliveTime){
+//      return;
+//    }
+//
+//    // else the mailMonitor is down and i should start listening
+//    console.log('I\'m listening now');
+//
+//    // keep alive
+//    Meteor.setInterval(function () {
+//      MailListenerState.update(state._id, {$set: {timeStamp: new Date().getTime()}});
+//    }, keepAliveTime/2);
+//  }
+//});
+
+//
+MailListenerState = new Mongo.Collection('mailListenerState');
+//CronerCollection = new Mongo.Collection('cronerCollection');
+//Croner = {
+//  start: function (id, interval, fn) {
+//    var cronerData = CronerCollection.findOne(id);
+//    if (!cronerData){
+//      try{
+//        cronerData.insert({_id: id});
+//        var intervalId = Meteor.setInterval(fn, interval);
+//      }catch (e){
+//        consol.log(e);
+//      }
+//    } else {
+//      console.log('croner with id ' + id + ' already started');
+//    }
+//  }
+//}
