@@ -32,8 +32,6 @@ DocCenterManager = {
       email: email
     };
 
-    console.log('userdata', userData);
-
     // Create the user in doc center
     var result = DocCenter.insertUser(hierId || Meteor.user().currentHierId, userData);
 

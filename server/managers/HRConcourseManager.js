@@ -75,6 +75,35 @@ HRConcourseManager = {
     })
   },
 
+  // Client account creation
+  createClientAccount: function (clientId, email) {
+    // Validate parameters
+    if (!clientId) throw new Error('Client ID is required');
+    if (!email) throw new Error('Email is required');
+
+    var client = Contactables.findOne({_id: clientId});
+    if (!client) throw new Error('Invalid client ID');
+
+    // Check if the client is already using HRC
+    if (client.docCenter) throw new Error('This client is already registered in HRC');
+
+    // Set up HR Concourse account
+    var userData = {
+      userName: email,
+      email: email,
+      password: Random.secret(8)
+    };
+
+    // Create the user in doc center
+    var result = DocCenter.insertUser(client.hierId || Meteor.user().currentHierId, userData);
+
+    // Update the employee with the account information
+    Contactables.update(clientId, {$set: {docCenter: result, docCenterUserName: email, tempPass: userData.password}});
+
+    // Send client email
+    // sendHrcAccountCreationEmail(email, client.hierId);
+  },
+
 
   syncKioskEmployee: function (hierId, docCenterId) {
     // Validate empInfo
@@ -366,3 +395,20 @@ function syncDocs(hierId, instances, logRecordId, entityId) {
     });
   });
 }
+
+
+
+var sendHrcAccountCreationEmail = function (email, hierId) {
+  var hier = Hierarchies.findOne({_id: hierId});
+  var webName = hier.configuration.webName;
+  var url = ExartuConfig.ApplicantCenter_URL + webName + '/register/' + token;
+
+  var text = "Dear user,\n\n"
+    + "You have been invited to HRC.\n"
+    + "Please click the link below to accept the invitation. Alternatively, copy the link into your browser.\n\n"
+    + url + "\n\n"
+    + "Thank you,\n"
+    + "Aïda team";
+
+  EmailManager.sendEmail(email, 'Aïda - Invitation', text, false);
+};

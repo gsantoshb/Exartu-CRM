@@ -315,6 +315,16 @@
         {{/unless}}
     {{/if}}
 
+    {{#if Client}}
+        <!-- Doc Center -->
+        {{#unless isDocCenterUser}}
+            <a id="createHrcAccount" class="btn-custom-1 btn-block pointer">
+                <i class="fa fa-file-text"></i>&nbsp;
+                <span style="white-space: normal;">{{_ "Create HRC Account"}}</span>
+            </a>
+        {{/unless}}
+    {{/if}}
+
     {{#if hasEmailAddress}}
         <a id="sendEmailTemplate" class="btn btn-custom-1 btn-block pointer"><i class="fa fa-envelope"></i>&nbsp;{{_ "Send email template"}}</a>
     {{/if}}
