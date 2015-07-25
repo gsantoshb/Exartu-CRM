@@ -39,11 +39,11 @@ Meteor.autorun(function () {
     });
 
 });
-
-Template.agendaBox.created=function() {
+var observe;
+Template.agendaBox.created = function() {
     var calendarDiv = $('.fc');
     startEndDep.changed();
-    var observe = CalendarNotes.find({}).observe({
+    observe = CalendarNotes.find({}).observe({
       //TODO: to make it completly reactive it need the add and remove
       changed: function (newDocument, oldDocument) {
         var calendarDiv = $('.fc');
@@ -58,18 +58,22 @@ Template.agendaBox.created=function() {
         renderDay();
 
       },
-      removed:
-        _.debounce(function (oldDocument) {
+      removed: function (oldDocument) {
           var calendarDiv = $('.fc');
           calendarDiv.fullCalendar('removeEvents', function (event) {
+            debugger;
             $('#'+event.id+'_circle').remove();
             return event.id == oldDocument._id;
           })
-        }, 500)
+        }
     });
 };
 
-Template.agendaBox.destroyed=function() {};
+Template.agendaBox.destroyed = function() {
+  observe && observe.stop();
+  handler && handler.stop();
+  handler = undefined;
+};
 
 var rerender = _.debounce(function () {
     var calendarDiv = $('.fc');
@@ -114,7 +118,6 @@ var renderDay = function(){
 }
 
 Template.agendaBox.helpers({
-
     options: function () {
         return {
             id: 'dashboard-calendar',
@@ -133,55 +136,25 @@ Template.agendaBox.helpers({
             },
             viewRender: function (view, element) {
                 //searching by class because id isn't working
-                var calendarDiv = $('.fc');
                 start = view.start.local().toDate();
                 end = view.end.local().toDate();
-                var today = new Date(new moment().format('YYYY-MM-DD'));
-
-
-
-                //this correct the calendar end date
-                //end = new Date(endAux.setDate(endAux.getDate()+1));
                 startEndDep.changed();
            },
             eventRender: function( event, element, view ){
                 var currentDate = event.start.format('YYYY-MM-DD');
                 var calendarDiv = $('.fc');
                 var dayCell = calendarDiv.find('td[data-date="'+currentDate+'"]');
-                if( dayCell.find('.day-tasks').length ){
-                    //console.log('number of elements : '+dayCell.find('.day-tasks i.fa-circle').length);
-                    if( dayCell.find('.day-tasks i.fa-circle').length ){
-                        if( dayCell.find('.day-tasks i.fa-circle').length < 3 ){
-                            //console.log('adding circle X for date : '+currentDate);
-                            dayCell.find('.day-tasks').append('<i id="'+event.id+'_circle" class="fa fa-circle"></i>');
-                        }
-                    }
-                    else{
-                        //console.log('adding circle Y for date : '+currentDate);
-                        //dayCell.find('.day-tasks').append('<i class="fa fa-circle"></i>');
-                    }
+
+                if (! dayCell.find('.day-tasks').length) {
+                  dayCell.append('<div class="day-tasks"></div>');
                 }
-                else{
-                    dayCell.append('<div class="day-tasks"><i id="'+event.id+'_circle" class="fa fa-circle"></i></div>');
+
+                if( dayCell.find('.day-tasks i.fa-circle').length < 3 ) {
+                    dayCell.find('.day-tasks').append('<i id="'+event.id+'_circle" class="fa fa-circle"></i>');
                 }
             },
             dayRender: function(date, cell) {
-                //var calendarDiv = $('.fc');
-                var currentDate = date.format('D');
-                cell.html('<a href="#">'+currentDate+'</a>');
-                //
-                //console.log('outside : '+currentDate);
-                ////console.log(cell);
-                //
-                //var eventCount = calendarDiv.fullCalendar( 'clientEvents', function(eventObj){
-                //    console.log('inside : '+currentDate);
-                //    if (eventObj.start.format('YYYY-MM-DD') == currentDate) {
-                //        return true;
-                //    } else {
-                //        return false;
-                //    }
-                //}).length;
-                //console.log(eventCount);
+                cell.html('<a href="#">'+date.format('D')+'</a>');
             },
             dayClick: function(date, jsEvent, view) {
                 currentDay = date;
@@ -239,11 +212,6 @@ Template.agendaBox.helpers({
             return CalendarNotes.find({}).count();
         }
     },
-
-
-
-
-
     query: function () {
         return query;
     },
@@ -280,7 +248,6 @@ Template.agendaBox.helpers({
     currentMonth: function(){
         return currentMonth.get();
     }
-
 });
 
 
