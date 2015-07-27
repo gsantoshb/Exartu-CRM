@@ -101,7 +101,7 @@ HRConcourseManager = {
     Contactables.update(clientId, {$set: {docCenter: result, docCenterUserName: email, tempPass: userData.password}});
 
     // Send client email
-    // sendHrcAccountCreationEmail(email, client.hierId);
+    sendHrcAccountCreationEmail(email, client.hierId, client.displayName, userData.password);
   },
 
 
@@ -398,17 +398,16 @@ function syncDocs(hierId, instances, logRecordId, entityId) {
 
 
 
-var sendHrcAccountCreationEmail = function (email, hierId) {
-  var hier = Hierarchies.findOne({_id: hierId});
-  var webName = hier.configuration.webName;
-  var url = ExartuConfig.ApplicantCenter_URL + webName + '/register/' + token;
+var sendHrcAccountCreationEmail = function (email, hierId, displayName, pass) {
+  var fillUrl = DocCenter.getFillUrl(hierId);
 
-  var text = "Dear user,\n\n"
-    + "You have been invited to HRC.\n"
-    + "Please click the link below to accept the invitation. Alternatively, copy the link into your browser.\n\n"
-    + url + "\n\n"
+  var text = "Dear " + displayName + ",\n\n"
+    + "You have been invited to HRC to fill documents.\n"
+    + "Please click the link below and login with your email and the following password.\n\n"
+    + fillUrl + "\n\n"
+    + "Password: " + pass + "\n\n"
     + "Thank you,\n"
-    + "Aïda team";
+    + "Aï¿½da team";
 
-  EmailManager.sendEmail(email, 'Aïda - Invitation', text, false);
+  EmailManager.sendEmail(email, 'Aï¿½da - Invitation', text, false);
 };
