@@ -265,7 +265,7 @@ var mergeFields = [{
     key: 'educationInstitution1',
     testValue: 'High School',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.education || !entity.education.length > 0) return '';
       return entity.education[0].institution;
     },
@@ -274,7 +274,7 @@ var mergeFields = [{
     key: 'educationDescription1',
     testValue: 'Example description',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.education || !entity.education.length > 0) return '';
       return entity.education[0].description;
     },
@@ -283,7 +283,7 @@ var mergeFields = [{
     key: 'educationDegree1',
     testValue: 'Degree',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.education || !entity.education.length > 0) return '';
       return entity.education[0].degreeAwarded;
     },
@@ -292,7 +292,7 @@ var mergeFields = [{
     key: 'educationInstitution2',
     testValue: 'High School',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.education || !entity.education.length > 1) return '';
       return entity.education[1].institution;
     },
@@ -301,7 +301,7 @@ var mergeFields = [{
     key: 'educationDescription2',
     testValue: 'Example description',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.education || !entity.education.length > 1) return '';
       return entity.education[1].description;
     },
@@ -310,7 +310,7 @@ var mergeFields = [{
     key: 'educationDegree2',
     testValue: 'Awarded degree',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.education || !entity.education.length > 1) return '';
       return entity.education[1].degreeAwarded;
     },
@@ -322,7 +322,7 @@ var mergeFields = [{
     key: 'pastJobCompany1',
     testValue: 'Company name',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
       return entity.pastJobs[0].company;
     },
@@ -331,7 +331,7 @@ var mergeFields = [{
     key: 'pastJobLocation1',
     testValue: '350 5th Ave',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
       return entity.pastJobs[0].location;
     },
@@ -340,7 +340,7 @@ var mergeFields = [{
     key: 'pastJobSupervisor1',
     testValue: 'John Smith',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
       return entity.pastJobs[0].supervisor;
     },
@@ -349,7 +349,7 @@ var mergeFields = [{
     key: 'pastJobPhone1',
     testValue: '555-555-5555',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
       return entity.pastJobs[0].supervisorPhone;
     },
@@ -358,7 +358,7 @@ var mergeFields = [{
     key: 'pastJobPosition1',
     testValue: 'Developer',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
       return entity.pastJobs[0].position;
     },
@@ -367,7 +367,7 @@ var mergeFields = [{
     key: 'pastJobPayRate1',
     testValue: '10',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
       return entity.pastJobs[0].payRate;
     },
@@ -376,7 +376,7 @@ var mergeFields = [{
     key: 'pastJobResponsibilities1Line1',
     testValue: 'Example task',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
       return entity.pastJobs[0].duties;
     },
@@ -385,7 +385,7 @@ var mergeFields = [{
     key: 'pastJobResponsibilities1Line2',
     testValue: 'Example task',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
       return entity.pastJobs[0].duties;
     },
@@ -394,7 +394,7 @@ var mergeFields = [{
     key: 'pastJobStartDate1',
     testValue: '7/4/2015',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
       return entity.pastJobs[0].start;
     },
@@ -403,7 +403,7 @@ var mergeFields = [{
     key: 'pastJobEndDate1',
     testValue: '7/5/2015',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
       return entity.pastJobs[0].end;
     },
@@ -412,7 +412,7 @@ var mergeFields = [{
     key: 'pastJobReasonForLeaving1',
     testValue: 'Example reason',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
       return entity.pastJobs[0].reasonForLeaving;
     },
@@ -421,7 +421,7 @@ var mergeFields = [{
     key: 'okayToContact1',
     testValue: 'True',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
       return entity.pastJobs[0].okay2contact;
     },
@@ -430,7 +430,7 @@ var mergeFields = [{
     key: 'pastJobCompany2',
     testValue: 'Company name',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
       return entity.pastJobs[1].company;
     },
@@ -439,7 +439,7 @@ var mergeFields = [{
     key: 'pastJobLocation2',
     testValue: '350 5th Ave',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
       return entity.pastJobs[1].location;
     },
@@ -448,7 +448,7 @@ var mergeFields = [{
     key: 'pastJobSupervisor2',
     testValue: 'John Smith',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
       return entity.pastJobs[1].supervisor;
     },
@@ -457,7 +457,7 @@ var mergeFields = [{
     key: 'pastJobPhone2',
     testValue: '555-555-5555',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
       return entity.pastJobs[1].supervisorPhone;
     },
@@ -466,7 +466,7 @@ var mergeFields = [{
     key: 'pastJobPosition2',
     testValue: 'Developer',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
       return entity.pastJobs[1].position;
     },
@@ -475,7 +475,7 @@ var mergeFields = [{
     key: 'pastJobPayRate2',
     testValue: '10',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
       return entity.pastJobs[1].payRate;
     },
@@ -484,7 +484,7 @@ var mergeFields = [{
     key: 'pastJobResponsibilities2Line1',
     testValue: 'Example task',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
       return entity.pastJobs[1].duties;
     },
@@ -493,7 +493,7 @@ var mergeFields = [{
     key: 'pastJobResponsibilities2Line2',
     testValue: 'Example task',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
       return entity.pastJobs[1].duties;
     },
@@ -502,7 +502,7 @@ var mergeFields = [{
     key: 'pastJobStartDate2',
     testValue: '7/4/2015',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
       return entity.pastJobs[1].start;
     },
@@ -511,7 +511,7 @@ var mergeFields = [{
     key: 'pastJobEndDate2',
     testValue: '7/5/2015',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
       return entity.pastJobs[1].end;
     },
@@ -520,7 +520,7 @@ var mergeFields = [{
     key: 'pastJobReasonForLeaving2',
     testValue: 'Example reason',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
       return entity.pastJobs[1].reasonForLeaving;
     },
@@ -529,7 +529,7 @@ var mergeFields = [{
     key: 'okayToContact2',
     testValue: 'True',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
       return entity.pastJobs[1].okay2contact;
     },
@@ -538,7 +538,7 @@ var mergeFields = [{
     key: 'pastJobCompany3',
     testValue: 'Company name',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
       return entity.pastJobs[2].company;
     },
@@ -547,7 +547,7 @@ var mergeFields = [{
     key: 'pastJobLocation3',
     testValue: '350 5th Ave',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
       return entity.pastJobs[2].location;
     },
@@ -556,7 +556,7 @@ var mergeFields = [{
     key: 'pastJobSupervisor3',
     testValue: 'John Smith',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
       return entity.pastJobs[2].supervisor;
     },
@@ -565,7 +565,7 @@ var mergeFields = [{
     key: 'pastJobPhone3',
     testValue: '555-555-5555',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
       return entity.pastJobs[2].supervisorPhone;
     },
@@ -574,7 +574,7 @@ var mergeFields = [{
     key: 'pastJobPosition3',
     testValue: 'Developer',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
       return entity.pastJobs[2].position;
     },
@@ -583,7 +583,7 @@ var mergeFields = [{
     key: 'pastJobPayRate3',
     testValue: '10',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
       return entity.pastJobs[2].payRate;
     },
@@ -592,7 +592,7 @@ var mergeFields = [{
     key: 'pastJobResponsibilities3Line1',
     testValue: 'Example task',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
       return entity.pastJobs[2].duties;
     },
@@ -601,7 +601,7 @@ var mergeFields = [{
     key: 'pastJobResponsibilities3Line2',
     testValue: 'Example task',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
       return entity.pastJobs[2].duties;
     },
@@ -610,7 +610,7 @@ var mergeFields = [{
     key: 'pastJobStartDate3',
     testValue: '7/4/2015',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
       return entity.pastJobs[2].start;
     },
@@ -619,7 +619,7 @@ var mergeFields = [{
     key: 'pastJobEndDate3',
     testValue: '7/5/2015',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
       return entity.pastJobs[2].end;
     },
@@ -628,7 +628,7 @@ var mergeFields = [{
     key: 'pastJobReasonForLeaving3',
     testValue: 'Example reason',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
       return entity.pastJobs[2].reasonForLeaving;
     },
@@ -637,7 +637,7 @@ var mergeFields = [{
     key: 'okayToContact3',
     testValue: 'True',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
       return entity.pastJobs[2].okay2contact;
     },
@@ -649,7 +649,7 @@ var mergeFields = [{
     key: 'tags',
     testValue: 'Administrative',
     type: DocCenter.mergeFieldTypes.string,
-    get: function () {
+    get: function (entity) {
       var res = '';
       if (entity && entity.tags) {
         _.each(tags, function (tag) {
