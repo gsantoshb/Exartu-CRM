@@ -367,6 +367,21 @@ _.extend(DocCenter,{
         cb(null, response);
       }
     });
+  }),
+
+  getFillUrl: Meteor.wrapAsync(function (hierId, cb) {
+    var account = getAccount(hierId);
+    var self = this;
+
+    var api = new DocCenterApi(account);
+
+    api.get(self._docCenterUrl + '/api/FillUrl', function (err, response) {
+      if (err) {
+        console.error(err);
+      } else {
+        cb(null, response);
+      }
+    });
   })
 
 
