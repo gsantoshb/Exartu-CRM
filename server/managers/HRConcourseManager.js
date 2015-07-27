@@ -75,6 +75,35 @@ HRConcourseManager = {
     })
   },
 
+  // Client account creation
+  createClientAccount: function (clientId, email) {
+    // Validate parameters
+    if (!clientId) throw new Error('Client ID is required');
+    if (!email) throw new Error('Email is required');
+
+    var client = Contactables.findOne({_id: clientId});
+    if (!client) throw new Error('Invalid client ID');
+
+    // Check if the client is already using HRC
+    if (client.docCenter) throw new Error('This client is already registered in HRC');
+
+    // Set up HR Concourse account
+    var userData = {
+      userName: email,
+      email: email,
+      password: Random.secret(8)
+    };
+
+    // Create the user in doc center
+    var result = DocCenter.insertUser(client.hierId || Meteor.user().currentHierId, userData);
+
+    // Update the employee with the account information
+    Contactables.update(clientId, {$set: {docCenter: result, docCenterUserName: email, tempPass: userData.password}});
+
+    // Send client email
+    sendHrcAccountCreationEmail(email, client.hierId, client.displayName, userData.password);
+  },
+
 
   syncKioskEmployee: function (hierId, docCenterId) {
     // Validate empInfo
@@ -366,3 +395,19 @@ function syncDocs(hierId, instances, logRecordId, entityId) {
     });
   });
 }
+
+
+
+var sendHrcAccountCreationEmail = function (email, hierId, displayName, pass) {
+  var fillUrl = DocCenter.getFillUrl(hierId);
+
+  var text = "Dear " + displayName + ",\n\n"
+    + "You have been invited to HRC to fill documents.\n"
+    + "Please click the link below and login with your email and the following password.\n\n"
+    + fillUrl + "\n\n"
+    + "Password: " + pass + "\n\n"
+    + "Thank you,\n"
+    + "A�da team";
+
+  EmailManager.sendEmail(email, 'A�da - Invitation', text, false);
+};

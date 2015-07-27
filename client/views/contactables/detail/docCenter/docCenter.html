@@ -7,6 +7,11 @@
                 {{> sendDocument}}
                 {{> documentInstances}}
 
+                <!-- Client account info -->
+                {{#if docCenterUserName}}
+                    <div> Username: {{docCenterUserName}} </div>
+                {{/if }}
+
                 {{#if tempPass}}
                     <div> Temporary password: {{tempPass}} </div>
                 {{/if}}
