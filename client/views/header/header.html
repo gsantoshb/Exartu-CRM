@@ -62,7 +62,62 @@
                     </a>
                 </li>
 
-                <li>
+                <!--mobile user menu-->
+                <li class="visible-xs">
+                    <a href="/user/{{user._id}}" style="display: inline-flex" data-toggle="dropdown" class="dropdown-toggle">
+                        <span class="user-menu-thumb" id="tourActivitieslog">
+                            <img class="img-responsive" style="max-height:26px; max-width:26px" src="{{userThumbnail}}">
+                        </span>
+                        <span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu pull-right">
+
+                        <li>
+                            <a href="/userProfile" ><i class="fa fa-user"></i> {{_ "My profile"}}</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="pointer trigger"><i class="fa fa-flag"></i> {{currentLanguageLabel}}</a>
+                            <ul class="dropdown-menu sub-menu">
+                                <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'en'}});">English</a></li>
+                                <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'es'}});">Español</a></li>
+                                <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'cn'}});">简体中文</a></li>
+                            </ul>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            {{#if isSysAdmin}}
+                                <a href="/management/help"><i class="fa fa-question-circle"></i> Help management</a>
+                            {{else}}
+                                <a href="/help"><i class="fa fa-question-circle"></i> Help</a>
+                            {{/if}}
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/hierarchyManagement" ><i class="fa fa-sitemap"></i> {{_ "Hierarchies"}}</a>
+                        </li>
+
+
+
+
+                        {{#if latestHiersCount}}
+                            <li class="divider"></li>
+                            {{#each latestHiers}}
+                                <li>
+                                    <a class="pointer changeHier">{{name}}</a>
+                                </li>
+                            {{/each}}
+                        {{/if}}
+
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/" id="signout"><i class="fa fa-sign-out"></i> {{_ "Sign out"}}</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="hidden-xs">
                     {{#if isSysAdmin}}
                         <a href="/management/help"><i class="fa fa-question-circle"></i></a>
                     {{else}}
