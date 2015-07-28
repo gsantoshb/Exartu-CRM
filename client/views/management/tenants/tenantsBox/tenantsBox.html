@@ -92,44 +92,44 @@
 <template name="tenantsListItem">
 
     <div class="list-item network-list-item ">
+        <div class="list-item-cell network-list-item-title">
+            <div class="item-title"><a href="/tenant/{{_id}}">{{name}}</a>
+                <br/>
+                {{_id}}
+            </div>
+        </div>
 
         <div class="list-item-details network-list-item-details">
-            <div class="list-item-cell network-list-item-title">
-                <div class="item-title"><a href="/tenant/{{_id}}">{{name}}</a>
-                    <br/>
-                    {{_id}}
-                </div>
-            </div>
 
             <div class="list-item-cell network-list-item-time">
                 <span>{{formattedDate dateCreated "fromNow"}}</span>
             </div>
-            <div class="list-item-cell network-list-item-contact">
+            <div class="list-item-cell network-list-item-type">
                     <span>
                         {{activityCount}}
                     </span>
             </div>
-            <div class="list-item-cell network-list-item-contact">
+            <div class="list-item-cell network-list-item-type">
                     <span>
                         {{formattedDate lastDate "fromNow"}}
                     </span>
             </div>
-            <div class="list-item-cell network-list-item-contact">
+            <div class="list-item-cell network-list-item-type">
                     <span>
                         {{this.userName}}
                     </span>
             </div>
-            <div class="list-item-cell network-list-item-contact">
+            <div class="list-item-cell network-list-item-type">
                     <span>
                         {{phone}}
                     </span>
             </div>
-            <div class="list-item-cell network-list-item-contact">
+            <div class="list-item-cell network-list-item-type">
                     <span>
                         {{getHierEmail}}
                     </span>
             </div>
-            <div class="list-item-cell network-list-item-contact">
+            <div class="list-item-cell network-list-item-type">
                     <span style="float:right; margin-left: 40%">
                         {{#if showAdd}}
                             <button type="button" class="btn btn-success addHierAsContactable" title="Add">
