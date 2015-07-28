@@ -150,13 +150,11 @@ Meteor.startup(function () {
       }else {
         // if the value is ok then do nothing, return
         if ((Date.now() - state.timeStamp) < keepAliveTime) {
-          console.log('its alive', (Date.now() - state.timeStamp));
           return;
         }
       }
       // keep alive
       var keepAliveIntervalId = Meteor.setInterval(function () {
-        console.log('im alive');
         MailListenerState.update(state._id, {$set: {timeStamp: new Date().getTime()}});
       }, keepAliveTime/2);
 
