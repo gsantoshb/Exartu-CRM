@@ -1160,12 +1160,18 @@ var runESComputation = function () {
         isSearching = false;
         searchDep.changed();
 
+        moveScroll();
+
       } else
         console.log(err)
     });
   });
 };
-
+var moveScroll = function(){
+  if ($(window).width() < 768){
+    $(window).scrollTop(260);
+  }
+};
 // Elasticsearch context match template
 Template.esContextMatch.rendered = function () {
   var text = this.$('.contextText');
