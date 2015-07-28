@@ -32,8 +32,6 @@ DocCenterManager = {
       email: email
     };
 
-    console.log('userdata', userData);
-
     // Create the user in doc center
     var result = DocCenter.insertUser(hierId || Meteor.user().currentHierId, userData);
 
@@ -228,24 +226,24 @@ Meteor.methods({
 
     var docInstance = DocCenter.instantiateDocument(user.currentHierId, documentIds, docCenterId, initialValues);
 
-
-    var hier = Hierarchies.findOne({_id: user.currentHierId});
-    var webName = hier.configuration.webName;
-    var url = ExartuConfig.ApplicantCenter_URL + webName;
-    var doclist = '';
-    _.forEach(docInstance, function(d){
-       doclist = doclist + d.documentName + '\n';
-    })
-    var text = "Dear "+contactable.displayName +",\n\n"
-      +"This is an automated reminder from your Aida software system.  You have the following documents to fill:\n\n"
+    if (!contactable.Client) {
+      var hier = Hierarchies.findOne({_id: user.currentHierId});
+      var webName = hier.configuration.webName;
+      var url = ExartuConfig.ApplicantCenter_URL + webName;
+      var doclist = '';
+      _.forEach(docInstance, function(d){
+        doclist = doclist + d.documentName + '\n';
+      })
+      var text = "Dear "+contactable.displayName +",\n\n"
+        +"This is an automated reminder from your Aida software system.  You have the following documents to fill:\n\n"
         + doclist
-      +"\nPlease log into Applicant Center to fill, using the following URL:\n"
-      + url
-      + "\n\nThank you,"
-      + "Aïda team";
+        +"\nPlease log into Applicant Center to fill, using the following URL:\n"
+        + url
+        + "\n\nThank you,"
+        + "Aïda team";
 
-    EmailManager.sendEmail(contactable.docCenter.Email, "New documents to fill", text, false);
-
+      EmailManager.sendEmail(contactable.docCenter.Email, "New documents to fill", text, false);
+    }
 
     return docInstance;
   }

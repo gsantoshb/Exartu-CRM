@@ -297,12 +297,21 @@ Template.contactable_actions.helpers({
   alreadyInvited: function () {
     // Invited users have the invitation property set
     return !!contactable.invitation;
+  },
+
+  // HRC Account
+  isDocCenterUser: function () {
+    // Registered users have the docCenter property set
+    return !!contactable.docCenter;
   }
 })
 ;
 Template.contactable_actions.events({
   'click #sendAppCenterInvite': function () {
     Utils.showModal('sendAppCenterInvitation', contactable);
+  },
+  'click #createHrcAccount': function () {
+    Utils.showModal('createHrcAccount', contactable);
   },
   'click #sendEmailTemplate': function () {
     var contactableType = Utils.getContactableType(this);
@@ -562,6 +571,16 @@ Template.contactable_nav.helpers({
         displayName: 'Placements',
         template: 'contactable_placements'
       });
+
+      // Check if it has a doc Center account or has been invited to Applicant Center or is already a user
+      if (!!contactable.docCenter) {
+        tabs.push({
+          id: 'docCenter',
+          mobileDisplayName: 'Doc Center',
+          displayName: 'Doc Center',
+          template: 'docCenterTab'
+        });
+      }
     }
 
     if (contactable.Employee) {

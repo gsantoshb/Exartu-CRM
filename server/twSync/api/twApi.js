@@ -98,7 +98,7 @@ TwApi = {
 
     // Mark the sync is over
     Hierarchies.update({_id: accountInfo.hierId}, {$unset: {'enterpriseAccount.empSync': ''}});
-  }
+  },
 
   //addContact: function (contactId, contact) {
   //  HTTP.post('http://localhost:3000/twStubApi', {data: contact}, function (error, result) {
@@ -131,4 +131,31 @@ TwApi = {
   //    }
   //  })
   //}
+
+
+  // Notes
+  addEmployeeNote: function (employeeId, note, accountInfo) {
+    var apiHelper = new TwApiHelper(accountInfo);
+    apiHelper.post('/Employee/' + employeeId + '/insertMessage', note, Meteor.bindEnvironment(function (error, result) {
+      if (error) {
+        throw new Error("TW Sync failed adding employee note");
+      }
+    }));
+  },
+  addCustomerNote: function (customerId, note, accountInfo) {
+    var apiHelper = new TwApiHelper(accountInfo);
+    apiHelper.post('/Customer/' + customerId + '/insertMessage', note, Meteor.bindEnvironment(function (error, result) {
+      if (error) {
+        throw new Error("TW Sync failed adding customer note");
+      }
+    }));
+  },
+  addContactNote: function (contactId, note, accountInfo) {
+    var apiHelper = new TwApiHelper(accountInfo);
+    apiHelper.post('/Contacts/' + contactId + '/insertMessage', note, Meteor.bindEnvironment(function (error, result) {
+      if (error) {
+        throw new Error("TW Sync failed adding contact note");
+      }
+    }));
+  }
 };

@@ -12,6 +12,10 @@ _.forEach([
             lookUpActions: [Enums.lookUpAction.ContactMethod_Phone, Enums.lookUpAction.ContactMethod_MobilePhone]
         },
         {
+          displayName: 'Emergency Phone',
+          lookUpActions: [Enums.lookUpAction.ContactMethod_Phone, Enums.lookUpAction.ContactMethod_EmergencyPhone]
+        },
+        {
             displayName: 'Email', lookUpActions: [Enums.lookUpAction.ContactMethod_Email]
         },
         {
