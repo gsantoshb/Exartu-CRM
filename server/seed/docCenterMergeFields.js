@@ -652,7 +652,7 @@ var mergeFields = [{
     get: function (entity) {
       var res = '';
       if (entity && entity.tags) {
-        _.each(tags, function (tag) {
+        _.each(entity.tags, function (tag) {
           if (!res) {
             res += tag;
           } else {
