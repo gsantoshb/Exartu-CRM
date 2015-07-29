@@ -1889,7 +1889,7 @@ div#activityChart #container text tspan { text-decoration: none !important; font
 @media (max-width: 767px) {
   .lastEntries-pinged{
      position: absolute;
-     top: 350px;
+     top: 310px;
      width: 100%;
   }
 }
@@ -1897,14 +1897,36 @@ div#activityChart #container text tspan { text-decoration: none !important; font
 @media (min-width: 767px) {
     .lastEntries-pinged{
         position: absolute;
-        top: 386px;
+        top: 345px;
         width: 100%;
     }
 }
 
+.magic-pager .pagination>li>a.next-page {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+}
+
+/* fix agenda alignment */
+.sidebar-right .day-tasks {
+  height: 0;
+}
 
 
 .row-container{
     padding-left: 15px;
     padding-right: 15px;
+}
+
+
+/* Activity page for mobiles */
+@media (max-width: 767px) {
+    .page-title-2 { padding-bottom: 5px; margin-bottom: 15px; }
+    .magic-pager .pagination {height: auto; margin-bottom: 5px; }
+    .magic-pager .pagination>li>a, .magic-pager .pagination>li>span { padding: 5px; height: 25px; }
+    .activity-feed { padding-top: 0px; }
+    .list-type-7 { margin-left: 33px; }
+    .list-type-7-icon { margin-left: -30px; padding: 10px 0; }
+    .list-type-7-title { padding: 10px 0; }
+    .list-type-7 .right-part { padding: 5px; }
 }

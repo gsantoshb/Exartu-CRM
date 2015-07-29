@@ -115,3 +115,47 @@ Notes.after.insert(function (userId, doc) {
   newNote.remindDate = doc.remindDate;
   NotesView.insert(newNote);
 });
+
+
+// TW Enterprise sync
+Notes.after.insert(function (userId, note) {
+  _.each(note.links, function (link) {
+    if (link.type == Enums.linkTypes.contactable.value) {
+      var contactable = Contactables.findOne(link.id, {fields: {_id: 1, hierId: 1, externalId: 1, Employee: 1, skipTwSync: 1}});
+
+      // Skip contactables with the skip flag set
+      if (contactable && !contactable.skipTwSync) {
+
+        // Sync only when an account has been set up for the contactable hier and the contactable has been sync
+        if (contactable && contactable.externalId) {
+          var hier = Hierarchies.findOne(contactable.hierId);
+          if (hier && hier.enterpriseAccount) {
+            // Set up account info for the helper
+            var accountInfo = {
+              hierId: hier._id,
+              username: hier.enterpriseAccount.username,
+              password: hier.enterpriseAccount.password,
+              accessToken: hier.enterpriseAccount.accessToken,
+              tokenType: hier.enterpriseAccount.tokenType
+            };
+
+            var data = {};
+            data.message = note.msg;
+
+            // Sync the note depending on the type of contactable
+            if (contactable.Employee) {
+              data.aIdent = contactable.externalId;
+              TwApi.addEmployeeNote(contactable.externalId, data, accountInfo);
+            } else if (contactable.Client) {
+              data.customerId = contactable.externalId;
+              TwApi.addCustomerNote(contactable.externalId, data, accountInfo);
+            } else if (contactable.Contact) {
+              data.ID = contactable.externalId;
+              TwApi.addContactNote(contactable.externalId, data, accountInfo);
+            }
+          }
+        }
+      }
+    }
+  });
+});

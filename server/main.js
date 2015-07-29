@@ -124,5 +124,60 @@ Meteor.startup(function () {
     });
   });
 
-  EmailManager.emailListenerResumeParser(ExartuConfig.ResumeParserEmail, ExartuConfig.ResumeParserEmailPassword,  "imap.gmail.com", 993);
+  var keepAliveTime = 5 * 60 * 1000; //5 minutes
+
+  // Quick explanation:
+  // the SyncedCron will keep calling your job method but, if you have 2 or more servers running
+  // against the same database only one of them will call the job, the other/s will do nothing (useful for heroku's dynos)
+  // Every time the job is called it will check for the status of the mail listener, if the status hasn't been updated recently
+  // this server will run the mail listener and it will keep updating the state, otherwise it will do nothing.
+
+  // Note: The SyncedCron package doesn't actually do wat it says, because it has a huge bug with the intendedAt
+  // that's why we use a local 'hacked' copy with the fixIntendedAt. in this case taking the milliseconds out of the date
+  // fixes it but with others schedules I'm not really sure what will happen
+
+  SyncedCron.add({
+    name: 'Listen resume parser emails',
+    schedule: function(parser) {
+      // parser is a later.parse object
+      return parser.text('every 1 minute');
+    },
+    job: function() {
+      var state = MailListenerState.findOne();
+      if (!state){
+        state = {};
+        state._id = MailListenerState.insert({timeStamp: Date.now()});
+      }else {
+        // if the value is ok then do nothing, return
+        if ((Date.now() - state.timeStamp) < keepAliveTime) {
+          return;
+        }
+      }
+      // keep alive
+      var keepAliveIntervalId = Meteor.setInterval(function () {
+        MailListenerState.update(state._id, {$set: {timeStamp: new Date().getTime()}});
+      }, keepAliveTime/2);
+
+      try {
+        // start listening
+        EmailManager.emailListenerResumeParser(ExartuConfig.ResumeParserEmail, ExartuConfig.ResumeParserEmailPassword,  "imap.gmail.com", 993, function (e) {
+          clearInterval(keepAliveIntervalId);
+        });
+      } catch (e){
+        console.log('exception cached', e);
+        clearInterval(keepAliveIntervalId);
+      }
+    },
+    fixIntendedAt: function (intendedAt) {
+      var milliseconds = intendedAt.getTime();
+      milliseconds = milliseconds - ( milliseconds % 1000 );
+      return new Date(milliseconds);
+    }
+  });
+  SyncedCron.start();
 });
+SyncedCron.config({
+  // Log job run details to console
+  log: false
+});
+MailListenerState = new Mongo.Collection('mailListenerState');

@@ -40,22 +40,8 @@ var canEdit = function (hierarchies, hierId) {
     return result;
 };
 
-Hierarchies.after.insert(function (userId, doc) {
-    if (!doc.parent) {
-        if (doc._id != ExartuConfig.TenantId) {
-            seedSystemLookUps(doc._id);
-            seedEmailTemplates(doc._id);
-            seedHotLists(doc._id);
-            createHouseAccount(doc);
-        }
-    }
-});
 
-Hierarchies.before.insert(function (userId, doc) {
-  doc.dateCreated = new Date();
-});
 // Users files
-
 HierarchiesFS = new Document.Collection({
     collection: Hierarchies
 });

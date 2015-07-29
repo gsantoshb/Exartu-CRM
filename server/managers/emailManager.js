@@ -132,23 +132,23 @@ var emailListener = Meteor.wrapAsync(function (email, pass, host, port, hierId, 
 
 });
 
+EmailManager.emailListenerResumeParser = function (email, pass, host, port, onErrorCallback) {
 
-EmailManager.emailListenerResumeParser = function (email, pass, host, port) {
-
+  onErrorCallback = onErrorCallback || function (e) {
+    console.log('resume parser not connected', e);
+  }
   //set by default a minimum date
-
-  //console.log(date);
 
   //find all news emails for hierId hierarchy:
   var mailListener = new MailListener({
-    username: email,//"lidnele4321@hotmail.com"
-    password: pass, //"ram123.R"
-    host: host,//"imap-mail.outlook.com"
-    port: port, //993 (imap port)
+    username: email,
+    password: pass,
+    host: host,
+    port: port,
     tls: true,
     fetchUnreadOnStart: true,
-    mailbox: "INBOX", // mailbox to monitor
-    markSeen: false, // all fetched email willbe marked as seen and not fetched next time
+    mailbox: "INBOX",
+    markSeen: false,
     searchFilter: ['UNSEEN']
   });
 
@@ -157,20 +157,9 @@ EmailManager.emailListenerResumeParser = function (email, pass, host, port) {
 
   mailListener.on("server:connected", function () {
     console.log("imapConnected");
-
   });
 
-  mailListener.on("server:disconnected", function () {
-    console.log("imapDisconnected");
-    mailListener.start();
-
-  });
-    
-    mailListener.on("server:disconnected", function () {
-    console.log("imapDisconnected");
-    mailListener.start();
-
-  });
+  mailListener.on("server:disconnected", onErrorCallback);
 
   mailListener.on("mail", function (mail, seqno, attributes) {
     // do something with mail object including attachments
@@ -261,10 +250,7 @@ EmailManager.emailListenerResumeParser = function (email, pass, host, port) {
     }
   });
 
-  mailListener.on("error", function (err) {
-    console.log(err);
-    //cb(err);
-  });
+  mailListener.on("error", onErrorCallback);
   mailListener.on("mail:arrived", function (id) {
     console.log("new mail arrived with id:" + id);
   });

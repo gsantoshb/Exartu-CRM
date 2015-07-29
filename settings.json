@@ -1,5 +1,17 @@
 {
   "public": {
 
+  },
+  "cluster": {
+    "count": 8
+  },
+  "workers": {
+    "count": 10,
+    "monq": {
+    },
+    "cron": {
+      "log": false,
+      "disable": false
+    }
   }
 }

@@ -273,11 +273,6 @@ Meteor.paginatedPublish(ContactablesFiles, function(entityId) {
     publicationName: 'contactablesDocs'
 });
 
-ContactablesFiles.before.insert(function(userId,doc){
-    doc.dateCreated=Date.now();
-
-});
-
 ContactablesFiles.allow({
     remove: function (userId, file) {
         var user = Meteor.users.findOne({_id: userId});
