@@ -1,5 +1,27 @@
 
 ApplicantCenterManager = {
+  getAppCenterUser: function(hierId){
+    var user = Meteor.users.findOne({hierId:hierId, 'emails.address':'appcenter-' + hierId + '@aidacreative.com'});
+    console.log('hierId', hierId);
+    console.log('emails.address','appCenter-' + hierId + '@aidacreative.com' )
+    console.log('appC',user)
+    if(user){
+      console.log('userAppCenter',user);
+      return user._id;
+    }
+    else{
+      var userId = UserManager.registerAccount({
+        name: 'applicantCenterUser',
+        email: 'appcenter-' + hierId + '@aidacreative.com',
+        currentHierId: hierId,
+        password: Random.id(8),
+        language: null,
+        phone: '0000000'
+      }, true);
+      console.log('userAppCenter',userId);
+      return userId
+    }
+  },
   createEmployeeForUser: function(userId, firstName, lastName) {
     console.log('createEmployeeForUser');
     // Validate user
