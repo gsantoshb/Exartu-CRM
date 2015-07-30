@@ -61,5 +61,8 @@ Meteor.methods({
     } catch (err) {
       throw new Meteor.Error(err.message);
     }
+  },
+  getAppCenterUser: function(hierId){
+    return ApplicantCenterManager.getAppCenterUser(hierId);
   }
 });
