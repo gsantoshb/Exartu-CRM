@@ -154,13 +154,16 @@ Meteor.startup(function () {
         }
       }
       // keep alive
-      var keepAliveIntervalId = Meteor.setInterval(function () {
+      var keepAlive = function () {
         MailListenerState.update(state._id, {$set: {timeStamp: new Date().getTime()}});
-      }, keepAliveTime/2);
+      };
+      keepAlive();
+      var keepAliveIntervalId = Meteor.setInterval(keepAlive, keepAliveTime/2);
 
       try {
         // start listening
         EmailManager.emailListenerResumeParser(ExartuConfig.ResumeParserEmail, ExartuConfig.ResumeParserEmailPassword,  "imap.gmail.com", 993, function (e) {
+          console.log('emailListener Failed', e);
           clearInterval(keepAliveIntervalId);
         });
       } catch (e){

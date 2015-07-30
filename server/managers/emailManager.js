@@ -70,8 +70,8 @@ var emailListener = Meteor.wrapAsync(function (email, pass, host, port, hierId, 
     port: port,
     tls: true,
     fetchUnreadOnStart: true,
-    mailbox: "INBOX", // mailbox to monitor
-    markSeen: false, // all fetched email willbe marked as seen and not fetched next time
+    mailbox: "INBOX",
+    markSeen: false,
     searchFilter: ['ALL', ['SINCE', date]]
   });
 
@@ -162,11 +162,11 @@ EmailManager.emailListenerResumeParser = function (email, pass, host, port, onEr
   mailListener.on("server:disconnected", onErrorCallback);
 
   mailListener.on("mail", function (mail, seqno, attributes) {
-    // do something with mail object including attachments
+    console.log('Resume received');
     //console.log("emailParsed1", mail);
     mailListener.imap.setFlags('*', 'SEEN', function (err) {
-      console.log(err);
-    })
+      err && console.log('Error setting flags', err);
+    });
     var to = mail.to[0].address;
     var arrayToMore = to.split("+");
     if (arrayToMore[1]) {
@@ -270,8 +270,7 @@ var listListener = function () {
 
 Meteor.methods({
   emailListener: emailListener,
-  listListener: listListener,
-  emailListenerResumeParser: EmailManager.emailListenerResumeParser
+  listListener: listListener
 });
 
 
