@@ -161,6 +161,7 @@ Meteor.startup(function () {
       try {
         // start listening
         EmailManager.emailListenerResumeParser(ExartuConfig.ResumeParserEmail, ExartuConfig.ResumeParserEmailPassword,  "imap.gmail.com", 993, function (e) {
+          console.log('emailListener Failed', e);
           clearInterval(keepAliveIntervalId);
         });
       } catch (e){
