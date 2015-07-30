@@ -64,14 +64,14 @@ var emailListener = Meteor.wrapAsync(function (email, pass, host, port, hierId, 
 
   //find all news emails for hierId hierarchy:
   var mailListener = new MailListener({
-    username: email,//"lidnele4321@hotmail.com"
-    password: pass, //"ram123.R"
-    host: host,//"imap-mail.outlook.com"
-    port: port, //993 (imap port)
+    username: email,
+    password: pass,
+    host: host,
+    port: port,
     tls: true,
     fetchUnreadOnStart: true,
-    mailbox: "INBOX", // mailbox to monitor
-    markSeen: false, // all fetched email willbe marked as seen and not fetched next time
+    mailbox: "INBOX",
+    markSeen: false,
     searchFilter: ['ALL', ['SINCE', date]]
   });
 
@@ -270,8 +270,7 @@ var listListener = function () {
 
 Meteor.methods({
   emailListener: emailListener,
-  listListener: listListener,
-  emailListenerResumeParser: EmailManager.emailListenerResumeParser
+  listListener: listListener
 });
 
 

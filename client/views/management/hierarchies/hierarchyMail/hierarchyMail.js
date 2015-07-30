@@ -41,7 +41,7 @@ AutoForm.hooks({
           break;
       }
       if(imapServer && port) {
-        Meteor.call('emailListener', insertDoc.email, insertDoc.password, "imap-mail.outlook.com", 993, Meteor.user().currentHierId, function (err, result) {
+        Meteor.call('emailListener', insertDoc.email, insertDoc.password, imapServer, port, Meteor.user().currentHierId, function (err, result) {
           if (result === 'OK') {
 
             Meteor.call('setCurrentHierarchyMailConf', insertDoc.email, insertDoc.password, "imap-mail.outlook.com", 993);

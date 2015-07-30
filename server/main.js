@@ -154,9 +154,11 @@ Meteor.startup(function () {
         }
       }
       // keep alive
-      var keepAliveIntervalId = Meteor.setInterval(function () {
+      var keepAlive = function () {
         MailListenerState.update(state._id, {$set: {timeStamp: new Date().getTime()}});
-      }, keepAliveTime/2);
+      };
+      keepAlive();
+      var keepAliveIntervalId = Meteor.setInterval(keepAlive, keepAliveTime/2);
 
       try {
         // start listening
