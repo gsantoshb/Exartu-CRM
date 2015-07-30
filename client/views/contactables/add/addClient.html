@@ -1,0 +1,56 @@
+<template name="addClient">
+    {{#autoForm schema="schemaAddClient" id="addClient" doc=this}}
+        <div class="form-group {{#if afFieldIsInvalid name='organizationName'}}has-error{{/if}}">
+            Organization name:
+            {{> afFieldInput  name='organizationName' placeholder="Organization name" id="organizationName" type="text" class="form-control"}}
+            {{#if afFieldIsInvalid name='organizationName'}}
+                <span class="help-block">{{afFieldMessage name='organizationName'}}</span>
+            {{/if}}
+        </div>
+        <div class="form-group {{#if afFieldIsInvalid name='department'}}has-error{{/if}}">
+            Department:
+            {{> afFieldInput  name='department' id="department" value="Primary" type="text" class="form-control"}}
+            {{#if afFieldIsInvalid name='department'}}
+                <span class="help-block">{{afFieldMessage name='department'}}</span>
+            {{/if}}
+        </div>
+        <div class="form-group {{#if afFieldIsInvalid name='statusNote'}}has-error{{/if}}">
+            Status note:
+            {{> afFieldInput  name='statusNote' placeholder="Status note" id="statusNote" type="text" class="form-control"}}
+            {{#if afFieldIsInvalid name='statusNote'}}
+                <span class="help-block">{{afFieldMessage name='statusNote'}}</span>
+            {{/if}}
+        </div>
+        <div >
+            Email:
+            <div>
+                <div  class="col-xs-7 col-lg-7 form-group {{#if afFieldIsInvalid name='email'}}has-error{{/if}}"  style="padding-left:0px">
+                    {{> afFieldInput  name='email' placeholder="Email" id="email" type="text" class="form-control" }}
+                    {{#if afFieldIsInvalid name='email'}}
+                        <span class="help-block">{{afFieldMessage name='email'}}</span>
+                    {{/if}}
+                </div>
+                <div class="col-xs-5  col-lg-5" style="padding-right:0px">
+                    {{> afFormGroup name="emailType" class="form-control"  label=false options=emailTypes}}
+                </div>
+            </div>
+        </div>
+        <div >
+            Phone number:
+            <div>
+                <div  class="col-xs-7 col-lg-7 form-group {{#if afFieldIsInvalid name='phone'}}has-error{{/if}}" style="padding-left:0px">
+                    {{> afFieldInput  name='phone' id="phone" placeholder="Phone numer" type="text" class="form-control" }}
+                    {{#if afFieldIsInvalid name='phone'}}
+                        <span class="help-block">{{afFieldMessage name='phone'}}</span>
+                    {{/if}}
+                </div>
+                <div class="col-xs-5 col-lg-5" style="padding-right:0px">
+                    {{> afFormGroup name="phoneType" class="form-control"  label=false options=phoneTypes}}
+                </div>
+            </div>
+        </div>
+        <div class="form-group text-center top-30">
+            <button class="btn btn-success btn-lg">Add Client</button>
+        </div>
+    {{/autoForm}}
+</template>

@@ -390,6 +390,14 @@ newObjType({
       defaultValue: null,
       showInAdd: false,
       required: false
+    },
+    {
+      name: 'isWebVisible',
+      displayName: 'Is web visible',
+      showInAdd: true,
+      required: false,
+      fieldType: 'boolean',
+      defaultValue: false
     }
   ]
 });

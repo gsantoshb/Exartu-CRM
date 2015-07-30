@@ -1,0 +1,40 @@
+<template name="addEmployee">
+   {{#autoForm schema="schemaAddEmployee" id="addEmployee" doc=this}}
+       <div class="form-group {{#if afFieldIsInvalid name='personFirstName'}}has-error{{/if}}">
+           First name:
+           {{> afFieldInput  name='personFirstName' id="personFirstName" type="text" class="form-control"}}
+           {{#if afFieldIsInvalid name='personFirstName'}}
+               <span class="help-block">{{afFieldMessage name='personFirstName'}}</span>
+           {{/if}}
+       </div>
+       <div class="form-group {{#if afFieldIsInvalid name='personLastName'}}has-error{{/if}}">
+           Last name:
+           {{> afFieldInput  name='personLastName' id="personLastName" type="text" class="form-control"}}
+           {{#if afFieldIsInvalid name='personLastName'}}
+               <span class="help-block">{{afFieldMessage name='personLastName'}}</span>
+           {{/if}}
+       </div>
+       <div class="form-group {{#if afFieldIsInvalid name='personMiddleName'}}has-error{{/if}}">
+           Middle name:
+           {{> afFieldInput  name='personMiddleName' id="personMiddleName" type="text" class="form-control"}}
+           {{#if afFieldIsInvalid name='personMiddleName'}}
+               <span class="help-block">{{afFieldMessage name='personMiddleName'}}</span>
+           {{/if}}
+       </div>
+       <div class="form-group {{#if afFieldIsInvalid name='personJobTitle'}}has-error{{/if}}">
+           Job tittle:
+           {{> afFieldInput  name='personJobTitle' id="personJobTitle" type="text" class="form-control"}}
+           {{#if afFieldIsInvalid name='personJobTitle'}}
+               <span class="help-block">{{afFieldMessage name='personJobTitle'}}</span>
+           {{/if}}
+       </div>
+       <div class="form-group {{#if afFieldIsInvalid name='taxId'}}has-error{{/if}}">
+           TaxID/SSN:
+           {{> afFieldInput  name='taxId' id="taxId" type="text" class="form-control"}}
+           {{#if afFieldIsInvalid name='taxId'}}
+               <span class="help-block">{{afFieldMessage name='taxId'}}</span>
+           {{/if}}
+       </div>
+
+   {{/autoForm}}
+</template>

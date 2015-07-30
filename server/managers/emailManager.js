@@ -64,10 +64,10 @@ var emailListener = Meteor.wrapAsync(function (email, pass, host, port, hierId, 
 
   //find all news emails for hierId hierarchy:
   var mailListener = new MailListener({
-    username: email,//"lidnele4321@hotmail.com"
-    password: pass, //"ram123.R"
-    host: host,//"imap-mail.outlook.com"
-    port: port, //993 (imap port)
+    username: email,
+    password: pass,
+    host: host,
+    port: port,
     tls: true,
     fetchUnreadOnStart: true,
     mailbox: "INBOX", // mailbox to monitor

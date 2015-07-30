@@ -1,0 +1,82 @@
+<template name="addContact">
+    {{#autoForm schema="schemaAddContact" id="addContact" doc=this}}
+    <div class="form-group {{#if afFieldIsInvalid name='personFirstName'}}has-error{{/if}}">
+        First name:
+        {{> afFieldInput  name='personFirstName' id="personFirstName" type="text" class="form-control"}}
+        {{#if afFieldIsInvalid name='personFirstName'}}
+            <span class="help-block">{{afFieldMessage name='personFirstName'}}</span>
+        {{/if}}
+    </div>
+    <div class="form-group {{#if afFieldIsInvalid name='personLastName'}}has-error{{/if}}">
+        Last name:
+        {{> afFieldInput  name='personLastName' id="personLastName" type="text" class="form-control"}}
+        {{#if afFieldIsInvalid name='personLastName'}}
+            <span class="help-block">{{afFieldMessage name='personLastName'}}</span>
+        {{/if}}
+    </div>
+    <div class="form-group {{#if afFieldIsInvalid name='personMiddleName'}}has-error{{/if}}">
+        Middle name:
+        {{> afFieldInput  name='personMiddleName' id="personMiddleName" type="text" class="form-control"}}
+        {{#if afFieldIsInvalid name='personMiddleName'}}
+            <span class="help-block">{{afFieldMessage name='personMiddleName'}}</span>
+        {{/if}}
+    </div>
+    <div class="form-group {{#if afFieldIsInvalid name='personJobTitle'}}has-error{{/if}}">
+        Job tittle:
+        {{> afFieldInput  name='personJobTitle' id="personJobTitle" type="text" class="form-control"}}
+        {{#if afFieldIsInvalid name='personJobTitle'}}
+            <span class="help-block">{{afFieldMessage name='personJobTitle'}}</span>
+        {{/if}}
+    </div>
+    <div class="form-group">
+        Status:
+        {{> afFormGroup name="status"  class="form-control" label=false options=status}}
+    </div>
+    <div class="form-group">
+        Client:
+        {{> afFieldInput  name='client' placeholder="Search client" class="form-control" type="afSearch"  getCollection=getClients selectionChanged=clientChanged }}
+    </div>
+    <div class="form-group {{#if afFieldIsInvalid name='statusNote'}}has-error{{/if}}">
+        Status note:
+        {{> afFieldInput  name='statusNote' id="statusNote" type="text" class="form-control"}}
+        {{#if afFieldIsInvalid name='statusNote'}}
+            <span class="help-block">{{afFieldMessage name='statusNote'}}</span>
+        {{/if}}
+    </div>
+    <div >
+        Email:
+        <div>
+        <div  class="col-xs-7 col-lg-7 form-group {{#if afFieldIsInvalid name='email'}}has-error{{/if}}"  style="padding-left:0px">
+        {{> afFieldInput  name='email' id="email" type="text" class="form-control" }}
+        {{#if afFieldIsInvalid name='email'}}
+            <span class="help-block">{{afFieldMessage name='email'}}</span>
+        {{/if}}
+        </div>
+        <div class="col-xs-5  col-lg-5" style="padding-right:0px">
+            {{> afFormGroup name="emailType" class="form-control"  label=false options=emailTypes}}
+        </div>
+        </div>
+    </div>
+    <div >
+        Phone number:
+        <div>
+            <div  class="col-xs-7 col-lg-7 form-group {{#if afFieldIsInvalid name='phone'}}has-error{{/if}}" style="padding-left:0px">
+                {{> afFieldInput  name='phone' id="phone" type="text" class="form-control" }}
+                {{#if afFieldIsInvalid name='phone'}}
+                    <span class="help-block">{{afFieldMessage name='phone'}}</span>
+                {{/if}}
+            </div>
+            <div class="col-xs-5 col-lg-5" style="padding-right:0px">
+                {{> afFormGroup name="phoneType" class="form-control"  label=false options=phoneTypes}}
+            </div>
+        </div>
+    </div>
+    <div class="form-group text-center top-30">
+        <button class="btn btn-success btn-lg">Add Contact</button>
+    </div>
+
+
+
+
+    {{/autoForm}}
+</template>

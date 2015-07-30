@@ -70,10 +70,14 @@ NoteManager = {
     }
 
     //add hier and user id
-    var user = Meteor.user();
-    note.hierId = user.currentHierId;
-    note.userId = user._id;
 
+    var user = Meteor.user();
+    if(!note.hierId) {
+      note.hierId = user.currentHierId;
+    }
+    if(!note.userId) {
+      note.userId = user._id;
+    }
     return Notes.insert(note);
 
   },

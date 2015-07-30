@@ -81,8 +81,8 @@ Template.jobDetail.events({
             return;
         }
         var update = job.getUpdate();
-
-        jobCollections.update({_id: job._id}, update, function (err, result) {
+        if(!_.isEmpty(update.$set)){
+          jobCollections.update({_id: job._id}, update, function (err, result) {
             if (!err) {
                 self.editMode = false;
                 job.reset();
@@ -90,10 +90,16 @@ Template.jobDetail.events({
             else {
                 alert(err);
             }
-        });
+          });
+       }
+      else{
+         self.editMode = false;
+          job.reset();
+       }
     },
     'click .cancelButton': function () {
         self.editMode = false;
+
     }
 });
 //

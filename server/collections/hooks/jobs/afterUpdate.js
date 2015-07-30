@@ -43,7 +43,7 @@ Jobs.after.update(function (userId, doc, fieldNames, modifier, options) {
 Jobs.after.update(function (userId, job, fieldNames, modifier, options) {
   var update = { $set: {} };
 
-  // Display Name & Public job title
+   // Display Name & Public job title
   if (_.contains(fieldNames, 'publicJobTitle') && modifier.$set.publicJobTitle) {
     update.$set.publicJobTitle = modifier.$set.publicJobTitle;
     update.$set.displayName = modifier.$set.publicJobTitle;
@@ -52,6 +52,11 @@ Jobs.after.update(function (userId, job, fieldNames, modifier, options) {
   // Process Status
   if (_.contains(fieldNames, 'status') && modifier.$set.status) {
     update.$set.status = modifier.$set.status;
+  }
+
+  // Is web visible
+  if (_.contains(fieldNames, 'isWebVisible') && ((modifier.$set.isWebVisible === true)||(modifier.$set.isWebVisible === false))) {
+    update.$set.isWebVisible = modifier.$set.isWebVisible;
   }
 
   // Active Status
