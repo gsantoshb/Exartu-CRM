@@ -162,11 +162,11 @@ EmailManager.emailListenerResumeParser = function (email, pass, host, port, onEr
   mailListener.on("server:disconnected", onErrorCallback);
 
   mailListener.on("mail", function (mail, seqno, attributes) {
-    // do something with mail object including attachments
+    console.log('Resume received');
     //console.log("emailParsed1", mail);
     mailListener.imap.setFlags('*', 'SEEN', function (err) {
-      console.log(err);
-    })
+      err && console.log('Error setting flags', err);
+    });
     var to = mail.to[0].address;
     var arrayToMore = to.split("+");
     if (arrayToMore[1]) {
