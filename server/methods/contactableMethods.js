@@ -303,9 +303,30 @@ Meteor.methods({
   },
   updateLegalInfo: function(update, contactableId){
     ContactableManager.updateLegalInfo(update, contactableId);
+  },
+
+
+  // Documents
+  addContactableDocumentInfo: function (documentInfo, downloadUrl) {
+    check(documentInfo, {
+      entityId: String,
+      name: String,
+      type: String,
+      extension: String,
+      description: Match.Optional(String),
+      tags: Match.Optional([String])
+    });
+    check(downloadUrl, String);
+
+    documentInfo.userId = Meteor.userId();
+    documentInfo.hierId = Meteor.user().currentHierId;
+
+    // Extract the file ID from the url
+    var split = downloadUrl.split('/');
+    documentInfo.fileId = split[split.length - 1];
+
+    return ContactablesFiles.insert(documentInfo);
   }
-
-
 });
 
 FileUploader.createEndpoint('uploadResume', {
