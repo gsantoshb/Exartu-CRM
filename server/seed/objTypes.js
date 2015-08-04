@@ -394,7 +394,7 @@ newObjType({
     {
       name: 'isWebVisible',
       displayName: 'Is web visible',
-      showInAdd: true,
+      showInAdd: false,
       required: false,
       fieldType: 'boolean',
       defaultValue: false
