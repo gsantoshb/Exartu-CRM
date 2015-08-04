@@ -68,7 +68,10 @@
         <!-- External Services -->
         <div class="row" style="margin-top: 20px;">
             <div class="col-md-6 col-md-offset-3 settingIconsRow">
-                <!-- HR Concourse -->
+              
+
+                {{#if isAdmin}}
+                  <!-- HR Concourse -->
                 <div class="col-md-3">
                     <a href="/management/hrconcourse" class="settingButton">
                         <span class="fa" style="background: transparent url('/assets/hr-concourse-logo.png') no-repeat center center; background-size: contain;">&nbsp;</span>
@@ -83,8 +86,6 @@
                         <span class="title">{{_ "Tempworks"}}</span>
                     </a>
                 </div>
-
-                {{#if isAdmin}}
                     <!-- SMS Setup -->
                     <div class="col-md-3">
                         <a href="/management/twilioManagement" class="settingButton">
