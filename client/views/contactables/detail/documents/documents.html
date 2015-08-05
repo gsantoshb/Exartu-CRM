@@ -4,8 +4,10 @@
             {{#if isLoading}}
                <div style="padding: 10px">
                    <h4>Uploading</h4>
-                   <div class="progress" style="width:100%">
-                       <div class="progress-bar" role="progressbar" style="width:{{getProgress}}%;"></div>
+                   <div class="progress">
+                       <div class="progress-bar" role="progressbar" aria-valuenow="{{getProgress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{getProgress}}%;">
+                           <span>{{getProgress}}% Complete</span>
+                       </div>
                    </div>
                </div>
             {{else}}

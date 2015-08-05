@@ -19,7 +19,6 @@ var downloading = new ReactiveVar(false);
 var addDisabled = new ReactiveVar(false);
 var isAddFormVisible = new ReactiveVar(false);
 var isLoading = new ReactiveVar(false);
-var progressBar;
 
 var showAddForm = function (file) {
     document.file = file;
@@ -39,6 +38,8 @@ var endParsing = function () {
     isLoading.set(false);
 };
 
+var uploader = new Slingshot.Upload("contactDocuments");
+
 // Add document panel
 Template.contactableDocumentsAdd.helpers({
     addForm: function () {
@@ -51,7 +52,7 @@ Template.contactableDocumentsAdd.helpers({
         return isLoading.get();
     },
     getProgress: function () {
-        return progressBar && progressBar.get();
+      return Math.round(uploader.progress() * 100);
     }
 });
 
@@ -88,48 +89,55 @@ Template.addDocumentForm.events = {
         document.tags.remove(this.value);
     },
     'click #save-document': function () {
-        addDisabled.set(true);
-        if (!document.isValid()) {
-            document.showErrors();
-            addDisabled.set(false);
-            return;
+      addDisabled.set(true);
+      if (!document.isValid()) {
+        document.showErrors();
+        addDisabled.set(false);
+        return;
+      }
+
+      var newDocument = document.getObject();
+
+      // Get extension
+      var extension;
+      var splitName = document.file.name.split('.');
+      if (splitName.length > 1)
+        extension = splitName[splitName.length - 1];
+
+      var metadata = {
+        entityId: Session.get('entityId'),
+        name: newDocument.name,
+        type: newDocument.file.type,
+        extension: extension,
+        description: newDocument.description,
+        tags: newDocument.tags
+      };
+
+      startParsing();
+
+      uploader.send(newDocument.file, function (error, downloadUrl) {
+        if (error) {
+          // Log service detailed response.
+          alert('File upload error:' + err);
+          addDisabled.set(false);
         }
-
-        var newDocument = document.getObject();
-
-        // Get extension
-        var extension;
-        var splitName = document.file.name.split('.');
-        if (splitName.length > 1)
-            extension = splitName[splitName.length - 1];
-
-        var metadata = {
-            entityId: Session.get('entityId'),
-            name: newDocument.name,
-            type: newDocument.file.type,
-            extension: extension,
-            description: newDocument.description,
-            tags: newDocument.tags,
-            owner: Meteor.userId()
-        };
-
-        startParsing();
-        progressBar = new progress();
-
-        FileUploader.postProgress('/uploadContactablesFiles', newDocument.file, progressBar, metadata, function (err, result) {
+        else {
+          console.log('download url:', downloadUrl);
+          Meteor.call('addContactableDocumentInfo', metadata, downloadUrl, function (err, result) {
             if (!err) {
-                endParsing();
-                hideAddForm();
-                document.reset();
-                addDisabled.set(false);
-
+              endParsing();
+              hideAddForm();
+              document.reset();
+              addDisabled.set(false);
             }
             else {
-                alert('File upload error:' + err);
-                console.log('File upload error');
-                addDisabled.set(false);
+              alert('File upload error:' + err);
+              console.log('File upload error');
+              addDisabled.set(false);
             }
-        });
+          });
+        }
+      });
     },
     'click #cancel-document': function () {
         AddForm.hide();
