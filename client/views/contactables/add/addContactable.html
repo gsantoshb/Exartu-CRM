@@ -17,49 +17,17 @@
                         </select>
                     </div>
 
-                    {{#with contactable}}
-                        {{#each subTypeArray}}
-                            {{> typeInput }}
-                        {{/each}}
-
-                        {{> typeInput }}
-
-                        {{#with  extraInformation}}
-                            <span>{{_ "Email"}}:</span>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-8">
-                                        {{#objectProperty property=email}}
-                                            <input class="form-control" type="text" placeholder= {{_ "Email"}} value="{{value}}">
-                                            <span>{{error}}</span>
-                                        {{/objectProperty}}
-                                    </div>
-                                    <div class="col-xs-12 col-md-4">
-                                        {{>select2 options=getEmailTypes onSelected=setEmailType initSelection=getDefaultEmailType}}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <span>{{_ "Phone number"}}:</span>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-8">
-                                        {{#objectProperty property=phoneNumber}}
-                                            <input class="form-control" type="text" placeholder= {{_"Phone number"}} value="{{value}}">
-                                        {{/objectProperty}}
-                                    </div>
-                                    <div class="col-xs-12 col-md-4">
-                                        {{>select2 options=getPhoneTypes onSelected=setPhoneType initSelection=getDefaultPhoneType}}
-                                    </div>
-                                </div>
-                            </div>
-                        {{/with}}
-
-                        <div class="form-group text-center top-30">
-                            <button class="btn btn-success btn-lg" disabled="{{addDisabled}}">{{_ "Add"}} {{objTypeName}}</button>
-                        </div>
-                    {{/with}}
-
+                    {{#if isContact}}
+                       {{>addContact}}
+                    {{else}}
+                        {{#if isClient}}
+                           {{>addClient}}
+                        {{else}}
+                            {{#if isEmployee}}
+                               {{>addEmployee}}
+                            {{/if}}
+                        {{/if}}
+                    {{/if}}
                 </div>
             </div>
         </div>

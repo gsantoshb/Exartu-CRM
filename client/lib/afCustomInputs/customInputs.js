@@ -109,3 +109,45 @@ Template.afButtonGroup.helpers({
       //return Template.instance().data.selected.get();
    }
 })
+
+
+
+AutoForm.addInputType('afSearch', {
+  template: 'afSearch',
+  valueOut: function (ctx) {
+    return this.val();
+  },
+  contextAdjust: function(data){
+   if(!data.atts.id){
+      data.atts.id = Meteor.uuid();
+    }
+    data.getCollection = data.atts.getCollection;
+    data.selectionChanged = data.atts.selectionChanged;
+    delete data.atts.getCollection;
+    delete data.atts.selectionChanged;
+    //var selected = new ReactiveVar();
+    //var buttonArray = new ReactiveVar();
+    //data.atts.value = data.value;
+    //selected.set(data.value);
+    //buttonArray.set(data.buttonArray);
+    //data.selected = selected;
+    //data.buttonArray = buttonArray;
+    //actualizeButtons(ctx);
+    return data;
+  }
+})
+
+Template.afSearch.helpers({
+  'getCollection': function () {
+    return this.getCollection.getCollection;
+  },
+  'selectionChanged': function () {
+    var self = this;
+    return function(string){
+      self.selectionChanged.selectionChanged(string);
+      var elem = $('#'+self.atts.id);
+      elem.val(string);
+      elem.change();
+    };
+  }
+})

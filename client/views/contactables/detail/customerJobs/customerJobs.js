@@ -19,10 +19,6 @@ Template.clientJobs.helpers({
   },
   jobs: function(){
     return Jobs.find();
-  },
-  isNotLast: function(){
-    var type = dType.ObjTypes.find({parent: 'job'}).fetch();
-    return this._id != type[type.length - 1]._id;
   }
 });
 
