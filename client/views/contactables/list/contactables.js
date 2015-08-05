@@ -21,11 +21,8 @@ ContactablesController = RouteController.extend({
     var objTypeQuery = {};
     var type = params.hash || params.type;
     if (type != undefined && type != 'all') {
-      var objType = dType.ObjTypes.findOne({
-        name: type
-      });
-      objTypeQuery.default = objType.name;
-      info.objType.value = objType.name + 's';
+      objTypeQuery.default = type;
+      info.objType.value = type + 's';
     } else {
       objTypeQuery.default = undefined;
       info.objType.value = 'record(s)';
@@ -119,7 +116,7 @@ ContactablesController = RouteController.extend({
     }
 
 
-    query = new Utils.ObjectDefinition({
+    query = query || new Utils.ObjectDefinition({
       reactiveProps: {
         objType: objTypeQuery,
         searchString: searchStringQuery,
@@ -159,7 +156,7 @@ ContactablesController = RouteController.extend({
 /**
  * Variables
  */
-var query = {};
+var query = null;
 var selectedValue = {};
 
 var selected = new ReactiveVar([]);
@@ -190,7 +187,7 @@ var showFilters = new ReactiveVar(true);
 
 // List - Variables
 var contactableTypes = function () {
-  return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
+  return [{name:"Contact"},{name:"Client"},{name:"Employee"}]
 };
 
 var locationFields = ['address', 'city', 'state', 'country'];
@@ -577,7 +574,6 @@ Template.contactablesListHeader.helpers({
     }
   },
   allEmployee: function () {
-    console.log('comonTypes', comonTypes);
     return _.contains(comonTypes, "employee");
   },
   isAdding: function () {

@@ -16,3 +16,10 @@
          {{/each}}
     </div>
 </template>
+
+<template name="afSearch">
+    <div>
+        <input type="hidden" {{atts}}>
+        {{>asyncSelect width="100%" query=getCollection placeholder="Search client" onChange=selectionChanged}}
+    </div>
+</template>

@@ -103,5 +103,8 @@ Meteor.methods({
   },
   getPlacementPreview: function(placementId){
     return PlacementManager.getPlacementPreview(placementId);
+  },
+  isPlacedEmployee: function(employeeId){
+    return PlacementManager.isPlacedEmployee(employeeId);
   }
 });

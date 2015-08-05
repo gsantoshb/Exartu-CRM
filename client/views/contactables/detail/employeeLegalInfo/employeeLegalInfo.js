@@ -39,7 +39,6 @@ var editMode = new ReactiveVar(false);
 
 Template.employeeLegalInfo.onCreated(function () {
   editMode.set(false);
-  objInstance = null;
   var contactable = Contactables.findOne(Session.get('entityId'));
 
   availableStartDate = {};
@@ -58,7 +57,6 @@ Template.employeeLegalInfo.onCreated(function () {
   locationChanged = false;
 });
 
-var objInstance;
 var preferredWorkLocation;
 var locationChanged;
 
@@ -76,12 +74,6 @@ Template.employeeLegalInfo.helpers({
   },
   selectEthnicity: function(){
     return [{label:"Caucasian", value:"caucasian"},{label:"African American", value:"africanAmerican"},{label:"Asian", value:"asian"},,{label:"Other", value:"other"}]
-  },
-  objInstance: function () {
-    if (!objInstance){
-      objInstance = new dType.objInstance(this, Contactables);
-    }
-    return objInstance;
   },
   editMode: function () {
     return editMode.get();
@@ -220,33 +212,6 @@ Template.employeeLegalInfo.events({
   'click #edit-mode': function () {
     editMode.set(!editMode.get());
   }
-  //'click #save-details': function () {
-  //  if (!objInstance.validate()) {
-  //    objInstance.showErrors();
-  //    return;
-  //  }
-  //
-  //  var update = objInstance.getUpdate();
-  //  if (!update.$set) return;
-  //
-  //  if (locationChanged){
-  //    update.$set['Employee.preferredWorkLocation'] = preferredWorkLocation;
-  //  }
-  //
-  //  if (availableStartDateChanged){
-  //    update.$set['Employee.availableStartDate'] = availableStartDate;
-  //  }
-  //
-  //  if (availableShiftsChanged){
-  //    update.$set['Employee.availableShifts'] = availableShifts;
-  //  }
-  //
-  //
-  //  if (!_.isObject(update.$set) || _.isEmpty(update.$set)) return;
-  //
-  //  Contactables.update(Session.get('entityId'), update);
-  //  editMode.set(false);
-  //}
 });
 
 
