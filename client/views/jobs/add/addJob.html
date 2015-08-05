@@ -9,23 +9,44 @@
                 </div><!-- /.add-box-head -->
 
                 <div class="add-box-content">
-                    {{#with model}}
+                   {{#autoForm schema="schemaAddJob" id="addJob" doc=this}}
+                     <div class="form-group">
+                         Job title:
+                       {{> afFormGroup name="jobTitle"  class="form-control" label=false options=jobTitles}}
+                     </div>
+                     <div class="form-group {{#if afFieldIsInvalid name='rateQuote'}}has-error{{/if}}">
+                           Rate quote:
+                           {{> afFieldInput  name='rateQuote' placeholder="Rate quote" id="rateQuote" type="text" class="form-control"}}
+                           {{#if afFieldIsInvalid name='rateQuote'}}
+                               <span class="help-block">{{afFieldMessage name='rateQuote'}}</span>
+                           {{/if}}
+                     </div>
+                     <div class="form-group {{#if afFieldIsInvalid name='statusNote'}}has-error{{/if}}">
+                           Status note:
+                           {{> afFieldInput  name='statusNote' placeholder="Status note" id="statusNote" type="text" class="form-control"}}
+                           {{#if afFieldIsInvalid name='statusNote'}}
+                               <span class="help-block">{{afFieldMessage name='statusNote'}}</span>
+                           {{/if}}
+                     </div>
+                     <div class="form-group {{#if afFieldIsInvalid name='jobDescription'}}has-error{{/if}}">
+                           Job description:
+                           {{> afFieldInput  name='jobDescription' placeholder="Job description" id="jobDescription" type="text" class="form-control"}}
+                           {{#if afFieldIsInvalid name='jobDescription'}}
+                               <span class="help-block">{{afFieldMessage name='jobDescription'}}</span>
+                           {{/if}}
+                     </div>
+                     <div class="form-group  {{#if afFieldIsInvalid name='client'}}has-error{{/if}}">
+                           Client:
+                           {{> afFieldInput  name='client' placeholder="Search client" class="form-control" type="afSearch"  getCollection=getClients selectionChanged=clientChanged }}
+                           {{#if afFieldIsInvalid name='client'}}
+                             <span class="help-block">{{afFieldMessage name='client'}}</span>
+                           {{/if}}
+                     </div>
 
-                        {{> typeInput }}
-                        {{#each subTypeArray}}
-                            {{> typeInput }}
-                        {{/each}}
-
-                        <div class="form-group text-center top-30">
-                            <button class="btn btn-success btn-lg" disabled="{{addDisabled}}">{{_ "Add Job"}}</button>
-                        </div><!-- /.form-group -->
-
-                    {{/with}}
-                    {{#if error }}
-                      <div class="error-msg">
-                          {{error}}
-                      </div>
-                    {{/if}}
+                     <div class="form-group text-center top-30 ">
+                          <button class="btn btn-success btn-lg">Add Jobs</button>
+                     </div>
+                   {{/autoForm}}
                 </div><!-- /.add-box-content -->
             </div><!-- /.add-box -->
 
