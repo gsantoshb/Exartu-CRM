@@ -95,5 +95,14 @@ PlacementManager = {
       {_id: contactable._id, type: Enums.linkTypes.contactable.value, displayName:contactable.displayName, contactMethods: contactable.contactMethods},
       {_id: job._id, type: Enums.linkTypes.job.value, displayName:job.displayName}
     ]});
+  },
+  isPlacedEmployee: function(employeeId){
+    var p = Placements.findOne({employee: employeeId});
+    if(p){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 };

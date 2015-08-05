@@ -126,19 +126,76 @@ Template.addPlacementPage.events({
         if (options.job) obj.job = options.job;
         obj.employee = employeeId;
         sending.set(true);
-        Meteor.call('addPlacement', obj, function (err, result) {
-            sending.set(false);
-            if (err) {
-                console.dir(err);
-                alert('Add placement error: ' + err);
-            }
-            else {
-                // add employee to last used employees list
-                Meteor.call('setLastUsed', Enums.lastUsedType.employee, obj.employee);
+        Meteor.call('getPlacements', obj.job, obj.employee, function(err, res){
+          if(res.length === 0) {
+            Meteor.call('isPlacedEmployee', obj.employee, function(err, res){
+              if(res === true){
+                Utils.showModal('basicModal', {
+                  title: 'Employee already placed',
+                  message: 'Selected employee already is placed on a job, do you want to continue?',
+                  buttons: [{label: 'Ok',
+                    classes: 'btn-success',
+                    value: true
+                  },{label: 'Cancel',
+                    classes: 'btn-info',
+                    value: false
+                  }],
+                  callback: function (result) {
+                    sending.set(false);
+                    if(result){
+                      Meteor.call('addPlacement', obj, function (err, result) {
+                        sending.set(false);
+                        if (err) {
+                          console.dir(err);
+                          alert('Add placement error: ' + err);
+                        }
+                        else {
+                          // add employee to last used employees list
+                          Meteor.call('setLastUsed', Enums.lastUsedType.employee, obj.employee);
+                          Router.go('/placement/' + result);
+                        }
+                      });
+                    }
+                  }
 
-                Router.go('/placement/' + result);
-            }
-        });
+                });
+              }
+              else{
+                Meteor.call('addPlacement', obj, function (err, result) {
+                  sending.set(false);
+                  if (err) {
+                    console.dir(err);
+                    alert('Add placement error: ' + err);
+                  }
+                  else {
+                    // add employee to last used employees list
+                    Meteor.call('setLastUsed', Enums.lastUsedType.employee, obj.employee);
+                    Router.go('/placement/' + result);
+                  }
+                });
+              }
+            })
+
+          }
+          else {
+            Utils.showModal('basicModal', {
+              title: 'Existing placement',
+              message: 'Cannot create placement, selected employee already is placed on this job',
+              buttons: [{
+                label: 'Ok',
+                classes: 'btn-success',
+                value: true
+              }],
+              callback: function (result) {
+                sending.set(false);
+              }
+
+            });
+          }
+            });
+          //}
+        //})
+
     },
     'click .goBack': function () {
         history.back();

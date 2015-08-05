@@ -472,6 +472,21 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
             if (phone) data.phone = phone.value;
           }
 
+          // Address
+          var address = Addresses.findOne({linkId: doc._id});
+          if (address) {
+            data.address = address.address;
+            data.address2 = address.address2;
+            data.city = address.city;
+            data.zip = address.postalCode;
+
+            // Try to find the state code that matches the string name
+            var state = _.find(StateCodes, function (state) {
+              return state.name.toLowerCase() == address.state.toLowerCase()
+            });
+            if (state) data.state = state.code;
+          }
+
           // Update enterprise
           if (!_.isEmpty(data)) TwApi.updateEmployee(doc.externalId, data, accountInfo);
         }
