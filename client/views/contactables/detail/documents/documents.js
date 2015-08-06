@@ -207,7 +207,8 @@ Template.contactableDocumentsList.helpers({
 
         return _.map(documents,function(doc){
           var downloading = new ReactiveVar(false);
-          return _.extend(doc, {downloading: downloading})
+          var downloadUrl = new ReactiveVar();
+          return _.extend(doc, {downloading: downloading, downloadUrl: downloadUrl});
         });
     },
 
@@ -227,7 +228,12 @@ Template.contactableDocumentsList.helpers({
     },
 
     url: function () {
-        return FileUploader.getUrl('uploadContactablesFiles', this.fileId);
+      var self = this;
+      Meteor.call('getDocumentDownloadURL', this.fileId, function (err, res) {
+        if (!self.downloadUrl.get())
+          self.downloadUrl.set(res);
+      });
+      return this.downloadUrl.get();
     },
 
     resumeUrl: function () {

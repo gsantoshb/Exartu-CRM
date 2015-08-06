@@ -326,6 +326,15 @@ Meteor.methods({
     documentInfo.fileId = split[split.length - 1];
 
     return ContactablesFiles.insert(documentInfo);
+  },
+  getDocumentDownloadURL: function (fileId) {
+    check(fileId, String);
+
+    try {
+      return ContactableManager.getDocumentDownloadURL(fileId);
+    } catch (err) {
+      throw new Meteor.Error(err.message);
+    }
   }
 });
 
