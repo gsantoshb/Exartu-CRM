@@ -5,6 +5,7 @@ ES.syncCollection({
   type: 'contactables',
 	fields: [
 		{ name: 'idField', label: 'Id'},
+		{ name: 'hierId', label: 'HierId', mapping: { type: 'string', index: "not_analyzed" } },
 		{ name: 'person.firstName', label: 'First name', boost:5},
     { name: 'person.lastName', label: 'Last name', boost:5},
 		{ name: 'person.middleName', label: 'Middle name', boost:3},
