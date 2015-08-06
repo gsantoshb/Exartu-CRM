@@ -1,6 +1,8 @@
 // Contactables
 ES.syncCollection({
 	collection: Contactables,
+  indexName: 'javierlocal',
+  type: 'contactables',
 	fields: [
 		{ name: 'idField', label: 'Id'},
 		{ name: 'person.firstName', label: 'First name', boost:5},

@@ -75,11 +75,12 @@ ES.connect = function(options) {
 //    the document.
 ES.syncCollection = function(options) {
   var collection = options.collection;
-  var indexName = collection._name;
+  var indexName = options.indexName || collection._name;
+  var type = options.type || collection._name;
 
   // Save sync information, when ES connection is ready this information is used
   // to sync documents that have not been synchronized before in this index (each collection has its index)
-  _indexedCollections.push({name: indexName, collection: collection, fields: options.fields, relations: options.relations});
+  _indexedCollections.push({name: indexName, collection: collection, fields: options.fields, relations: options.relations, type: type});
 
   // Define collection's hook to keep track of changes in documents
   // When a document is inserted it's synchronized on ES and a flag is set
@@ -165,31 +166,9 @@ ES.syncCollection = function(options) {
 
     var options = getIndexedCollection(indexName);
 
-    var map = function (object, fields) {
-      var result = {};
-      _.each(fields, function (field) {
-        var parts = field.name.split('.');
-        var currentResult = result;
-        var currentDoc = object;
-        if (parts.length >1){
-          // move currentResult and currentDoc deeper
-          for(var i = 0;i <= parts.length - 2; ++i){
-            currentResult[parts[i]] = currentResult[parts[i]] || {};
-            currentResult = currentResult[parts[i]];
-            currentDoc = currentDoc && currentDoc[parts[i]];
-          }
-        }
-        //set the value
-        currentResult[parts[parts.length - 1]] = currentDoc && currentDoc[parts[parts.length - 1]];
-      });
-      return result;
-    };
-    // info that the rest of the code expects to be there, this will no longer be needed when everything is ready
-    var info = _.pick(doc, '_id', 'hierId');
+
     //map document
     doc = map(doc, options.fields);
-    _.extend(doc, info);
-
 
     // Set undefined and empty to null so Elasticsearch can detect those
     // fields and set a default value. Otherwise they won't be saved and
@@ -224,9 +203,9 @@ ES.syncCollection = function(options) {
       }
     });
     doc.idField=doc._id; // make the id field searchable as well
-    // Index document using its hierId as its type
+    // Index document using its type as its type
     console.log('indexing doc');
-    index.index(doc.hierId, doc, { id: doc._id }, Meteor.bindEnvironment(function (err, result) {
+    index.index(type, doc, { id: doc._id }, Meteor.bindEnvironment(function (err, result) {
       if (!err) {
         // Mark document
         var flag = {
@@ -266,11 +245,11 @@ Meteor.methods({
     var userHierarchiesId = _.map(Utils.getUserHiers(Meteor.userId()), function (hier) {
       return hier._id;
     });
-    var hierid=Utils.getUserHierId(Meteor.userId())
+    var hierid=Utils.getUserHierId(Meteor.userId());
 
     var async = Meteor._wrapAsync(
       Meteor.bindEnvironment(function(cb) {
-        _client.search({query: query, size: 25, highlight: highlight, type: [hierid], index: indexName}, function(err, result) {
+        _client.search({query: query, size: 25, highlight: highlight, type: type, index: indexName}, function(err, result) {
           cb(err, result);
         })
       })
@@ -280,6 +259,26 @@ Meteor.methods({
     return async();
   }
 });
+
+var map = function (object, fields) {
+  var result = {};
+  _.each(fields, function (field) {
+    var parts = field.name.split('.');
+    var currentResult = result;
+    var currentDoc = object;
+    if (parts.length >1){
+      // move currentResult and currentDoc deeper
+      for(var i = 0;i <= parts.length - 2; ++i){
+        currentResult[parts[i]] = currentResult[parts[i]] || {};
+        currentResult = currentResult[parts[i]];
+        currentDoc = currentDoc && currentDoc[parts[i]];
+      }
+    }
+    //set the value
+    currentResult[parts[parts.length - 1]] = currentDoc && currentDoc[parts[parts.length - 1]];
+  });
+  return result;
+};
 
 // Helper used to check the connection
 var isConnectionReady = function() {
@@ -299,6 +298,8 @@ var initialSync = function(collection, indexName) {
   // Initial sync. Index all document not indexed on this index
   var documents = collection.find().fetch();
 
+  var options = getIndexedCollection(indexName);
+
   // Generate bulk's operation
   var operations = [];
   _.forEach(documents, function(document) {
@@ -309,9 +310,9 @@ var initialSync = function(collection, indexName) {
     // Define operation
     var op = {
       index: indexName,
-      type: document.hierId,
+      type: options.type,
       id: document._id,
-      data: document
+      data: map(document, options.fields)
     };
 
     operations.push({index: op});
