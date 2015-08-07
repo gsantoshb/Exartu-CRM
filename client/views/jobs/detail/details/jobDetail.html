@@ -11,8 +11,8 @@
         
                 <div class="col-md-10">
                     <div class="row">
-
-                        {{#with job }}
+                       {{#autoForm schema="schemaEditJob" id="updateJob" doc=job}}
+                          {{#with job }}
                             <div class="col-md-6">
                                 <ul class="list-type-5">
                                     <li>
@@ -20,22 +20,16 @@
                                             {{_ "Job title"}}:
                                         </div>
                                         <div class="right-part">
-                                            {{#objectProperty property=jobTitle editable=editMode}}
-                                                <div class="form-group  {{hasError}}">
-                                                    <select class="form-control input-md">
-                                                        {{#each options}}
-                                                            <option value="{{_id}}"
-                                                                    selected="{{isSelected _id ../value}}">{{_ displayName}}</option>
-                                                        {{/each}}
-                                                    </select>
-                                                    <span>{{error}}</span>
+                                            {{#if editMode}}
+                                                <div class="form-group">
+                                                    {{> afFormGroup name="jobTitle"  class="form-control" label=false options=jobTitles}}
                                                 </div>
                                                 <!-- /.form-group -->
                                             {{else}}
                                                 <strong>
-                                                    <strong>{{_ displayName}}</strong>
+                                                    <strong>{{jobTitleDisplayName}}</strong>
                                                 </strong>
-                                            {{/objectProperty}}
+                                            {{/if}}
                                         </div>
                                     </li>
                                     <li>
@@ -43,21 +37,27 @@
                                             {{_ "Public job title"}}:
                                         </div>
                                         <div class="right-part">
-                                            {{#objectProperty property=publicJobTitle editable=editMode}}
-                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{#if editMode}}
+                                                {{> afFieldInput  name='publicJobTitle' id="publicJobTitle" style="width:80%" type="text" class="form-control"}}
+                                                {{#if afFieldIsInvalid name='publicJobTitle'}}
+                                                    <span class="help-block">{{afFieldMessage name='publicJobTitle'}}</span>
+                                                {{/if}}
                                             {{else}}
-                                                <strong>{{_ value}}</strong>
-                                            {{/objectProperty}}
+                                                <strong>{{publicJobTitle}}</strong>
+                                            {{/if}}
                                         </div>
                                     </li>
                                     <li>
                                         <div class="left-part">{{_ "Rate quote"}}:</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=rateQuote editable=editMode}}
-                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{#if editMode}}
+                                                {{> afFieldInput  name='rateQuote' id="rateQuote" style="width:80%" type="text" class="form-control"}}
+                                                {{#if afFieldIsInvalid name='rateQuote'}}
+                                                    <span class="help-block">{{afFieldMessage name='rateQuote'}}</span>
+                                                {{/if}}
                                             {{else}}
-                                                <span>{{value}}</span>
-                                            {{/objectProperty}}
+                                                <span>{{rateQuote}}</span>
+                                            {{/if}}
                                         </div>
                                     </li>
                                     <li>
@@ -65,13 +65,16 @@
                                             # {{_ "Required"}}:
                                         </div>
                                         <div class="right-part">
-                                            {{#objectProperty property=numberRequired editable=editMode}}
-                                                <input class="form-control" type="number" value="{{value}}">
+                                            {{#if editMode}}
+                                                {{> afFieldInput  name='numberRequired' id="numberRequired" style="width:80%" type="text" class="form-control"}}
+                                                {{#if afFieldIsInvalid name='numberRequired'}}
+                                                    <span class="help-block">{{afFieldMessage name='numberRequired'}}</span>
+                                                {{/if}}
                                             {{else}}
                                                 <strong>
-                                                    {{value}}
+                                                    {{numberRequired}}
                                                 </strong>
-                                            {{/objectProperty}}
+                                            {{/if}}
                                         </div>
                                     </li>
 
@@ -80,27 +83,13 @@
                                             {{_ "Duration"}}:
                                         </div>
                                         <div class="right-part">
-                                            {{#objectProperty property=duration editable=editMode}}
-                                                <div class="form-group  {{hasError}}">
-                                                    <select class="form-control input-lg">
-                                                        {{#unless required}}
-                                                            <option value="null" selected="{{isSelected null value}}">--{{_ "Select"}}
-                                                                --
-                                                            </option>
-                                                        {{/unless}}
-                                                        {{#each options}}
-                                                            <option value="{{_id}}"
-                                                                    selected="{{isSelected _id ../value}}">{{_ displayName}}</option>
-                                                        {{/each}}
-                                                    </select>
-                                                    <span>{{error}}</span>
-                                                </div>
-                                                <!-- /.form-group -->
+                                            {{#if editMode}}
+                                                {{> afFormGroup name="duration"  class="form-control" label=false options=durations}}
                                             {{else}}
                                                 <strong>
-                                                    <strong>{{_ displayName}}</strong>
+                                                    <strong>{{getDuration}}</strong>
                                                 </strong>
-                                            {{/objectProperty}}
+                                            {{/if}}
                                         </div>
 
                                     </li>
@@ -108,13 +97,13 @@
                                     <li>
                                         <div class="left-part">{{_ "Active status"}}</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=activeStatus editable=editMode}}
-                                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                            {{#if editMode}}
+                                                {{> afFieldInput  name='activeStatus' style="width:80%" type="afButtonGroup"  buttonArray=buttonsActiveStatus }}
                                             {{else}}
                                                 <strong>
-                                                    <strong>{{_ displayName}}</strong>
+                                                    <strong>{{getActiveStatus}}</strong>
                                                 </strong>
-                                            {{/objectProperty}}
+                                            {{/if}}
                                         </div>
                                     </li>
                                     <li>
@@ -122,13 +111,11 @@
                                             {{_ "Process status"}}:
                                         </div>
                                         <div class="right-part">
-                                            {{#objectProperty property=status editable=editMode}}
-                                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                            {{#if editMode}}
+                                                {{> afFieldInput  name='status' style="width:80%" type="afButtonGroup"  buttonArray=buttonsStatus }}
                                             {{else}}
-                                                <strong>
-                                                    <strong>{{_ displayName}}</strong>
-                                                </strong>
-                                            {{/objectProperty}}
+                                                <strong>{{getStatus}}</strong>
+                                            {{/if}}
                                         </div>
                                     </li>
                                     <li>
@@ -136,15 +123,15 @@
                                             {{_ "Is web visible"}}:
                                         </div>
                                         <div class="right-part">
-                                            {{#objectProperty property=isWebVisible editable=editMode}}
-                                                <input type="checkbox" value="{{value}}" checked="{{value}}">
+                                            {{#if editMode}}
+                                                {{> afFieldInput name='isWebVisible' type='afSimpleCheckbox' label=false}}
                                             {{else}}
-                                                {{#if value}}
-                                                  <strong>{{_ value}}</strong>
+                                                {{#if isWebVisible}}
+                                                  <strong>{{isWebVisible}}</strong>
                                                 {{else}}
                                                   <strong>false</strong>
                                                 {{/if}}
-                                            {{/objectProperty}}
+                                            {{/if}}
                                         </div>
                                     </li>
                                 </ul>
@@ -154,11 +141,14 @@
                                     <li>
                                         <div class="left-part">{{_ "Status note"}}:</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=statusNote editable=editMode}}
-                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{#if editMode}}
+                                                {{> afFieldInput  name='statusNote' id="statusNote" style="width:80%" type="text" class="form-control"}}
+                                                {{#if afFieldIsInvalid name='statusNote'}}
+                                                    <span class="help-block">{{afFieldMessage name='statusNote'}}</span>
+                                                {{/if}}
                                             {{else}}
-                                                <span>{{_ value}}</span>
-                                            {{/objectProperty}}
+                                                <span>{{statusNote}}</span>
+                                            {{/if}}
                                         </div>
                                     </li>
                                     {{#with originalJob}}
@@ -172,181 +162,23 @@
                                     {{/with}}
                                 </ul>
                             </div>
-                        {{/with}}
+                          {{/with}}
+                           {{#if editMode }}
+                               <div class="col-md-12">
+                                   <div class="box-header-2">
+                                       <a class="btn btn-default cancelButton"> {{_ "Cancel"}} </a>
+                                       <button id="save-details" class="btn btn-success pull-right">{{_ "Save"}} </button>
+                                   </div>
+                               </div>
+                           {{/if}}
+                       {{/autoForm}}
                     </div>
                     <!-- /.col-md-6 -->
 
-                    {{#if editMode }}
-                        <div class="col-md-12">
-                            <div class="box-header-2">
-                                <a class="btn btn-default cancelButton"> {{_ "Cancel"}} </a>
-                                <a class="btn btn-success pull-right saveDetailsButton"> {{_ "Save"}} </a>
-                            </div>
-                        </div>
-                    {{/if}}
+
                 </div>
 
             </div>
         </div>
     </section>
 </template>
-
-<!--<template name="old_jobDetail">-->
-    <!--{{#with job}}-->
-        <!--<div class="box">-->
-            <!--<div class="box-header-2">-->
-                <!--<a class="btn-action editJob pull-right pointer" style="color: {{colorEdit}}" title="Edit"><i-->
-                        <!--class="fa fa-pencil"></i></a>-->
-
-                <!--<div class="box-title">{{_ "Job Details"}}</div>-->
-                <!--&lt;!&ndash;<a class="visible-sm visible-xs box-title" href="#details-body" data-toggle="collapse">Job Details</a>&ndash;&gt;-->
-            <!--</div>-->
-            <!--<div class="box-content-md">-->
-                <!--<ul class="list-type-5">-->
-                    <!--<li>-->
-                        <!--<div class="left-part">{{_ "Rate Quote"}}:</div>-->
-                        <!--<div class="right-part">-->
-                            <!--{{#objectProperty property=rateQuote editable=editMode}}-->
-                                <!--<input class="form-control" type="text" value="{{value}}">-->
-                            <!--{{else}}-->
-                                <!--<span>{{value}}</span>-->
-                            <!--{{/objectProperty}}-->
-                        <!--</div>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<div class="left-part">{{_ "Status note"}}:</div>-->
-                        <!--<div class="right-part">-->
-                            <!--{{#objectProperty property=statusNote editable=editMode}}-->
-                                <!--<input class="form-control" type="text" value="{{value}}">-->
-                            <!--{{else}}-->
-                                <!--<span>{{_ value}}</span>-->
-                            <!--{{/objectProperty}}-->
-                        <!--</div>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<div class="left-part">-->
-                            <!--{{_ "Public job title"}}:-->
-                        <!--</div>-->
-                        <!--<div class="right-part">-->
-                            <!--{{#objectProperty property=publicJobTitle editable=editMode}}-->
-                                <!--<input class="form-control" type="text" value="{{value}}">-->
-                            <!--{{else}}-->
-                                <!--<strong>{{_ value}}</strong>-->
-                            <!--{{/objectProperty}}-->
-                        <!--</div>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<div class="left-part">{{_ "Active Status"}}</div>-->
-                        <!--<div class="right-part">-->
-                            <!--{{#objectProperty property=activeStatus editable=editMode}}-->
-                                <!--{{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}-->
-                            <!--{{else}}-->
-                                <!--<strong>-->
-                                    <!--<strong>{{_ displayName}}</strong>-->
-                                <!--</strong>-->
-                            <!--{{/objectProperty}}-->
-                        <!--</div>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<div class="left-part">-->
-                            <!--{{_ "Process Status"}}:-->
-                        <!--</div>-->
-                        <!--<div class="right-part">-->
-                            <!--{{#objectProperty property=status editable=editMode}}-->
-                                <!--{{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}-->
-                            <!--{{else}}-->
-                                <!--<strong>-->
-                                    <!--<strong>{{_ displayName}}</strong>-->
-                                <!--</strong>-->
-                            <!--{{/objectProperty}}-->
-                        <!--</div>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<div class="left-part">-->
-                            <!--{{_ "Job title"}}:-->
-                        <!--</div>-->
-                        <!--<div class="right-part">-->
-                            <!--{{#objectProperty property=jobTitle editable=editMode}}-->
-                                <!--<div class="form-group  {{hasError}}">-->
-                                    <!--<select class="form-control input-md">-->
-                                        <!--{{#each options}}-->
-                                            <!--<option value="{{_id}}"-->
-                                                    <!--selected="{{isSelected _id ../value}}">{{_ displayName}}</option>-->
-                                        <!--{{/each}}-->
-                                    <!--</select>-->
-                                    <!--<span>{{error}}</span>-->
-                                <!--</div>-->
-                                <!--&lt;!&ndash; /.form-group &ndash;&gt;-->
-                            <!--{{else}}-->
-                                <!--<strong>-->
-                                    <!--<strong>{{_ displayName}}</strong>-->
-                                <!--</strong>-->
-                            <!--{{/objectProperty}}-->
-                        <!--</div>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<div class="left-part">-->
-                            <!--# {{_ "Required"}}:-->
-                        <!--</div>-->
-                        <!--<div class="right-part">-->
-                            <!--{{#objectProperty property=numberRequired editable=editMode}}-->
-                                <!--<input class="form-control" type="number" value="{{value}}">-->
-                            <!--{{else}}-->
-                                <!--<strong>-->
-                                    <!--{{value}}-->
-                                <!--</strong>-->
-                            <!--{{/objectProperty}}-->
-                        <!--</div>-->
-                    <!--</li>-->
-
-                    <!--<li>-->
-                        <!--<div class="left-part">-->
-                            <!--{{_ "Duration"}}:-->
-                        <!--</div>-->
-                        <!--<div class="right-part">-->
-                            <!--{{#objectProperty property=duration editable=editMode}}-->
-                                <!--<div class="form-group  {{hasError}}">-->
-                                    <!--<select class="form-control input-lg">-->
-                                        <!--{{#unless required}}-->
-                                            <!--<option value="null" selected="{{isSelected null value}}">--{{_ "Select"}}-->
-                                                <!------>
-                                            <!--</option>-->
-                                        <!--{{/unless}}-->
-                                        <!--{{#each options}}-->
-                                            <!--<option value="{{_id}}"-->
-                                                    <!--selected="{{isSelected _id ../value}}">{{_ displayName}}</option>-->
-                                        <!--{{/each}}-->
-                                    <!--</select>-->
-                                    <!--<span>{{error}}</span>-->
-                                <!--</div>-->
-                                <!--&lt;!&ndash; /.form-group &ndash;&gt;-->
-                            <!--{{else}}-->
-                                <!--<strong>-->
-                                    <!--<strong>{{_ displayName}}</strong>-->
-                                <!--</strong>-->
-                            <!--{{/objectProperty}}-->
-                        <!--</div>-->
-
-                    <!--</li>-->
-                    <!--{{#with originalJob}}-->
-                        <!--{{>displayOriginDataInTable}}-->
-                    <!--{{/with}}-->
-               <!--</ul>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.box-content-lg&ndash;&gt;-->
-
-            <!--{{#if editMode}}-->
-                <!--<div class="box-header-2" style="height: 60px">-->
-                    <!--<div class="pull-right">-->
-                <!--<span class="btn btn-default cancelButton">-->
-                    <!--{{_ "Cancel"}}-->
-                <!--</span>-->
-                <!--<span class="btn btn-info saveDetailsButton">-->
-                    <!--{{_ "Save"}}-->
-                <!--</span>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--{{/if}}-->
-        <!--</div>-->
-    <!--{{/with}}-->
-<!--</template>-->
