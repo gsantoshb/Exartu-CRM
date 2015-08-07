@@ -8,174 +8,182 @@
                     </div>
                     <h3>{{_ "Details"}}</h3>
                 </div>
-        
+
                 <div class="col-md-10">
                     <div class="row">
-                       {{#autoForm schema="schemaEditJob" id="updateJob" doc=job}}
-                          {{#with job }}
-                            <div class="col-md-6">
-                                <ul class="list-type-5">
-                                    <li>
-                                        <div class="left-part">
-                                            {{_ "Job title"}}:
-                                        </div>
-                                        <div class="right-part">
-                                            {{#if editMode}}
-                                                <div class="form-group">
-                                                    {{> afFormGroup name="jobTitle"  class="form-control" label=false options=jobTitles}}
-                                                </div>
-                                                <!-- /.form-group -->
-                                            {{else}}
-                                                <strong>
-                                                    <strong>{{jobTitleDisplayName}}</strong>
-                                                </strong>
-                                            {{/if}}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="left-part">
-                                            {{_ "Public job title"}}:
-                                        </div>
-                                        <div class="right-part">
-                                            {{#if editMode}}
-                                                {{> afFieldInput  name='publicJobTitle' id="publicJobTitle" style="width:80%" type="text" class="form-control"}}
-                                                {{#if afFieldIsInvalid name='publicJobTitle'}}
-                                                    <span class="help-block">{{afFieldMessage name='publicJobTitle'}}</span>
-                                                {{/if}}
-                                            {{else}}
-                                                <strong>{{publicJobTitle}}</strong>
-                                            {{/if}}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="left-part">{{_ "Rate quote"}}:</div>
-                                        <div class="right-part">
-                                            {{#if editMode}}
-                                                {{> afFieldInput  name='rateQuote' id="rateQuote" style="width:80%" type="text" class="form-control"}}
-                                                {{#if afFieldIsInvalid name='rateQuote'}}
-                                                    <span class="help-block">{{afFieldMessage name='rateQuote'}}</span>
-                                                {{/if}}
-                                            {{else}}
-                                                <span>{{rateQuote}}</span>
-                                            {{/if}}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="left-part">
-                                            # {{_ "Required"}}:
-                                        </div>
-                                        <div class="right-part">
-                                            {{#if editMode}}
-                                                {{> afFieldInput  name='numberRequired' id="numberRequired" style="width:80%" type="text" class="form-control"}}
-                                                {{#if afFieldIsInvalid name='numberRequired'}}
-                                                    <span class="help-block">{{afFieldMessage name='numberRequired'}}</span>
-                                                {{/if}}
-                                            {{else}}
-                                                <strong>
-                                                    {{numberRequired}}
-                                                </strong>
-                                            {{/if}}
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div class="left-part">
-                                            {{_ "Duration"}}:
-                                        </div>
-                                        <div class="right-part">
-                                            {{#if editMode}}
-                                                {{> afFormGroup name="duration"  class="form-control" label=false options=durations}}
-                                            {{else}}
-                                                <strong>
-                                                    <strong>{{getDuration}}</strong>
-                                                </strong>
-                                            {{/if}}
-                                        </div>
-
-                                    </li>
-
-                                    <li>
-                                        <div class="left-part">{{_ "Active status"}}</div>
-                                        <div class="right-part">
-                                            {{#if editMode}}
-                                                {{> afFieldInput  name='activeStatus' style="width:80%" type="afButtonGroup"  buttonArray=buttonsActiveStatus }}
-                                            {{else}}
-                                                <strong>
-                                                    <strong>{{getActiveStatus}}</strong>
-                                                </strong>
-                                            {{/if}}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="left-part">
-                                            {{_ "Process status"}}:
-                                        </div>
-                                        <div class="right-part">
-                                            {{#if editMode}}
-                                                {{> afFieldInput  name='status' style="width:80%" type="afButtonGroup"  buttonArray=buttonsStatus }}
-                                            {{else}}
-                                                <strong>{{getStatus}}</strong>
-                                            {{/if}}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="left-part">
-                                            {{_ "Is web visible"}}:
-                                        </div>
-                                        <div class="right-part">
-                                            {{#if editMode}}
-                                                {{> afFieldInput name='isWebVisible' type='afSimpleCheckbox' label=false}}
-                                            {{else}}
-                                                {{#if isWebVisible}}
-                                                  <strong>{{isWebVisible}}</strong>
-                                                {{else}}
-                                                  <strong>false</strong>
-                                                {{/if}}
-                                            {{/if}}
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-md-6">
-                                <ul class="list-type-5">
-                                    <li>
-                                        <div class="left-part">{{_ "Status note"}}:</div>
-                                        <div class="right-part">
-                                            {{#if editMode}}
-                                                {{> afFieldInput  name='statusNote' id="statusNote" style="width:80%" type="text" class="form-control"}}
-                                                {{#if afFieldIsInvalid name='statusNote'}}
-                                                    <span class="help-block">{{afFieldMessage name='statusNote'}}</span>
-                                                {{/if}}
-                                            {{else}}
-                                                <span>{{statusNote}}</span>
-                                            {{/if}}
-                                        </div>
-                                    </li>
-                                    {{#with originalJob}}
+                        {{#autoForm schema="schemaEditJob" id="updateJob" doc=job}}
+                            {{#with job }}
+                                <div class="col-md-6">
+                                    <ul class="list-type-5">
                                         <li>
-                                            <div class="left-part">User</div>
+                                            <div class="left-part">
+                                                {{_ "Job title"}}:
+                                            </div>
                                             <div class="right-part">
-                                                {{displayUserName userId}}
+                                                {{#if editMode}}
+                                                    <div class="form-group">
+                                                        {{> afFormGroup name="jobTitle"  class="form-control" style="width:80%" label=false options=jobTitles}}
+                                                    </div>
+                                                    <!-- /.form-group -->
+                                                {{else}}
+                                                    <strong>{{jobTitleDisplayName}}</strong>
+                                                {{/if}}
                                             </div>
                                         </li>
-                                        {{>displayOriginDataInline}}
-                                    {{/with}}
-                                </ul>
-                            </div>
-                          {{/with}}
-                           {{#if editMode }}
-                               <div class="col-md-12">
-                                   <div class="box-header-2">
-                                       <a class="btn btn-default cancelButton"> {{_ "Cancel"}} </a>
-                                       <button id="save-details" class="btn btn-success pull-right">{{_ "Save"}} </button>
-                                   </div>
-                               </div>
-                           {{/if}}
-                       {{/autoForm}}
+                                        <li>
+                                            <div class="left-part">
+                                                {{_ "Public job title"}}:
+                                            </div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    <div class="form-group">
+                                                        {{> afFieldInput  name='publicJobTitle' id="publicJobTitle" style="width:80%" type="text" class="form-control"}}
+                                                        {{#if afFieldIsInvalid name='publicJobTitle'}}
+                                                            <span class="help-block">{{afFieldMessage name='publicJobTitle'}}</span>
+                                                        {{/if}}
+                                                    </div>
+                                                {{else}}
+                                                    <strong>{{publicJobTitle}}</strong>
+                                                {{/if}}
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="left-part">{{_ "Rate quote"}}:</div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    <div class="form-group">
+                                                        {{> afFieldInput  name='rateQuote' id="rateQuote" style="width:80%" type="text" class="form-control"}}
+                                                        {{#if afFieldIsInvalid name='rateQuote'}}
+                                                            <span class="help-block">{{afFieldMessage name='rateQuote'}}</span>
+                                                        {{/if}}
+                                                    </div>
+                                                {{else}}
+                                                    <span>{{rateQuote}}</span>
+                                                {{/if}}
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="left-part">
+                                                # {{_ "Required"}}:
+                                            </div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    <div class="form-group">
+                                                        {{> afFieldInput  name='numberRequired' id="numberRequired" style="width:80%" type="text" class="form-control"}}
+                                                        {{#if afFieldIsInvalid name='numberRequired'}}
+                                                            <span class="help-block">{{afFieldMessage name='numberRequired'}}</span>
+                                                        {{/if}}
+                                                    </div>
+                                                {{else}}
+                                                    <strong>
+                                                        {{numberRequired}}
+                                                    </strong>
+                                                {{/if}}
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <div class="left-part">
+                                                {{_ "Duration"}}:
+                                            </div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    <div class="form-group">
+                                                        {{> afFormGroup name="duration"  class="form-control" style="width:80%" label=false options=durations}}
+                                                    </div>
+                                                {{else}}
+                                                    <strong>{{getDuration}}</strong>
+                                                {{/if}}
+                                            </div>
+
+                                        </li>
+
+                                        <li>
+                                            <div class="left-part">{{_ "Active status"}}</div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    <div class="form-group">
+                                                        {{> afFieldInput  name='activeStatus' style="width:80%" type="afButtonGroup"  buttonArray=buttonsActiveStatus }}
+                                                    </div>
+                                                {{else}}
+                                                    <strong>{{getActiveStatus}}</strong>
+                                                {{/if}}
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="left-part">
+                                                {{_ "Process status"}}:
+                                            </div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    <div class="form-group">
+                                                        {{> afFieldInput  name='status' style="width:80%" type="afButtonGroup"  buttonArray=buttonsStatus }}
+                                                    </div>
+                                                {{else}}
+                                                    <strong>{{getStatus}}</strong>
+                                                {{/if}}
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="left-part">
+                                                {{_ "Is web visible"}}:
+                                            </div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    <div class="form-group">
+                                                        {{> afFieldInput name='isWebVisible' type='afSimpleCheckbox' label=false}}
+                                                    </div>
+                                                {{else}}
+                                                    {{#if isWebVisible}}
+                                                        <strong>{{isWebVisible}}</strong>
+                                                    {{else}}
+                                                        <strong>false</strong>
+                                                    {{/if}}
+                                                {{/if}}
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="list-type-5">
+                                        <li>
+                                            <div class="left-part">{{_ "Status note"}}:</div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    <div class="form-group">
+                                                        {{> afFieldInput  name='statusNote' id="statusNote" style="width:80%" type="text" class="form-control"}}
+                                                        {{#if afFieldIsInvalid name='statusNote'}}
+                                                            <span class="help-block">{{afFieldMessage name='statusNote'}}</span>
+                                                        {{/if}}
+                                                    </div>
+                                                {{else}}
+                                                    <span>{{statusNote}}</span>
+                                                {{/if}}
+                                            </div>
+                                        </li>
+                                        {{#with originalJob}}
+                                            <li>
+                                                <div class="left-part">User</div>
+                                                <div class="right-part">
+                                                    {{displayUserName userId}}
+                                                </div>
+                                            </li>
+                                            {{>displayOriginDataInline}}
+                                        {{/with}}
+                                    </ul>
+                                </div>
+                            {{/with}}
+                            {{#if editMode }}
+                                <div class="col-md-12">
+                                    <div class="box-header-2">
+                                        <a class="btn btn-default cancelButton"> {{_ "Cancel"}} </a>
+                                        <button id="save-details"
+                                                class="btn btn-success pull-right">{{_ "Save"}} </button>
+                                    </div>
+                                </div>
+                            {{/if}}
+                        {{/autoForm}}
                     </div>
-                    <!-- /.col-md-6 -->
-
-
                 </div>
 
             </div>
