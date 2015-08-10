@@ -1129,7 +1129,7 @@ var runESComputation = function () {
     if (query.activeStatus.value.length > 0) {
       var processArray = [];
       _.forEach(query.activeStatus.value, function (p) {
-        processArray.push(p.toLowerCase());
+        processArray.push(p);
       });
       filters.bool.must.push({terms: {'activeStatus': processArray}});
     }
