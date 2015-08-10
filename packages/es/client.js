@@ -37,6 +37,9 @@ ES.syncCollection = function (options) {
     // Define query using splitted string and only considering fields that were specified
     q.regexp = {};
     _.forEach(options.fields, function (field) {
+      if (field.search === false){
+        return;
+      }
       var boost = undefined;
       if (_.isObject(field)) {
         boost = field.boost;
