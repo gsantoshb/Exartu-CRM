@@ -62,13 +62,13 @@ ES.syncCollection = function (options) {
       highlight.fields[field] = {};
     });
     // Call server side method 'esSearch' using collection name as the index name
-    Meteor.call('esSearch', collection._name, query, filters, highlight, function (err, result) {
+    Meteor.call('esSearch', options.indexName, query, filters, highlight, function (err, result) {
       if (!err) {
-        console.log(result);
+        //console.log(result);
       }
 
       // Set result to empty object if it's not defined
-      if (!result)  { result = { hits: [] } };
+      if (!result)  { result = { hits: [] } }
 
       // Renaming highlight result
       _.forEach(result.hits, function (hit) {
