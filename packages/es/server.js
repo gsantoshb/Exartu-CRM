@@ -52,7 +52,6 @@ ES.connect = function(options) {
       if (field.mapping){
         var parts = field.name.split('.');
         var current = props.properties;
-        console.log('parts',parts);
 
         if (parts.length > 1){
           for(var i=0; i<= parts.length -2; ++i){
@@ -63,6 +62,11 @@ ES.connect = function(options) {
           }
         }
         current[parts[parts.length-1]] = field.mapping;
+      }
+    });
+    _.each(options.relations, function (relation) {
+      if (relation.mapping){
+        props.properties[relation.fieldName] = relation.mapping;
       }
     });
 
