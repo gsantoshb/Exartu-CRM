@@ -1,14 +1,27 @@
 // Contactables
 Meteor.startup(function () {
 
+	var indexName = 'exartu'; //default
+	if (Meteor.isServer){
+		indexName = process.env.ES_INDEX_NAME || ExartuConfig.ES_INDEX_NAME;
+		__meteor_runtime_config__.indexName = indexName; // pass it to the client
+	}
+	if (Meteor.isClient){
+		indexName = __meteor_runtime_config__.indexName;
+	}
+	console.log('indexName', indexName);
+
 	ES.syncCollection({
 		collection: Contactables,
-		indexName: 'exartu',
+		indexName: indexName,
 		type: 'contactables',
 		fields: [
 			{ name: 'idField', label: 'Id', search: false },
 			{ name: 'hierId', label: 'HierId', mapping: { type: 'string', index: "not_analyzed" }, search: false },
 			{ name: '_id', label: '_id', mapping: { type: 'string', index: "not_analyzed" }, search: false  },
+			{ name: 'externalId', label: 'external id', transform: function (value) {
+				return value && value.toString();
+			}},
 			{ name: 'userId', label: 'User Id', mapping: { type: 'string', index: "not_analyzed" }, search: false  },
 			{ name: 'objNameArray', label: 'ObjNameArray', mapping: { type: 'string', index: "not_analyzed" }, search: false  },
 			{ name: 'activeStatus', label: 'Active status', mapping: { type: 'string', index: "not_analyzed" }, search: false  },
@@ -19,11 +32,9 @@ Meteor.startup(function () {
 			}
 			},
 			{ name: 'dateCreated', label: 'Date created', search: false, mapping: { type: 'date'}, transform: function (value) {
-				console.log('calue', value);
 				if (! value) return null;
 
-				if (!_.isDate(value)){
-					console.log('new date');
+				if (!_.isDate(value)) {
 					return new Date(value);
 				}
 				return value;
