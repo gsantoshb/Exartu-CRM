@@ -9,6 +9,7 @@ Meteor.startup(function () {
 			{ name: 'idField', label: 'Id', search: false },
 			{ name: 'hierId', label: 'HierId', mapping: { type: 'string', index: "not_analyzed" }, search: false },
 			{ name: '_id', label: '_id', mapping: { type: 'string', index: "not_analyzed" }, search: false  },
+			{ name: 'externalId', label: 'external id', mapping: { type: 'string', index: "not_analyzed" }},
 			{ name: 'userId', label: 'User Id', mapping: { type: 'string', index: "not_analyzed" }, search: false  },
 			{ name: 'objNameArray', label: 'ObjNameArray', mapping: { type: 'string', index: "not_analyzed" }, search: false  },
 			{ name: 'activeStatus', label: 'Active status', mapping: { type: 'string', index: "not_analyzed" }, search: false  },
@@ -19,11 +20,9 @@ Meteor.startup(function () {
 			}
 			},
 			{ name: 'dateCreated', label: 'Date created', search: false, mapping: { type: 'date'}, transform: function (value) {
-				console.log('calue', value);
 				if (! value) return null;
 
-				if (!_.isDate(value)){
-					console.log('new date');
+				if (!_.isDate(value)) {
 					return new Date(value);
 				}
 				return value;
