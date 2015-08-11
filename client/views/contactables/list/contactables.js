@@ -1129,7 +1129,7 @@ var runESComputation = function () {
     if (query.activeStatus.value.length > 0) {
       var processArray = [];
       _.forEach(query.activeStatus.value, function (p) {
-        processArray.push(p.toLowerCase());
+        processArray.push(p);
       });
       filters.bool.must.push({terms: {'activeStatus': processArray}});
     }
@@ -1137,10 +1137,19 @@ var runESComputation = function () {
 
     isSearching = true;
     searchDep.changed();
+
     Contactables.esSearch('.*' + query.searchString.value + '.*', filters, function (err, result) {
       if (!err) {
         esResult = _.map(result.hits, function (hit) {
-          var contactable = Contactables._transform(hit._source);
+          var contactable = hit._source;
+
+          Utils.extendContactableDisplayName(contactable);
+
+          if (contactable.Contact && contactable.Contact.client) {
+            var client = Contactables.findOne({_id: contactable.Contact.client });
+            contactable.Contact.clientName = client && client.displayName;
+          }
+
           contactable._match = {
             score: (hit._score / result.max_score) * 100,
             properties: _.map(hit.highlight, function (matchedProperty, propertyName) {
