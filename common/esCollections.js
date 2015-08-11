@@ -3,7 +3,7 @@ Meteor.startup(function () {
 
 	ES.syncCollection({
 		collection: Contactables,
-		indexName: ExartuConfig.ES_INDEX_NAME,
+		indexName: 'exartu',
 		type: 'contactables',
 		fields: [
 			{ name: 'idField', label: 'Id', search: false },
