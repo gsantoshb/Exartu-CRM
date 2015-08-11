@@ -3,12 +3,13 @@ Meteor.startup(function () {
 
 	var indexName = 'exartu'; //default
 	if (Meteor.isServer){
-		indexName = ExartuConfig.ES_INDEX_NAME;
+		indexName = process.env.ES_INDEX_NAME || ExartuConfig.ES_INDEX_NAME;
 		__meteor_runtime_config__.indexName = indexName; // pass it to the client
 	}
 	if (Meteor.isClient){
 		indexName = __meteor_runtime_config__.indexName;
 	}
+	console.log('indexName', indexName);
 
 	ES.syncCollection({
 		collection: Contactables,
