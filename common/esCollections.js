@@ -1,9 +1,18 @@
 // Contactables
 Meteor.startup(function () {
 
+	var indexName = 'exartu'; //default
+	if (Meteor.isServer){
+		indexName = ExartuConfig.ES_INDEX_NAME;
+		__meteor_runtime_config__.indexName = indexName; // pass it to the client
+	}
+	if (Meteor.isClient){
+		indexName = __meteor_runtime_config__.indexName;
+	}
+
 	ES.syncCollection({
 		collection: Contactables,
-		indexName: 'exartu',
+		indexName: indexName,
 		type: 'contactables',
 		fields: [
 			{ name: 'idField', label: 'Id', search: false },
