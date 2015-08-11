@@ -45,6 +45,8 @@ ES.connect = function(options) {
 
     var options = getIndexedCollection(index.name);
 
+
+    // build mappings
     var props = {
       properties: {}
     };
@@ -79,10 +81,14 @@ ES.connect = function(options) {
           initialSync(index.collection, index.name);
         }
         else {
-          console.log('Creating ' + index.name + ' index', mappings)
+          console.log('Creating ' + index.name + ' index', mappings);
           _client.createIndex(index.name, mappings, function(err, result) {
             if (!err) {
               console.log("Index created ", result);
+              Meteor.setTimeout(function () {
+                console.log('initialSync ' + index.name + ' index');
+                initialSync(index.collection, index.name);
+              }, 1000);
             }
             else
               console.log('index creation error',err,index);
@@ -100,6 +106,12 @@ ES.connect = function(options) {
 //    - collection {Mongo.Collection} Collection that is synchronized.
 //    - fields {Array} Objects that defined which fields from the document
 //    on the specified collection are considered when performing a search.
+//      each field must have 'name' which represents the path to the property in mongo
+//      each field can have 'label' used for highlighting results
+//                          'search' if set to false this field won't be used to search
+//                          'mapping' the elasticsearch mappings associated with this field
+//                          'transform' a function that receives the value found in the path (name) for a doc
+//                              and should return a value
 //    - relation {Array} Specifies where and how to fetch information related to
 //    the document.
 ES.syncCollection = function(options) {
@@ -120,7 +132,6 @@ ES.syncCollection = function(options) {
 
   //
   collection.after.update(function(userId, doc) {
-    // TODO: make update more granular, only update values that have changed
     indexDocument(indexName, collection, doc);
   });
 
@@ -164,7 +175,6 @@ ES.syncCollection = function(options) {
 
       // Keep track of changes in data related to the document
       rel.collection.after.update(function(userId, doc) {
-        // TODO: make update more granular, only update values that have changed
         relationIndexing(doc);
       });
       rel.collection.after.insert(function(userId, doc) {
@@ -231,7 +241,7 @@ ES.syncCollection = function(options) {
         });
       }
     });
-    doc.idField=doc._id; // make the id field searchable as well
+    doc.idField = doc._id; // make the id field searchable as well
     // Index document using its type as its type
     console.log('indexing doc');
     index.index(type, doc, { id: doc._id }, Meteor.bindEnvironment(function (err, result) {
@@ -260,6 +270,13 @@ Meteor.methods({
     // At least on of the criteria defined in should must be true
     query.bool.minimum_should_match = 1;
 
+    var hierid = Utils.getUserHierId(Meteor.userId());
+
+    filters = filters || {};
+    filters.bool = filters.bool || {};
+    filters.bool.must = filters.bool.must || [];
+    filters.bool.must.push({term: {hierId: hierid}});
+
     // Change query format if filters are defined
     if (filters.bool.must.length > 0) {
       query = {
@@ -269,16 +286,12 @@ Meteor.methods({
         }
       };
     }
+    var options = getIndexedCollection(indexName);
 
-    // Get user's hierarchies and use them to filter documents' type
-    var userHierarchiesId = _.map(Utils.getUserHiers(Meteor.userId()), function (hier) {
-      return hier._id;
-    });
-    var hierid=Utils.getUserHierId(Meteor.userId());
 
     var async = Meteor._wrapAsync(
       Meteor.bindEnvironment(function(cb) {
-        _client.search({query: query, size: 25, highlight: highlight, type: type, index: indexName}, function(err, result) {
+        _client.search({query: query, size: 25, highlight: highlight, type: options.type, index: indexName}, function(err, result) {
           cb(err, result);
         })
       })
