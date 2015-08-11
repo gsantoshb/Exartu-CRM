@@ -846,6 +846,21 @@ ContactableManager = {
         update.$unset = queryUnset;
       Contactables.update({_id: contactableId},update);
 
+    },
+
+    // Documents
+    getDocumentDownloadURL: function (fileId) {
+      // Validate parameters
+      if (!fileId) throw new Error("File ID is required");
+
+      var file = ContactablesFiles.findOne({fileId: fileId});
+      if (!file) throw new Error("Invalid file ID");
+
+      try {
+        return AWS_S3.getSignedUrl(ExartuConfig.AWS_S3_bucket, fileId);
+      } catch (err) {
+        throw new Meteor.Error(err.message);
+      }
     }
 };
 

@@ -140,5 +140,75 @@ JobManager = {
     Jobs.update({ _id: job._id }, { $unset: { address: '' } });
 
     Addresses.remove({_id: address._id});
+  },
+  getJobById: function(jobId){
+    return Jobs.findOne({_id:jobId});
+  },
+  updateJob: function(jobId, jobUpdate){
+     Jobs.update({_id: jobId},jobUpdate);
+  },
+  updateLegalInfo: function(update, contactableId){
+    var querySet = {};
+    var queryUnset = {};
+
+    if(update.$set.convictions ){
+      _.extend(querySet, {'Employee.convictions':update.$set.convictions});
+    }
+    if(update.$set.gender ){
+      _.extend(querySet, {'Employee.gender':update.$set.gender});
+    }
+    if(update.$set.ethnicity ){
+      _.extend(querySet, {'Employee.ethnicity':update.$set.ethnicity});
+    }
+    if(update.$set.i9OnFile ){
+      _.extend(querySet, {'Employee.i9OnFile':update.$set.i9OnFile});
+    }
+    if(update.$set.i9ExpireDate ){
+      _.extend(querySet, {'Employee.i9ExpireDate':update.$set.i9ExpireDate});
+    }
+    if(update.$set.dependentNumber ){
+      _.extend(querySet, {'Employee.dependentNumber':update.$set.dependentNumber});
+    }
+    if(update.$set.orientationDate ){
+      _.extend(querySet, {'Employee.orientationDate':update.$set.orientationDate});
+    }
+    if(update.$set.hireDate ){
+      _.extend(querySet, {'Employee.hireDate':update.$set.hireDate});
+    }
+
+    if(update.$unset) {
+      if(update.$unset.convictions != undefined){
+        _.extend(queryUnset, {'Employee.convictions':update.$unset.convictions});
+      }
+      if(update.$unset.gender!= undefined ){
+        _.extend(queryUnset, {'Employee.gender':update.$unset.gender});
+      }
+      if(update.$unset.ethnicity != undefined){
+        _.extend(queryUnset, {'Employee.ethnicity':update.$unset.ethnicity});
+      }
+      if(update.$unset.i9OnFile != undefined){
+        _.extend(queryUnset, {'Employee.i9OnFile':update.$unset.i9OnFile});
+      }
+      if(update.$unset.i9ExpireDate!= undefined ){
+        _.extend(queryUnset, {'Employee.i9ExpireDate':update.$unset.i9ExpireDate});
+      }
+      if(update.$unset.dependentNumber!= undefined ){
+        _.extend(queryUnset, {'Employee.dependentNumber':update.$unset.dependentNumber});
+      }
+      if(update.$unset.orientationDate!= undefined ){
+        _.extend(queryUnset, {'Employee.orientationDate':update.$unset.orientationDate});
+      }
+      if(update.$unset.hireDate!= undefined ){
+        _.extend(queryUnset, {'Employee.hireDate':update.$unset.hireDate});
+      }
+    }
+
+    var update = {};
+    if(!_.isEmpty(querySet))
+      update.$set = querySet;
+    if(!_.isEmpty(queryUnset))
+      update.$unset = queryUnset;
+    Contactables.update({_id: contactableId},update);
+
   }
 };
