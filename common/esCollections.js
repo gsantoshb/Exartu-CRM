@@ -9,7 +9,9 @@ Meteor.startup(function () {
 			{ name: 'idField', label: 'Id', search: false },
 			{ name: 'hierId', label: 'HierId', mapping: { type: 'string', index: "not_analyzed" }, search: false },
 			{ name: '_id', label: '_id', mapping: { type: 'string', index: "not_analyzed" }, search: false  },
-			{ name: 'externalId', label: 'external id', mapping: { type: 'string', index: "not_analyzed" }},
+			{ name: 'externalId', label: 'external id', transform: function (value) {
+				return value && value.toString();
+			}},
 			{ name: 'userId', label: 'User Id', mapping: { type: 'string', index: "not_analyzed" }, search: false  },
 			{ name: 'objNameArray', label: 'ObjNameArray', mapping: { type: 'string', index: "not_analyzed" }, search: false  },
 			{ name: 'activeStatus', label: 'Active status', mapping: { type: 'string', index: "not_analyzed" }, search: false  },
