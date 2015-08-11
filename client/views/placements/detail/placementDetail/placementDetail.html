@@ -7,32 +7,40 @@
             <div class="box-title">{{_ "Placement details"}}</div>
         </div>
         <div class="box-content-md">
-            <table class="table box-table table-striped">
-                <tbody>
+            {{#autoForm schema="schemaEditPlacement" id="updatePlacement" doc=placement}}
+               <table class="table box-table table-striped">
+                  <tbody>
 
-                {{#with placement}}
+                  {{#with placement}}
 
                     <tr>
                         <td>{{_ "Status note"}}:</td>
                         <td>
-                            {{#objectProperty property=statusNote editable=editMode}}
-                                <input class="form-control" type="text" value="{{value}}">
+                            {{#if editMode}}
+                              <div class="form-group">
+                                {{> afFieldInput  name='statusNote' id="statusNote" style="width:80%" type="text" class="form-control"}}
+                                {{#if afFieldIsInvalid name='statusNote'}}
+                                    <span class="help-block">{{afFieldMessage name='statusNote'}}</span>
+                                {{/if}}
+                              </div>
                             {{else}}
-                                <span>{{_ value}}</span>
-                            {{/objectProperty}}
+                                <span>{{statusNote}}</span>
+                            {{/if}}
                         </td>
                     </tr>
 
                     <tr>
                         <td>{{_ "Active Status"}}</td>
                         <td>
-                            {{#objectProperty property=activeStatus editable=editMode}}
-                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                            {{#if editMode}}
+                              <div class="form-group">
+                                {{> afFieldInput  name='activeStatus' style="width:80%" type="afButtonGroup"  buttonArray=buttonsActiveStatus }}
+                              </div>
                             {{else}}
                                 <strong>
-                                    <strong>{{_ displayName}}</strong>
+                                    <strong>{{getActiveStatus}}</strong>
                                 </strong>
-                            {{/objectProperty}}
+                            {{/if}}
                         </td>
                     </tr>
                     <tr>
@@ -40,13 +48,15 @@
                             <i class="fa fa-info-circle"></i>&nbsp;{{_ "Process Status"}}:
                         </td>
                         <td>
-                            {{#objectProperty property=candidateStatus editable=editMode}}
-                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                            {{#if editMode}}
+                                <div class="form-group {{#if afFieldIsInvalid name='candidateStatus'}}has-error{{/if}}">
+                                   {{> afFieldInput  name='candidateStatus'  style="width:80%" type="afButtonGroup"  buttonArray=buttonsCandidateStatus}}
+                                </div>
                             {{else}}
                                 <strong>
-                                    <strong>{{_ displayName}}</strong>
+                                    <strong>{{getCandidateStatus}}</strong>
                                 </strong>
-                            {{/objectProperty}}
+                            {{/if}}
                         </td>
                     </tr>
                     <tr>
@@ -54,17 +64,17 @@
                             <i class="fa fa-calendar"></i>&nbsp;{{_ "Start date"}}:
                         </td>
                         <td>
-                            {{#objectProperty property=startDate editable=editMode}}
-                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                            {{#if editMode}}
+                                {{> afB3DatePicker name='startDate' style="width:80%" value=startDate format="D, MM dd"}}
                             {{else}}
                                 <strong>
-                                    {{#if value}}
-                                        {{formattedDate value "ddd, MMMM DD, YYYY"}}
+                                    {{#if startDate}}
+                                        {{formattedDate startDate "ddd, MMMM DD, YYYY"}}
                                     {{else}}
                                         {{_ "Not set"}}
                                     {{/if}}
                                 </strong>
-                            {{/objectProperty}}
+                            {{/if}}
                         </td>
                     </tr>
                     <tr>
@@ -72,50 +82,57 @@
                             <i class="fa fa-calendar"></i>&nbsp;{{_ "End date"}}:
                         </td>
                         <td>
-                            {{#objectProperty property=endDate editable=editMode}}
-                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                            {{#if editMode}}
+                                {{> afB3DatePicker name='endDate' style="width:80%" value=endDate format="D, MM dd"}}
                             {{else}}
                                 <strong>
-                                    {{#if value}}
-                                        {{formattedDate value "ddd, MMMM DD, YYYY"}}
+                                    {{#if endDate}}
+                                        {{formattedDate endDate "ddd, MMMM DD, YYYY"}}
                                     {{else}}
                                         {{_ "Not set"}}
                                     {{/if}}
                                 </strong>
-                            {{/objectProperty}}
+                            {{/if}}
                         </td>
                     </tr>
                     <tr>
                         <td>{{_ "Rate quote"}}:</td>
                         <td>
-                            {{#objectProperty property=rateQuote editable=editMode}}
-                                <input class="form-control" type="text" value="{{value}}">
+                            {{#if editMode}}
+                                <div class="form-group">
+                                    {{> afFieldInput  name='rateQuote' id="rateQuote" style="width:80%" type="text" class="form-control"}}
+                                    {{#if afFieldIsInvalid name='rateQuote'}}
+                                        <span class="help-block">{{afFieldMessage name='rateQuote'}}</span>
+                                    {{/if}}
+                                </div>
                             {{else}}
-                                <span>{{_ value}}</span>
-                            {{/objectProperty}}
+                                <span>{{rateQuote}}</span>
+                            {{/if}}
                         </td>
                     </tr>
 
-                {{/with}}
-                {{#with originalPlacement}}
-                    {{>displayOriginDataInTable}}
-                {{/with}}
+                  {{/with}}
+                  {{#with originalPlacement}}
+                     {{>displayOriginDataInTable}}
+                  {{/with}}
 
-                </tbody>
-            </table>
-        </div>
-
-        {{#if editMode}}
-            <div class="box-header-2" style="height: 60px">
-                <div class="pull-right">
+                  </tbody>
+               </table>
+                {{#if editMode}}
+                    <div class="box-header-2" style="height: 60px">
+                        <div class="pull-right">
                     <span class="btn btn-default cancelButton">
                         {{_ "Cancel"}}
                     </span>
-                    <span class="btn btn-info saveDetailsButton">
+                    <button id="save-details" class="btn btn-success pull-right">
                         {{_ "Save"}}
-                    </span>
-                </div>
-            </div>
-        {{/if}}
+                    </button>
+                        </div>
+                    </div>
+                {{/if}}
+            {{/autoForm}}
+        </div>
+
+
     </div>
 </template>
