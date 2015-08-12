@@ -93,9 +93,17 @@ Jobs.after.update(function (userId, job, fieldNames, modifier, options) {
   }
 
   // Address
-  if (_.contains(fieldNames, 'address') && modifier.$set.address) {
-    var address = Addresses.findOne({_id: modifier.$set.address});
-    update.$set.address = address;
+  if (_.contains(fieldNames, 'address')) {
+    // Set
+    if (modifier.$set && modifier.$set.address) {
+      var address = Addresses.findOne({_id: modifier.$set.address});
+      update.$set.address = address;
+    }
+
+    // Unset
+    else if (modifier.$unset && !_.isUndefined(modifier.$unset.address)) {
+      update.$set.address = null;
+    }
   }
 
 

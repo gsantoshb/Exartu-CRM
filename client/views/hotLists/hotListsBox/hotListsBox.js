@@ -46,19 +46,21 @@ var loadqueryFromURL = function (params) {
     if (params.creationDate) {
         creationDateQuery.default = params.creationDate;
     }
-
-    var objTypeQuery = {};
-    var type = params.hash || params.type;
-    if (type != undefined && type != 'all') {
-        var objType = dType.ObjTypes.findOne({
-            name: type
-        });
-        objTypeQuery.default = objType.name;
-        info.objType.value = objType.name + 's';
-    } else {
-        objTypeQuery.default = undefined;
-        info.objType.value = 'record(s)';
-    }
+    //
+    //var objTypeQuery = {};
+    //var type = params.hash || params.type;
+    //if (type != undefined && type != 'all') {
+    //    debugger;
+    //    var objType = dType.ObjTypes.findOne({
+    //        name: type
+    //    });
+    //    debugger;
+    //    objTypeQuery.default = objType.name;
+    //    info.objType.value = objType.name + 's';
+    //} else {
+    //    objTypeQuery.default = undefined;
+    //    info.objType.value = 'record(s)';
+    //}
 
     // Tags
     var tagsQuery = {type: Utils.ReactivePropertyTypes.array};
@@ -79,8 +81,8 @@ var loadqueryFromURL = function (params) {
             searchString: searchStringQuery,
             selectedLimit: creationDateQuery,
             activeStatus: activeStatusQuery,
-            tags: tagsQuery,
-            objType: objTypeQuery
+            tags: tagsQuery
+            //objType: objTypeQuery
         }
     });
 };
@@ -95,7 +97,7 @@ var isSearching = false;
 
 // All
 Template.hotListsBox.created = function () {
-    query = query || loadqueryFromURL(Router.current().params);
+  query = query || loadqueryFromURL(Router.current().params);
 };
 
 Template.hotListsBox.helpers({
@@ -213,15 +215,14 @@ Template.hotListFilters.helpers({
     query: function () {
         return query;
     },
-    leftSectionTitle: function() {
-        if( hotListCount.get() > 1) leftSectionTitle.set('Hot Lists');
-        else leftSectionTitle.set('Hot List');
-        return leftSectionTitle.get();
-    },
-    contactableTypes: function () {
-        return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
-    },
-
+    //leftSectionTitle: function() {
+    //    if( hotListCount.get() > 1) leftSectionTitle.set('Hot Lists');
+    //    else leftSectionTitle.set('Hot List');
+    //    return leftSectionTitle.get();
+    //},
+    //contactableTypes: function () {
+    //    return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
+    //},
     tags: function () {
         return query.tags;
     }

@@ -3,7 +3,7 @@
 <template name="afSimpleCheckbox">
     <div>
         <label class="pointer" style="font-weight: normal;">
-            <input type="checkbox" value="true" {{atts}} /> {{afFieldLabelText name=this.name}}
+            <input id="checkBox" type="checkbox" value="true" {{atts}} /> {{afFieldLabelText name=this.name}}
         </label>
     </div>
 </template>
@@ -14,5 +14,12 @@
          {{#each buttonsGroup}}
              <button type="button" id="{{value}}" class="buttonGroup {{class}}">{{displayName}}</button>
          {{/each}}
+    </div>
+</template>
+
+<template name="afSearch">
+    <div>
+        <input type="hidden" {{atts}}>
+        {{>asyncSelect width="100%" query=getCollection placeholder="Search client" onChange=selectionChanged}}
     </div>
 </template>

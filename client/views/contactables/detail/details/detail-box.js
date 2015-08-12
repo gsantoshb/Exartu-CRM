@@ -1,7 +1,3 @@
-
-
-
-
 schemaEditContactable = new SimpleSchema({
   'personFirstName': {
     type: String,

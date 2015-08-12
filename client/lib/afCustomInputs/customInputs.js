@@ -2,7 +2,7 @@
 AutoForm.addInputType('afSimpleCheckbox', {
   template: 'afSimpleCheckbox',
   valueOut: function () {
-    return !!this.is(":checked");
+    return !!this[0].reactiveCheck.get();
   },
   valueConverters: {
     "string": function (val) {
@@ -39,15 +39,29 @@ AutoForm.addInputType('afSimpleCheckbox', {
     }
   },
   contextAdjust: function (context) {
+
     if (context.value === true) {
       context.atts.checked = "";
     }
+
     //don't add required attribute to checkboxes because some browsers assume that to mean that it must be checked, which is not what we mean by "required"
     delete context.atts.required;
     return context;
   }
 })
 
+Template.afSimpleCheckbox.events({
+   'change input': function(e, ctx){
+     e.target.reactiveCheck.set(e.target.checked);
+   }
+})
+
+Template.afSimpleCheckbox.rendered = function(){
+  var check =  this.$("#checkBox");
+  var reactiveCheck = new ReactiveVar(check.is(":checked"));
+  check[0].reactiveCheck = reactiveCheck;
+
+}
 
 
 
@@ -108,4 +122,46 @@ Template.afButtonGroup.helpers({
       //debugger;
       //return Template.instance().data.selected.get();
    }
+})
+
+
+
+AutoForm.addInputType('afSearch', {
+  template: 'afSearch',
+  valueOut: function (ctx) {
+    return this.val();
+  },
+  contextAdjust: function(data){
+   if(!data.atts.id){
+      data.atts.id = Meteor.uuid();
+    }
+    data.getCollection = data.atts.getCollection;
+    data.selectionChanged = data.atts.selectionChanged;
+    delete data.atts.getCollection;
+    delete data.atts.selectionChanged;
+    //var selected = new ReactiveVar();
+    //var buttonArray = new ReactiveVar();
+    //data.atts.value = data.value;
+    //selected.set(data.value);
+    //buttonArray.set(data.buttonArray);
+    //data.selected = selected;
+    //data.buttonArray = buttonArray;
+    //actualizeButtons(ctx);
+    return data;
+  }
+})
+
+Template.afSearch.helpers({
+  'getCollection': function () {
+    return this.getCollection.getCollection;
+  },
+  'selectionChanged': function () {
+    var self = this;
+    return function(string){
+      self.selectionChanged.selectionChanged(string);
+      var elem = $('#'+self.atts.id);
+      elem.val(string);
+      elem.change();
+    };
+  }
 })

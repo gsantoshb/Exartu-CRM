@@ -17,6 +17,7 @@ ExartuConfig = {
   ES_PROTOCOL: undefined,
   ES_PORT: undefined,
   ES_AUTH: undefined,
+  ES_INDEX_NAME: "xr2",
   // Kadira
   APM_ID: undefined,
   APM_SECRET: undefined,

@@ -1,113 +1,171 @@
-var jobCollections = Jobs;
+schemaEditJob = new SimpleSchema({
+  'jobTitle': {
+    type: String,
+    optional: false
 
-var generateReactiveObject = function (job) {
-    return new dType.objInstance(job, jobCollections);
-};
+  },
+  'jobTitleDisplayName': {
+    type: String,
+    optional:true
+  },
+  'publicJobTitle': {
+    type: String,
+    optional:true
+  },
+  'rateQuote':{
+    type: String,
+    optional:true
+  },
+  'numberRequired':{
+    type: Number,
+    optional:true
+  },
+  'duration':{
+    type: String,
+    optional:true
+  },
+  'activeStatus':{
+    type: String,
+    optional:true
+  },
+  'status':{
+    type: String,
+    optional:true
+  },
+  'isWebVisible':{
+    type: Boolean,
+    optional:true
+  },
+  'statusNote':{
+    type: String,
+    optional:true
+  }
+})
+var job = new ReactiveVar();
 
 var self = {};
-Utils.reactiveProp(self, 'editMode', false);
+var editMode = new ReactiveVar(false);
 var location = {};
 Utils.reactiveProp(location, 'value', null);
 
 Template.jobDetail.created = function () {
-    self.editMode = false;
+    editMode.set(false);
+    this.autorun(function(){
+      job.set(Jobs.findOne({ _id: Session.get('entityId')}))
+    })
 //  var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
 };
-var job;
+
 Template.jobDetail.destroyed = function () {
-    job = null;
+
 };
 
 Template.jobDetail.helpers({
     job: function () {
-        var originalJob = jobCollections.findOne({_id: Session.get('entityId')});
-        if (!originalJob) return; // could be navigating away from job search
-        Session.set('jobDisplayName', originalJob.displayName);
-        job = generateReactiveObject(originalJob);
-        return job;
+      var reactJob = job.get();
+      if(reactJob){
+        var toReturn = {};
+        toReturn._id = reactJob._id;
+        toReturn.jobTitle = reactJob.jobTitle;
+        toReturn.jobTitleDisplayName = reactJob.jobTitleDisplayName;
+        toReturn.publicJobTitle = reactJob.publicJobTitle;
+        toReturn.rateQuote = reactJob.rateQuote;
+        toReturn.numberRequired = reactJob.numberRequired;
+        toReturn.duration = reactJob.duration;
+        toReturn.activeStatus = reactJob.activeStatus;
+        toReturn.status = reactJob.status;
+        toReturn.isWebVisible = reactJob.isWebVisible;
+        toReturn.statusNote = reactJob.statusNote;
+        return toReturn;
+      }
+    },
+    buttonsActiveStatus: function(){
+      var activeArray = LookUps.find({lookUpCode:Enums.lookUpCodes.active_status}).fetch();
+      var arrayButtons = _.map(activeArray, function(a){
+        return {displayName: a.displayName, value: a._id}
+      })
+      return arrayButtons;
+    },
+    buttonsStatus: function(){
+      var activeArray = LookUps.find({lookUpCode:Enums.lookUpCodes.job_status}).fetch();
+      var arrayButtons = _.map(activeArray, function(a){
+        return {displayName: a.displayName, value: a._id}
+      })
+      return arrayButtons;
+    },
+    jobTitles: function(){
+      var jobTitlesArray = LookUps.find({lookUpCode:Enums.lookUpCodes.job_titles}).fetch()
+      var toReturn = _.map(jobTitlesArray, function(a){
+        return {label: a.displayName, value: a._id}
+      })
+      return toReturn;
+    },
+    durations: function(){
+      var jobDurations = LookUps.find({lookUpCode:Enums.lookUpCodes.job_duration}).fetch()
+      var toReturn = _.map(jobDurations, function(a){
+        return {label: a.displayName, value: a._id}
+      })
+      return toReturn;
+    },
+    getDuration: function(){
+      var lkDuration = LookUps.findOne({_id: job.get().duration});
+      if(lkDuration){
+        return lkDuration.displayName;
+      }
+      else{
+        return "Not set"
+      }
+    },
+    getActiveStatus: function(){
+      var lkActive = LookUps.findOne({_id: job.get().activeStatus});
+      if(lkActive){
+        return lkActive.displayName;
+      }
+      else{
+        return "Not set"
+      }
+    },
+    getStatus: function(){
+      var lkStatus = LookUps.findOne({_id: job.get().status});
+      if(lkStatus){
+        return lkStatus.displayName;
+      }
+      else{
+        return "Not set"
+      }
     },
     originalJob: function () {
-        return jobCollections.findOne({_id: Session.get('entityId')});
+        return job.get();
     },
     editMode: function () {
-        return self.editMode;
+        return editMode.get();
     },
     colorEdit: function () {
-        return self.editMode ? '#008DFC' : ''
-    },
-    //isType: function (typeName) {
-    //    return !!jobCollections.findOne({_id: Session.get('entityId'), objNameArray: typeName});
-    //},
-    //jobCollection: function () {
-    //    return jobCollections;
-    //},
-
-    isSelected: function (optionValue, currentValue) {
-        return optionValue == currentValue;
-    },
-    //location: function () {
-    //    var originalJob = jobCollections.findOne({_id: Session.get('entityId')});
-    //
-    //    location.value = originalJob && originalJob.location;
-    //    return location;
-    //},
-    //datePickerOptions: function () {
-    //    return {
-    //        format: "D, MM dd, yyyy",
-    //        minViewMode: "days",
-    //        startView: "months"
-    //    }
-    //},
-    fetchOptions: function () {
-        return this.options.map(function (status) {
-            return {id: status._id, text: status.displayName};
-        });
-    },
-    onSelectedStatus: function () {
-        return function (newStatus) {
-            var ctx = Template.parentData(2);
-            ctx.property._value = newStatus;
-        }
+        return editMode.get() ? '#008DFC' : ''
     }
 });
 
 Template.jobDetail.events({
     'click .editJob': function () {
-        self.editMode = !self.editMode;
-    },
-    'click .saveDetailsButton': function () {
-        if (!job.validate()) {
-            job.showErrors();
-            return;
-        }
-        var update = job.getUpdate();
-        if(!_.isEmpty(update.$set)){
-          jobCollections.update({_id: job._id}, update, function (err, result) {
-            if (!err) {
-                self.editMode = false;
-                job.reset();
-            }
-            else {
-                alert(err);
-            }
-          });
-       }
-      else{
-         self.editMode = false;
-          job.reset();
-       }
+      editMode.set(!editMode.get());
     },
     'click .cancelButton': function () {
-        self.editMode = false;
+      editMode.set(false);
 
     }
 });
-//
-//
-//Template.jobDetail.helpers({
-//    getType: function () {
-//        return Enums.linkTypes.job;
-//    }
-//});
 
-
+AutoForm.hooks({
+  updateJob: {
+    onSubmit: function (insertDoc, updateDoc, currentDoc) {
+      if(updateDoc.$set.jobTitle){
+        var lkJobTitle = LookUps.findOne({_id: updateDoc.$set.jobTitle});
+        updateDoc.$set.jobTitleDisplayName = lkJobTitle.displayName;
+      }
+      Meteor.call('updateJob',currentDoc._id,updateDoc, function(err, res){
+        editMode.set(false);
+      })
+      return false;
+    }
+  }
+})

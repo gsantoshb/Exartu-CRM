@@ -3,7 +3,7 @@ Migrations.add({
   version: 21,
   up: function() {
     // Remove the objType Customer
-    dType.ObjTypes.remove({ name: 'Customer' });
+    //dType.ObjTypes.remove({ name: 'Customer' });
 
     var count = 0;
     Contactables.find({Customer:{$exists:true}}, {fields: {objNameArray: 1, Customer: 1}}).forEach(function (c) {

@@ -5,6 +5,11 @@
   "cluster": {
     "count": 8
   },
+
+"AWSAccessKeyId": "AKIAJ32UVD2IEQFPT2CQ",
+"AWSSecretAccessKey": "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",
+"AWSRegion": "sa-east-1",
+
   "workers": {
     "count": 10,
     "monq": {
@@ -13,5 +18,7 @@
       "log": false,
       "disable": false
     }
+
   }
+
 }

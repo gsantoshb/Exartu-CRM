@@ -44,49 +44,58 @@ helper.emailRE.str="^(([^<>()[\\]\\.,;:\\s@\"]+(\\.[^<>()[\\]\\.,;:\\s@\"]+)*)|(
 
 _.extend(helper, {
 
-  getObjType: function (id) {
-    return dType.ObjTypes.findOne({
-      _id: id
-    });
-  },
-
+  //getObjType: function (id) {
+  //  return dType.ObjTypes.findOne({
+  //    _id: id
+  //  });
+  //},
+//
   getIconForObjName: function (name) {
-    var objtype = dType.ObjTypes.findOne({
-      name: name
-    });
-    if (objtype && objtype.style && objtype.style.icon)
+    var iconName;
+    switch(name){
+      case 'Employee': {
+        iconName = "connection";
+        break;
+      }
+      case 'Contact':{
+        iconName = "contact";
+        break;
+      }
+      case 'Client':{
+        iconName = "build"
+      }
+    }
       return _.findWhere(icons, {
-        name: objtype.style.icon
+        name: iconName
       }).value;
-
     return defaultIcon;
-  },
-  getEntityIcon: function (entity) {
-    var type = dType.ObjTypes.findOne({
-      name: { $in: entity.objNameArray },
-        style: { $exists: true }
-    });
-    return _.findWhere(icons, {
-      name: type.style.icon
-    }).value;
-  },
-  getActivityColor: function (activity) {
-    var style = dType.ObjTypes.findOne({
-      name: _.isString(activity.data.objTypeName) ? activity.data.objTypeName : activity.data.objTypeName()
-    }).style;
-    return _.findWhere(colors, {
-      name: style.color
-    }).value;
-  },
-  getActivityIcon: function (activity) {
-
-    var style = dType.ObjTypes.findOne({
-      name: _.isString(activity.data.objTypeName)? activity.data.objTypeName : activity.data.objTypeName()
-    }).style;
-    return _.findWhere(icons, {
-      name: style.icon
-    }).value;
   }
+//  getEntityIcon: function (entity) {
+//    var type = dType.ObjTypes.findOne({
+//      name: { $in: entity.objNameArray },
+//        style: { $exists: true }
+//    });
+//    return _.findWhere(icons, {
+//      name: type.style.icon
+//    }).value;
+//  },
+//  getActivityColor: function (activity) {
+//    var style = dType.ObjTypes.findOne({
+//      name: _.isString(activity.data.objTypeName) ? activity.data.objTypeName : activity.data.objTypeName()
+//    }).style;
+//    return _.findWhere(colors, {
+//      name: style.color
+//    }).value;
+//  },
+//  getActivityIcon: function (activity) {
+//
+//    var style = dType.ObjTypes.findOne({
+//      name: _.isString(activity.data.objTypeName)? activity.data.objTypeName : activity.data.objTypeName()
+//    }).style;
+//    return _.findWhere(icons, {
+//      name: style.icon
+//    }).value;
+//  }
 });
 
 /*

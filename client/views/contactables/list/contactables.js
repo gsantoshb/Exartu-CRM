@@ -21,11 +21,8 @@ ContactablesController = RouteController.extend({
     var objTypeQuery = {};
     var type = params.hash || params.type;
     if (type != undefined && type != 'all') {
-      var objType = dType.ObjTypes.findOne({
-        name: type
-      });
-      objTypeQuery.default = objType.name;
-      info.objType.value = objType.name + 's';
+      objTypeQuery.default = type;
+      info.objType.value = type + 's';
     } else {
       objTypeQuery.default = undefined;
       info.objType.value = 'record(s)';
@@ -119,7 +116,7 @@ ContactablesController = RouteController.extend({
     }
 
 
-    query = new Utils.ObjectDefinition({
+    query = query || new Utils.ObjectDefinition({
       reactiveProps: {
         objType: objTypeQuery,
         searchString: searchStringQuery,
@@ -159,7 +156,7 @@ ContactablesController = RouteController.extend({
 /**
  * Variables
  */
-var query = {};
+var query = null;
 var selectedValue = {};
 
 var selected = new ReactiveVar([]);
@@ -190,7 +187,7 @@ var showFilters = new ReactiveVar(true);
 
 // List - Variables
 var contactableTypes = function () {
-  return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
+  return [{name:"Contact"},{name:"Client"},{name:"Employee"}]
 };
 
 var locationFields = ['address', 'city', 'state', 'country'];
@@ -577,7 +574,6 @@ Template.contactablesListHeader.helpers({
     }
   },
   allEmployee: function () {
-    console.log('comonTypes', comonTypes);
     return _.contains(comonTypes, "employee");
   },
   isAdding: function () {
@@ -1133,7 +1129,7 @@ var runESComputation = function () {
     if (query.activeStatus.value.length > 0) {
       var processArray = [];
       _.forEach(query.activeStatus.value, function (p) {
-        processArray.push(p.toLowerCase());
+        processArray.push(p);
       });
       filters.bool.must.push({terms: {'activeStatus': processArray}});
     }
@@ -1141,10 +1137,19 @@ var runESComputation = function () {
 
     isSearching = true;
     searchDep.changed();
+
     Contactables.esSearch('.*' + query.searchString.value + '.*', filters, function (err, result) {
       if (!err) {
         esResult = _.map(result.hits, function (hit) {
-          var contactable = Contactables._transform(hit._source);
+          var contactable = hit._source;
+
+          Utils.extendContactableDisplayName(contactable);
+
+          if (contactable.Contact && contactable.Contact.client) {
+            var client = Contactables.findOne({_id: contactable.Contact.client });
+            contactable.Contact.clientName = client && client.displayName;
+          }
+
           contactable._match = {
             score: (hit._score / result.max_score) * 100,
             properties: _.map(hit.highlight, function (matchedProperty, propertyName) {

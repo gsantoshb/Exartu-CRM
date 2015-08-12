@@ -73,7 +73,7 @@ Meteor.startup(function () {
 
 
   // Elasticsearch
-  if (ExartuConfig.ES_HOST && ExartuConfig.ES_AUTH)
+  //if (ExartuConfig.ES_HOST && ExartuConfig.ES_AUTH)
     ES.connect({
       host: ExartuConfig.ES_HOST,
       protocol: ExartuConfig.ES_PROTOCOL,
