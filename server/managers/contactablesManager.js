@@ -158,12 +158,38 @@ ContactableManager = {
 
     },
 
+    getContactableFromPhoneNumber : function(phoneNumber,hierId) {
+        // Get contactable with phone number equal to reply.From that belong to hier
+        var contactable;
+        var hierFilter =Utils.filterByHiers(hierId);
+        var fromNumber = phoneNumber.trim();
+        if (fromNumber.length >= 10) {
+            // Craft phone number regex
+            var areaCode = fromNumber.slice(fromNumber.length - 10, fromNumber.length - 7);
+            var part1 = fromNumber.slice(fromNumber.length - 7, fromNumber.length - 4);
+            var part2 = fromNumber.slice(fromNumber.length - 4, fromNumber.length);
+            var regex = '(\\+1)?(\\()?' + areaCode + '(\\))?(\\-)?' + part1 + '(\\-)?' + part2;
+
+            contactable = Contactables.findOne({
+                'contactMethods.value': {$regex: regex, $options: 'x'},
+                $or: hierFilter
+            });
+        } else {
+            contactable = Contactables.findOne({
+                'contactMethods.value': {$regex: fromNumber, $options: 'x'},
+                $or: hierFilter
+            });
+        }
+
+        return contactable;
+    },
+
     // Notes
     addNote: function (note) {
 
         if (note.sendAsSMS) {
             // Send SMS to contactableId (which may be a contactable or a hotlist of contactables)
-            SMSManager.sendSMSToContactable(note.contactableId, note.userNumber, note.contactableNumber, note.msg, note.hotListFirstName);
+            TwilioManager.sendSMSToContactable(note.contactableId, note.userNumber, note.contactableNumber, note.msg, note.hotListFirstName);
         }
 
         // Save note
@@ -301,7 +327,6 @@ ContactableManager = {
         // Update job client
         Contactables.update({_id: contactId}, {$set: {'Contact.client': clientId}});
     },
-
     changeContactableUserId: function (contactableId, userId) {
         //todo: if isAdmin
 

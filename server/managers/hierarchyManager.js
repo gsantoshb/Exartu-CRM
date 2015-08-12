@@ -69,6 +69,12 @@ HierarchyManager = {
             }
         );
     },
+    getHierByPhoneNumber : function(phoneNumber){
+        var hier = Hierarchies.findOne({'phoneNumber.value': {$regex: phoneNumber.replace(/\+/g, ''), $options: 'x'}});
+        if (!hier)
+            throw new Error('There is no hierarchy with phone number ' + phoneNumber);
+        return hier;
+    },
     saveConfiguration: function (options) {
         var user = Meteor.user();
         if (!user)

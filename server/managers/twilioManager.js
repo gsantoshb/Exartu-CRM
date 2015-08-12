@@ -1,4 +1,4 @@
-SMSManager = {
+TwilioManager = {
     createHierarchyNumber: function (hierId) {
         // Get hierarchy
         if (!Meteor.user().hierarchies.indexOf(hierId) == -1)
@@ -109,116 +109,8 @@ SMSManager = {
 
         });
     },
-    processSMSReply: function (reply) {
-        // Get origin phone number hierarchy
-        var hier = Hierarchies.findOne({'phoneNumber.value': {$regex: reply.To.replace(/\+/g, ''), $options: 'x'}});
-        if (!hier)
-            throw new Error('There is no hierarchy with phone number ' + reply.To);
 
-        // Get contactable with phone number equal to reply.From that belong to hier
-        var contactable;
-        var hierFilter = Utils.filterByHiers(hier._id);
-        var fromNumber = reply.From.trim();
-        if (fromNumber.length >= 10) {
-            // Craft phone number regex
-            var areaCode = fromNumber.slice(fromNumber.length - 10, fromNumber.length - 7);
-            var part1 = fromNumber.slice(fromNumber.length - 7, fromNumber.length - 4);
-            var part2 = fromNumber.slice(fromNumber.length - 4, fromNumber.length);
-            var regex = '(\\+1)?(\\()?' + areaCode + '(\\))?(\\-)?' + part1 + '(\\-)?' + part2;
-
-            contactable = Contactables.findOne({
-                'contactMethods.value': {$regex: regex, $options: 'x'},
-                $or: hierFilter
-            });
-        } else {
-            contactable = Contactables.findOne({
-                'contactMethods.value': {$regex: fromNumber, $options: 'x'},
-                $or: hierFilter
-            });
-        }
-
-        if (!contactable)
-            throw new Error('There is no contactable with phone number ' + reply.From + ' in hierarchy ' + hier.name);
-
-        var hotlist = HotLists.findOne({members: contactable._id}, {$sort:{dateCreated: -1}});
-        var note = {}
-        if(hotlist){
-          note = {
-            msg: reply.Body,
-            sendAsSMS: true,
-            contactableNumber: reply.From,
-            userNumber: reply.To,
-            links: [{
-              id: contactable._id,
-              type: Enums.linkTypes.contactable.value
-            },
-              {
-              id:hotlist._id,
-              type: Enums.linkTypes.hotList.value
-              }
-            ],
-            hierId: hier._id,
-            isReply: true
-          };
-        }
-        else {
-          // Create note
-          note = {
-            msg: reply.Body,
-            sendAsSMS: true,
-            contactableNumber: reply.From,
-            userNumber: reply.To,
-            links: [{
-              id: contactable._id,
-              type: Enums.linkTypes.contactable.value
-            }],
-            hierId: hier._id,
-            isReply: true
-          };
-        }
-
-        Notes.insert(note);
-    }
 };
-
-// Twilio SMS Endpoint
-Router.map(function () {
-    // Placement Statuses
-    this.route('smsReply', {
-        where: 'server',
-        path: 'sms/reply',
-        action: function () {
-            var response = new RESTAPI.response(this.response);
-
-            // Obtain data from the respective method executed
-            var data;
-            switch (this.request.method) {
-                case 'GET':
-                    data = this.params.query;
-                    break;
-
-                case 'POST':
-                    data = this.request.body;
-                    break;
-
-                default:
-                    response.error('Method not supported');
-            }
-
-            try {
-                // Process the received sms
-                SMSManager.processSMSReply(data);
-
-                // Respond to twilio
-                var resp = new Twilio.TwimlResponse();
-                response.end(resp.toString(), {type: 'xml', plain: true});
-            } catch (err) {
-                console.log(err);
-                response.error(err.message);
-            }
-        }
-    });
-});
 
 var _requestNumber = function () {
     var newNumber;
@@ -241,7 +133,9 @@ var _requestNumber = function () {
             phoneNumber: result.availablePhoneNumbers[0].phoneNumber,
             areaCode: '651',
             smsMethod: "GET",
-            smsUrl: Meteor.absoluteUrl('sms/reply')
+            smsUrl: 'http://testingaram1243.ngrok.com/sms/reply',
+            voiceUrl:  'http://testingaram1243.ngrok.com/voice/handle'
+
           });
 
         } else {
@@ -275,3 +169,5 @@ var _sendSMS = function (from, to, text, cb) {
         cb && cb.call({}, err);
     }));
 };
+
+

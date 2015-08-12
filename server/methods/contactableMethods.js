@@ -284,7 +284,7 @@ Meteor.methods({
 
   // Communication
   sendSMSToContactable: function (contactableId, from, to, text) {
-    return SMSManager.sendSMSToContactable(contactableId, from, to, text);
+    return TwilioManager.sendSMSToContactable(contactableId, from, to, text);
   },
 
   // Client relations
@@ -305,7 +305,9 @@ Meteor.methods({
     ContactableManager.updateLegalInfo(update, contactableId);
   },
 
-
+  getContactableFromPhoneNumber : function(phoneNumber){
+    return ContactableManager.getContactableFromPhoneNumber(phoneNumber, Meteor.user().currentHierId);
+  },
   // Documents
   addContactableDocumentInfo: function (documentInfo, downloadUrl) {
     check(documentInfo, {

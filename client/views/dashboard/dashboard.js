@@ -171,6 +171,12 @@ Template.dashboard.helpers({
     }
 
   },
+  receiveCalls: function () {
+    if(Meteor.user().receiveCallAvailable)
+    return 'checked';
+    else
+    return '';
+  },
   listViewMode: function () {
     return listViewMode.get();
   },
@@ -237,6 +243,15 @@ Template.dashboard.events({
   'keyup #searchString': _.debounce(function (e) {
     searchString.set(e.target.value);
   }, 200),
+  'click #receive-calls-checkbox': function(e){
+
+    if( $(e.currentTarget).prop('checked') ){
+      Meteor.call('setUserPhoneAvailability',true);
+    }
+    else{
+      Meteor.call('setUserPhoneAvailability',false);
+    }
+  },
   'click #activityFilter input': function(e, ctx) {
     if( $(e.currentTarget).val() == 'all' ){
       if( $(e.currentTarget).prop('checked') ){
