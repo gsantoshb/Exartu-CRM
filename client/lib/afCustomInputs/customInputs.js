@@ -2,7 +2,7 @@
 AutoForm.addInputType('afSimpleCheckbox', {
   template: 'afSimpleCheckbox',
   valueOut: function () {
-    return !!this.is(":checked");
+    return !!this[0].reactiveCheck.get();
   },
   valueConverters: {
     "string": function (val) {
@@ -39,15 +39,29 @@ AutoForm.addInputType('afSimpleCheckbox', {
     }
   },
   contextAdjust: function (context) {
+
     if (context.value === true) {
       context.atts.checked = "";
     }
+
     //don't add required attribute to checkboxes because some browsers assume that to mean that it must be checked, which is not what we mean by "required"
     delete context.atts.required;
     return context;
   }
 })
 
+Template.afSimpleCheckbox.events({
+   'change input': function(e, ctx){
+     e.target.reactiveCheck.set(e.target.checked);
+   }
+})
+
+Template.afSimpleCheckbox.rendered = function(){
+  var check =  this.$("#checkBox");
+  var reactiveCheck = new ReactiveVar(check.is(":checked"));
+  check[0].reactiveCheck = reactiveCheck;
+
+}
 
 
 

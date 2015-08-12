@@ -104,5 +104,8 @@ PlacementManager = {
     else{
       return false;
     }
+  },
+  updatePlacement: function(placementId, update){
+    Placements.update({_id: placementId}, update);
   }
 };
