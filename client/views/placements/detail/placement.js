@@ -39,10 +39,10 @@ Utils.reactiveProp(self, 'editMode', false);
 var location={};
 Utils.reactiveProp(location, 'value', null);
 var services;
-
+var originalPlacement = {};
 Template.placement.created=function(){
   self.editMode = false;
-  var originalPlacement=placementCollection.findOne({ _id: Session.get('entityId') });
+  originalPlacement=placementCollection.findOne({ _id: Session.get('entityId') });
   var definition={
     reactiveProps:{
       tags:{
@@ -60,15 +60,16 @@ var job;
 var employee;
 Template.placement.helpers({
   placement: function(){
-    var originalPlacement=placementCollection.findOne({ _id: Session.get('entityId') });
+    //var originalPlacement=placementCollection.findOne({ _id: Session.get('entityId') });
     if(originalPlacement) {
-      Session.set('placementDisplayName', originalPlacement.displayName);
-      if (originalPlacement.tags == null) {
-        originalPlacement.tags = [];
-      }
-      if (!placement)
-        placement = new dType.objInstance(originalPlacement, Placements);
-      return placement;
+      //Session.set('placementDisplayName', originalPlacement.displayName);
+      //if (originalPlacement.tags == null) {
+      //  originalPlacement.tags = [];
+      //}
+      //if (!placement)
+      //  placement = new dType.objInstance(originalPlacement, Placements);
+      //debugger;
+      return originalPlacement;
     }
   },
   originalPlacement:function(){

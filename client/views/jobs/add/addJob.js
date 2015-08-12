@@ -137,8 +137,6 @@ Template.addJobPage.destroyed = function () {
 AutoForm.hooks({
   addJob: {
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
-      debugger;
-
       var job = {}
       job.objNameArray = ["Temporary", "job"];
       job.Temporary = {}

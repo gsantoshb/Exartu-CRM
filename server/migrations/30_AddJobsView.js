@@ -3,7 +3,7 @@ Migrations.add({
   version: 30,
   up: function () {
     var count = 0;
-    var jobTypes = _.pluck(dType.ObjTypes.find({parent: Enums.objGroupType.job}).fetch(), 'name');
+    var jobTypes = ['Direct Hire', 'Temporary']
 
     Jobs.find({}).forEach(function (job) {
       // Check that the job view record doesn't exist yet

@@ -35,8 +35,7 @@ Jobs.after.insert(function (userId, doc) {
 
 // Jobs View
 Jobs.after.insert(function (userId, job) {
-  var jobTypes = _.pluck(dType.ObjTypes.find({parent: Enums.objGroupType.job}).fetch(), 'name');
-
+  var jobTypes = ['Direct Hire', 'Temporary']
   var type = _.find(job.objNameArray, function (obj) {return jobTypes.indexOf(obj) != -1});
   var client = Contactables.findOne(job.client);
 

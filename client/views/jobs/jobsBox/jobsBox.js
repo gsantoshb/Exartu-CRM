@@ -72,12 +72,12 @@ var loadqueryFromURL = function (params) {
   var jobType = {};
   var type = params.hash || params.type;
   if (type != undefined && type != 'all') {
-    var re = new RegExp("^" + type + "$", "i");
-    var objType = dType.ObjTypes.findOne({
-      name: re
-    });
-    jobType.default = objType.name;
-    info.objType.value = objType.name + 's';
+    //var re = new RegExp("^" + type + "$", "i");
+    //var objType = dType.ObjTypes.findOne({
+    //  name: re
+    //});
+    jobType.default = type;
+    info.objType.value = type + 's';
   } else {
     jobType.default = undefined;
     info.objType.value = 'record(s)';
@@ -440,7 +440,10 @@ Template.jobFilters.helpers({
     return query;
   },
   jobTypes: function () {
-    return dType.ObjTypes.find({parent: Enums.objGroupType.job});
+    //var toReturn = dType.ObjTypes.find({parent: Enums.objGroupType.job});
+    //debugger;
+    //return toReturn
+    return [{name:"Direct Hire"},{name:"Temporary"}]
   }
 });
 

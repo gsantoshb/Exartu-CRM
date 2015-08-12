@@ -370,14 +370,15 @@ Template.sidebar.helpers({
     isAdmin: function () {
       return Utils.bUserIsAdmin();
     },
-    contactableTypes: function () {
-        return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
-    },
-    jobObjTypes: function () {
-        return dType.ObjTypes.find({
-            parent: Enums.objGroupType.job
-        });
-    },
+    //contactableTypes: function () {
+    //  debugger;
+    //    return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
+    //},
+    //jobObjTypes: function () {
+    //    return dType.ObjTypes.find({
+    //        parent: Enums.objGroupType.job
+    //    });
+    //},
     getActiveClass: function (route, type) {
         var current = Router.current();
         if (!current) return '';
