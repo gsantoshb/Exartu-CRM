@@ -2,7 +2,7 @@
  * Created by ramiro on 21/07/15.
  */
 var contact;
-var client;
+var client = new ReactiveVar();
 schemaAddContact = new SimpleSchema({
   'personFirstName': {
     type: String,
@@ -64,12 +64,15 @@ schemaAddContact = new SimpleSchema({
   }
 });
 Template.addContact.created = function(){
-  if(Session.get('options'))
-    contact = Session.get('options').Contact;
+  client.set(false);
+  if(Router.current().params) {
+    contact = {};
+    contact.client = Router.current().params.query.client;
+  }
   if(contact){
     Meteor.call('getContactableById', contact.client, function(err, res){
       if(res)
-        client = res;
+        client.set(res);
     })
   }
 }
@@ -121,15 +124,14 @@ Template.addContact.helpers({
   },
   'client': function(){
     if(_.isEmpty(contact)){
-      debugger;
       return false
     }
     else{
-      if(client){
-        return client.displayName;
+      if(client.get()){
+       return client.get().displayName;
       }
       else{
-        return false;
+       return false;
       }
     }
 
