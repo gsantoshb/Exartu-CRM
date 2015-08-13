@@ -1,5 +1,5 @@
 <template name="addContact">
-    {{#autoForm schema="schemaAddContact" id="addContact" doc=this}}
+    {{#autoForm schema="schemaAddContact" id="addContact" doc=contact}}
     <div class="form-group {{#if afFieldIsInvalid name='personFirstName'}}has-error{{/if}}">
         First name:
         {{> afFieldInput  name='personFirstName' placeholder="First name" id="personFirstName" type="text" class="form-control"}}
@@ -32,10 +32,17 @@
         Status:
         {{> afFormGroup name="status"  class="form-control" label=false options=status}}
     </div>
-    <div class="form-group">
-        Client:
-        {{> afFieldInput  name='client' placeholder="Search client" class="form-control" type="afSearch"  getCollection=getClients selectionChanged=clientChanged }}
-    </div>
+    {{#if client}}
+        <div class="form-group">
+            Client:
+            <input class="form-control" value={{client}} readonly>
+        </div>
+    {{else}}
+        <div class="form-group">
+            Client:
+            {{> afFieldInput  name='client' placeholder="Search client" startValue=contact.client class="form-control" type="afSearch"  getCollection=getClients selectionChanged=clientChanged }}
+        </div>
+    {{/if}}
     <div class="form-group {{#if afFieldIsInvalid name='statusNote'}}has-error{{/if}}">
         Status note:
         {{> afFieldInput  name='statusNote' placeholder="Status note" id="statusNote" type="text" class="form-control"}}
