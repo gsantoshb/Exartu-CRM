@@ -68,7 +68,6 @@ Template.addContact.created = function(){
     contact = Session.get('options').Contact;
   if(contact){
     Meteor.call('getContactableById', contact.client, function(err, res){
-      debugger;
       if(res)
         client = res;
     })
@@ -97,7 +96,7 @@ Template.addContact.helpers({
         self.ready(_.map(result, function (r) {
             var text = r.organization.organizationName;
             if (r.Client) text = text + '/' + r.Client.department;
-            text = text + '/' + r._id;
+            text = text ;
             return {id: r._id, text: text};
           })
         );
@@ -127,7 +126,7 @@ Template.addContact.helpers({
     }
     else{
       if(client){
-        return client.displayName + "/"+client._id;
+        return client.displayName;
       }
       else{
         return false;
