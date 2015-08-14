@@ -24,6 +24,7 @@ Notes.after.insert(function (userId, doc) {
 // Activities
 Notes.after.insert(function (userId, doc) {
   var obj = {
+    msg: doc.msg,
     userId: userId || doc.userId,
     hierId: doc.hierId,
     type: Enums.activitiesType.noteAdd,
@@ -32,6 +33,7 @@ Notes.after.insert(function (userId, doc) {
       return link.id;
     }),
     data: {dateCreated: new Date()}
+
   };
 
   if (doc && doc.testData) obj.testData = true;
