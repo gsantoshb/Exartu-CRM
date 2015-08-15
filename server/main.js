@@ -21,6 +21,8 @@ var handleConfiguration = function () {
 
   _.forEach(_.keys(ExartuConfig), function (option) {
     ExartuConfig[option] = ExartuConfig[option] || process.env[option];
+    if(ExartuConfig[option] == undefined)
+      console.log('Environment variable not set: ' + option);
   });
 }
 
