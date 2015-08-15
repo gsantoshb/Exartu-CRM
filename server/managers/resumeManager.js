@@ -1,26 +1,14 @@
 var stream = Meteor.npmRequire('stream');
 var fs = Meteor.npmRequire('fs');
-Meteor.startup(function () {
-  if (!ExartuConfig.ResumeParserURL) {
-    console.error('ResumeParserURL not set');
-  }
-  if (!ExartuConfig.ResumeParserPasscode) {
-    console.error('ResumeParserPasscode not set');
-  }
-});
 
 ResumeManager = {
   parse: function (data) {
-
-
     var form = new FormData();
-
     // handle a path
     if (_.isString(data)){
       var stream = fs.createReadStream(data);
       form.append("file", stream);
     }
-
     if (data.fileData) {
       var fileData = new Buffer(data.fileData, 'base64');
       form.append("file", fileData, {
@@ -32,7 +20,6 @@ ResumeManager = {
       //if data is readable stream , then use it as is on append, as it will get the filename and content type from the stream itself.
       form.append("file", data);
     }
-
 
     var headers = _.extend(form.getHeaders(), {
       'Accept-Encoding': 'gzip,deflate',
@@ -78,105 +65,6 @@ var xml2jsAsync = function (json) {
 };
 
 var extractInformation = function (parseResult) {
-//var example = {
-//  StructuredXMLResume: {
-//    ContactInfo: [
-//      {
-//        ContactMethod: [
-//          {
-//            Telephone: [
-//              {
-//                FormattedNumber: [
-//                  '555-5555-555'
-//                ]
-//              }
-//            ]
-//          },
-//          {
-//            InternetEmailAddress: ['asd@asd.asd'],
-//            Location: ['onPerson'],
-//            Use: ['personal'],
-//            WhenAvailable: ['anytime']
-//          },
-//          {
-//            PostalAddress: [{
-//              $: { type: "undefined" },
-//              CountryCode: ['CA'],
-//              DeliveryAddress: [{ AddressLine: ['"1A Software Engineering"'] }],
-//              Municipality: ['University of Waterland ID: 20202020↵↵Permanent Address:↵100 Fake St.↵Waterland'],
-//              PostalCode: [''],
-//              Region: ['On']
-//            }],
-//            WhenAvailable: Array[1]
-//          }
-//        ]
-//      }
-//    ],
-//    PersonName: [
-//      {
-//        FamilyName: [''],
-//        FormattedName: [''],
-//        GivenName: [''],
-//        MiddleName: ['']
-//      }
-//    ],
-//    EducationHistory: [
-//      {
-//        $: {schoolType: "highschool"},
-//        Degree: [
-//          {
-//            $: {degreeType: "high school or equivalent"},
-//            Comments: [''],
-//            DatesOfAttendance: [
-//              {
-//                EndDate: [
-//                  {
-//                    AnyDate: ['YYY-MM-DD']
-//                  }
-//                ],
-//                StartDate: [
-//                  {AnyDate: []}
-//                ]
-//              }
-//            ],
-//            DegreeDate: [
-//              {AnyDate: []}
-//            ],
-//            DegreeName: ['Diploma'],
-//            UserArea: [
-//              {
-//                'sov:DegreeUserArea': [
-//                  {
-//                    'sov:Id': ['DEG-1']
-//                  }
-//                ]
-//              }
-//            ]
-//          }
-//        ],
-//        PostalAddress: Array[1],
-//        School: [
-//          {SchoolName: ['']}
-//        ]
-//      }
-//    ],
-//    EmploymentHistory: Array[1],
-//    LicensesAndCertifications: Array[1],
-//    Objective: [''],
-//    Qualifications: [
-//      {
-//        Competency: {
-//          $: {name: "TRAINING"},
-//          CompetencyEvidence: Array[1],
-//          CompetencyId: Array[1],
-//          TaxonomyId: Array[1]
-//        }
-//      }
-//    ],
-//    References: Array[1],
-//    RevisionDate: Array[1]
-//  }
-//};
     var employee = {};
     employee.objNameArray = ['person', 'Employee', 'contactable'];
     employee.person = {
