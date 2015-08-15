@@ -39,6 +39,11 @@ schemaEditJob = new SimpleSchema({
   'statusNote':{
     type: String,
     optional:true
+  },
+  'availableShift':{
+    type: String,
+    allowedValues: ['1st shift','2nd shift','3rd shift'],
+    optional:true
   }
 })
 var job = new ReactiveVar();
@@ -76,6 +81,7 @@ Template.jobDetail.helpers({
         toReturn.status = reactJob.status;
         toReturn.isWebVisible = reactJob.isWebVisible;
         toReturn.statusNote = reactJob.statusNote;
+        toReturn.availableShift = reactJob.availableShift;
         return toReturn;
       }
     },
@@ -162,6 +168,7 @@ AutoForm.hooks({
         var lkJobTitle = LookUps.findOne({_id: updateDoc.$set.jobTitle});
         updateDoc.$set.jobTitleDisplayName = lkJobTitle.displayName;
       }
+      debugger;
       Meteor.call('updateJob',currentDoc._id,updateDoc, function(err, res){
         editMode.set(false);
       })
