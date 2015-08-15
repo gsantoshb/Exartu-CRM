@@ -7,6 +7,7 @@ _.extend(TwilioManager, {
             Twilio.Device.ready(function (device) {
                 console.log("Twilio ready");
             });
+
             //This is triggered when an incoming connection is canceled by the caller before it is accepted by the Twilio Client device.
             Twilio.Device.cancel(function (conn){
                 currentTwilioConnection.set(undefined);
@@ -23,8 +24,9 @@ _.extend(TwilioManager, {
             //This is triggered whenever an incoming connection from an outbound REST call or a TwiML <Dial> to this device is made.
             Twilio.Device.incoming(function (conn) {
                 console.log("Incoming connection from " + conn.parameters.From);
-                Utils.showModal('incomingCallModal', conn);
                 currentTwilioConnection.set(conn);
+                Utils.showModal('incomingCallModal');
+
             });
  }});
 
