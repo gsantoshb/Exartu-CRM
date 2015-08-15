@@ -2,10 +2,10 @@
   "name": "aida",
   "version": "0.0.1",
   "dependencies": {
-    "twilioclient": "1.2"
+    "twilioclient-fixed": "1.2"
   },
   "overrides": {
-    "twilioclient": {
+    "twilioclient-fixed": {
       "arch": ["client"]
     }
   },
