@@ -15,7 +15,6 @@ var OnBeforeActions = {
     }else{
       userInfo = Utils.getUserInformation(Meteor.userId());
       TAPi18n.setLanguage(userInfo.language);
-      TwilioManager.startReceivingCalls();
       this.next();
     }
   }
