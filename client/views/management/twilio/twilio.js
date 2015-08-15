@@ -26,6 +26,12 @@ TwilioManagementController = RouteController.extend({
 Template.twilioManagement.helpers({
   hierarchy: function () {
     return Hierarchies.findOne(Meteor.user().currentHierId);
+  },
+  receiveCalls: function () {
+    if(Meteor.user().receiveCallAvailable)
+      return 'checked';
+    else
+      return '';
   }
 });
 
@@ -42,5 +48,14 @@ Template.twilioManagement.events({
         }
       }
     });
+  },
+  'click #receive-calls-checkbox': function(e){
+
+    if( $(e.currentTarget).prop('checked') ){
+      Meteor.call('setUserPhoneAvailability',true);
+    }
+    else{
+      Meteor.call('setUserPhoneAvailability',false);
+    }
   }
 });

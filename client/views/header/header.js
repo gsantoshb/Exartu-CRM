@@ -37,6 +37,7 @@ Template.header.helpers({
     userEmail: function () {
         return Meteor.user().emails[0].address;
     },
+
     UnreadMessagesCount: function () {
         console.log('unreadmess');
         return Messages.find({
@@ -370,15 +371,9 @@ Template.sidebar.helpers({
     isAdmin: function () {
       return Utils.bUserIsAdmin();
     },
-    //contactableTypes: function () {
-    //  debugger;
-    //    return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
-    //},
-    //jobObjTypes: function () {
-    //    return dType.ObjTypes.find({
-    //        parent: Enums.objGroupType.job
-    //    });
-    //},
+    currentTwilioConnectionNumber : function () {
+        return currentTwilioConnection.get().parameters.From;
+    },
     getActiveClass: function (route, type) {
         var current = Router.current();
         if (!current) return '';
@@ -401,6 +396,17 @@ Template.sidebar.helpers({
     }
 
 });
+Template.sidebar.events({
+    'click #cancelCall': function(e){
+
+        currentTwilioConnection.get().reject();
+    currentTwilioConnection.get().disconnect();
+        currentTwilioConnection.set(undefined);
+}
+
+});
+
+
 
 Template.lastEntryItem.helpers({
   isContactable:function(){

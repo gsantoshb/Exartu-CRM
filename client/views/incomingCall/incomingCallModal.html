@@ -7,11 +7,14 @@
                     <h4 class="modal-title" id="myModalLabel">Incoming call from  {{incomingName}} </h4>
                 </div>
                 <div class="modal-body" style="min-height: 100px;">
+                    {{#if contactable}}
+                 <a href="/contactable/{{contactable._id}}">Navigate to details for {{incomingName}} </a>
 
-
+                    {{>entityActivities entityId=contactable._id}}
+                    {{/if}}
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-success" id="answerCall"> Answer </a>
+                    <a class="btn btn-success {{answerCallDisabled}}"  id="answerCall"> Answer </a>
                     <a class="btn btn-danger" id="declineCall" data-dismiss="modal"> Decline </a>
                 </div>
             </div>
