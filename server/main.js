@@ -27,8 +27,6 @@ var handleConfiguration = function () {
 }
 
 Meteor.startup(function () {
-  console.log(Meteor.settings);
-
   // Run migrations
   Meteor.setTimeout(function () {
     Migrations.migrateTo('latest');
