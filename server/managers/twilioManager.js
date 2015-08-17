@@ -133,8 +133,8 @@ var _requestNumber = function () {
             phoneNumber: result.availablePhoneNumbers[0].phoneNumber,
             areaCode: '651',
             smsMethod: "GET",
-            smsUrl: 'http://testingaram1243.ngrok.com/sms/reply',
-            voiceUrl:  'http://testingaram1243.ngrok.com/voice/handle'
+              smsUrl: Meteor.absoluteUrl('sms/reply'),
+              voiceUrl:  Meteor.absoluteUrl('voice/handle')
 
           });
 
