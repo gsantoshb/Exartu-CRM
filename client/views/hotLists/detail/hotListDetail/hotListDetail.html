@@ -1,55 +1,55 @@
-<template name="hotListDetail">
-    <div class="box">
-        <div class="box-header-2">
-            <a class="btn-action editHotList pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i class="fa fa-pencil"></i></a>
-            <div class="box-title">{{_ "HotList Details"}}</div>
-        </div>
-        <div class="box-content-md">
-            <table class="table box-table table-striped">
-                <tbody>
-                {{#with hotList}}
-                    <tr>
-                        <td>{{_ "Status note"}}:</td>
-                        <td>
-                            {{#objectProperty property=statusNote editable=editMode}}
-                                <input class="form-control" type="text" value="{{_ value}}">
-                            {{else}}
-                                <span >{{_ value}}</span>
-                            {{/objectProperty}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{{_ "Active Status"}}</td>
-                        <td>
-                            {{#objectProperty property=activeStatus editable=editMode}}
-                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
-                            {{else}}
-                                <strong>
-                                    <strong>{{_ displayName}}</strong>
-                                </strong>
-                            {{/objectProperty}}
-                        </td>
-                    </tr>
-                {{/with}}
-                {{#with originalHotList}}
-                    {{>displayOriginDataInTable}}
-                {{/with}}
+<!--<template name="hotListDetail">-->
+    <!--<div class="box">-->
+        <!--<div class="box-header-2">-->
+            <!--<a class="btn-action editHotList pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i class="fa fa-pencil"></i></a>-->
+            <!--<div class="box-title">{{_ "HotList Details"}}</div>-->
+        <!--</div>-->
+        <!--<div class="box-content-md">-->
+            <!--<table class="table box-table table-striped">-->
+                <!--<tbody>-->
+                <!--{{#with hotList}}-->
+                    <!--<tr>-->
+                        <!--<td>{{_ "Status note"}}:</td>-->
+                        <!--<td>-->
+                            <!--{{#objectProperty property=statusNote editable=editMode}}-->
+                                <!--<input class="form-control" type="text" value="{{_ value}}">-->
+                            <!--{{else}}-->
+                                <!--<span >{{_ value}}</span>-->
+                            <!--{{/objectProperty}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>{{_ "Active Status"}}</td>-->
+                        <!--<td>-->
+                            <!--{{#objectProperty property=activeStatus editable=editMode}}-->
+                                <!--{{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}-->
+                            <!--{{else}}-->
+                                <!--<strong>-->
+                                    <!--<strong>{{_ displayName}}</strong>-->
+                                <!--</strong>-->
+                            <!--{{/objectProperty}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                <!--{{/with}}-->
+                <!--{{#with originalHotList}}-->
+                    <!--{{>displayOriginDataInTable}}-->
+                <!--{{/with}}-->
 
-                </tbody>
-            </table>
-        </div>
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
 
-        {{#if editMode}}
-            <div class="box-header-2" style="height: 60px">
-                <div class="pull-right">
-                    <span class="btn btn-default cancelButton">
-                        {{_ "Cancel"}}
-                    </span>
-                    <span class="btn btn-info saveDetailsButton">
-                        {{_ "Save"}}
-                    </span>
-                </div>
-            </div>
-        {{/if}}
-    </div>
-</template>
+        <!--{{#if editMode}}-->
+            <!--<div class="box-header-2" style="height: 60px">-->
+                <!--<div class="pull-right">-->
+                    <!--<span class="btn btn-default cancelButton">-->
+                        <!--{{_ "Cancel"}}-->
+                    <!--</span>-->
+                    <!--<span class="btn btn-info saveDetailsButton">-->
+                        <!--{{_ "Save"}}-->
+                    <!--</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--{{/if}}-->
+    <!--</div>-->
+<!--</template>-->

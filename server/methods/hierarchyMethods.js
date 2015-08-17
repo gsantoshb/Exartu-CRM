@@ -15,7 +15,7 @@ Meteor.methods({
     if (! _.findWhere(userHierarchies, {_id: hierId}))
       throw new Meteor.Error(500, 'User not allowed to require number for this hierarchy');
 
-    return SMSManager.createHierarchyNumber(hierId);
+    return TwilioManager.createHierarchyNumber(hierId);
   },
   changeCurrentHierId: function(hierid,userid){
     HierarchyManager.changeCurrentHier(hierid,userid);

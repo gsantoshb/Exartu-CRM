@@ -15,6 +15,13 @@ var OnBeforeActions = {
     }else{
       userInfo = Utils.getUserInformation(Meteor.userId());
       TAPi18n.setLanguage(userInfo.language);
+
+      $.cachedScript( "https://static.twilio.com/libs/twiliojs/1.2/twilio.js" ).done(function( script, textStatus ) {
+        TwilioManager.startReceivingCalls();
+      });
+
+
+
       this.next();
     }
   }

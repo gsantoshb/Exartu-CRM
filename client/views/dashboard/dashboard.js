@@ -171,6 +171,7 @@ Template.dashboard.helpers({
     }
 
   },
+
   listViewMode: function () {
     return listViewMode.get();
   },
@@ -237,6 +238,7 @@ Template.dashboard.events({
   'keyup #searchString': _.debounce(function (e) {
     searchString.set(e.target.value);
   }, 200),
+
   'click #activityFilter input': function(e, ctx) {
     if( $(e.currentTarget).val() == 'all' ){
       if( $(e.currentTarget).prop('checked') ){

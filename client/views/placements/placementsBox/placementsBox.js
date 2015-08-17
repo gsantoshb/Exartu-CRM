@@ -404,9 +404,9 @@ Template.placementList.helpers({
     placements: function () {
         return placementCollection.find({}, options);
     },
-    placementTypes: function () {
-        return dType.ObjTypes.find({parent: Enums.objGroupType.placement});
-    },
+    //placementTypes: function () {
+    //    return dType.ObjTypes.find({parent: Enums.objGroupType.placement});
+    //},
     listViewMode: function () {
         return listViewMode.get();
     },

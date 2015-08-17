@@ -36,9 +36,9 @@ JobController = RouteController.extend({
     }
 });
 
-var generateReactiveObject = function (job) {
-    return new dType.objInstance(job, jobCollections);
-};
+//var generateReactiveObject = function (job) {
+//    return new dType.objInstance(job, jobCollections);
+//};
 
 var job;
 var client;
@@ -57,9 +57,9 @@ Template.job.onCreated(function () {
 
     Session.set('jobDisplayName', originalJob.get().displayName);
 
-    if (!job.get()){
-        job.set(generateReactiveObject(originalJob.get()));
-    }
+    //if (!job.get()){
+    //    job.set(generateReactiveObject(originalJob.get()));
+    //}
 });
 
 Template.job.helpers({

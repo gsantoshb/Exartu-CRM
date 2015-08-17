@@ -1,92 +1,173 @@
-
 TwilioManager = {
-  makePlacementCall: function (placementId) {
-    // Validate parameters
-    if (!placementId) throw new Error("Placement ID is required");
+    createHierarchyNumber: function (hierId) {
+        // Get hierarchy
+        if (!Meteor.user().hierarchies.indexOf(hierId) == -1)
+            throw new Meteor.Error(500, 'Invalid hierarchy');
 
-    // Get placement
-    var placement = Utils.filterCollectionByUserHier2(Meteor.userId(), Placements.find({_id: placementId})).fetch()[0];
-    if (!placement) throw new Error("Invalid placement ID");
+        var hier = Hierarchies.findOne(hierId);
+        if (!hier)
+            throw new Meteor.Error(404, 'Hierarchy not found');
 
-    // Get employee
-    var employee = Utils.filterCollectionByUserHier2(Meteor.userId(), Contactables.find({_id: placement.employee})).fetch()[0];
-    if (!employee.contactMethods || employee.contactMethods.length == 0) throw new Error("Employee needs a phone contact method");
+        if (hier.phoneNumber)
+            return hier.phoneNumber;
 
-    // Get employee phone number
-    var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
-    var phoneCMs = _.pluck(LookUps.find({
-      hierId: rootHier,
-      lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
-      lookUpActions: Enums.lookUpAction.ContactMethod_Phone
-    }).fetch(), '_id');
-    var phone = _.find(employee.contactMethods, function (cm) {return phoneCMs.indexOf(cm.type) != -1;});
-    if (!phone) throw new Error("Employee needs a phone contact method");
+        // Request number
+        var phoneNumber = _requestNumber();
+        if (!phoneNumber)
+            throw new Meteor.Error(500, 'Error creating hierarchy phone number');
 
-    // Get job
-    var job = Utils.filterCollectionByUserHier2(Meteor.userId(), Jobs.find({_id: placement.job})).fetch()[0];
-    if (!job.address) throw new Error("The job needs a worksite");
+        // Set available SMS
+        phoneNumber.smsCount = 0;
 
-    // Get job address
-    var address = Addresses.findOne({_id: job.address});
-    if (!address) throw new Error("The job needs a worksite");
+        // Set user who requested a hier phone number
+        phoneNumber.requestedBy = Meteor.userId();
+
+        // Set number to hierarchy
+        Hierarchies.update({_id: hierId}, {$set: {phoneNumber: phoneNumber}});
+
+        return phoneNumber;
+    },
+    sendSMSToContactable: function (id, from, to, text,hotListFirstName) {
+        var ids;
+        // try for a hotlist of contactables
+        var hotlist = HotLists.findOne({_id:id});
+        if (hotlist) {
+            ids = hotlist.members;
+        }
+        else ids = [id];
+        // Validate user phone number
+        // Simpleschema messes up and does an unasked for conversion of the twilio # (from) which
+        // wipes out the '+' sign from the front of the number...add it back here
+        if (from[0] != '+'){
+            from = '+' + from;
+        }
+        _.each(ids, function (contactableid) {
+
+            var userHierarchies = Utils.getUserHiers();
+            var phoneNumberHier;
+
+            _.forEach(userHierarchies, function (userHier) {
+                if (userHier.phoneNumber && userHier.phoneNumber.value == from) {
+                    phoneNumberHier = userHier;
+                }
+            });
 
 
-    // Get hierarchy phone number
-    var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
-    var hier = Hierarchies.findOne({_id: rootHier});
-    if (!hier.phoneNumber || !hier.phoneNumber.value) throw new Error("Hierarchy phone number is required");
+            if (!phoneNumberHier) {
+                console.log('invalid user phone number on sms send');
+                throw new Meteor.Error(500, 'Invalid user phone number');
+            }
 
-    // Check twilio credentials
-    if (!twilio) throw new Error("Twilio account credentials not set");
+            // Check if hier's phone number has available sms
+            if (phoneNumberHier.phoneNumber.smsCount >= Global._MAX_AVAILABLE_SMS_COUNT)
+                throw new Meteor.Error('Hierarchy phone number has reach max SMS count sent');
 
-    // Craft the url
-    var callUrl = "https://hrckiosk.ngrok.io/" + "twilio/placementCall?id=" + placement._id;
+            // Get contactable hierarchy
+            var contactable = Contactables.findOne({_id: contactableid, hierId: {$in: Meteor.user().hierarchies}});
+            if (!contactable)
+                throw new Meteor.Error(404, 'Contactable not found',contactableid);
+            var destNumber;
+            var msgText=text;
+            if (hotlist)
+            {
+                if (hotListFirstName)
+                {
+                    if (contactable.person && contactable.person.firstName)
+                        if (contactable) msgText= contactable.person.firstName + ', ' + msgText;
+                }
+                var contactMethodsTypes=LookUps.find({
+                    lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+                    lookUpActions: "ContactMethod_MobilePhone"
+                        }).fetch();
+                _.every(contactable.contactMethods, function (cm) {
+                    var type = _.findWhere(contactMethodsTypes, {_id: cm.type});
+                    if (!type)
+                        return true; //keep looking
+                    else {
+                        destNumber=cm.value;
+                    }
+                });
+            }
+            else {
+                // Validate contactable phone number
+                var contactMethod = _.findWhere(contactable.contactMethods, {value: to});
+                if (!contactMethod)
+                    throw new Meteor.Error(500, 'Invalid phone number');
+                destNumber=to;
+            };
 
-    // Make the twilio call
-    twilio.makeCall({
-      to:'+16519680123', // Any number Twilio can call
-      from: hier.phoneNumber.value, // A number you bought from Twilio and can use for outbound communication
-      url: callUrl // A URL that produces an XML document (TwiML) which contains instructions for the call
-    }, function(err, responseData) {
-      //executed when the call has been initiated.
-      console.log(responseData.from); // outputs "+14506667788"
-    });
-  },
+            // Send SMS
+            _sendSMS(from, destNumber, msgText, function (err) {
+                if (!err) {
+                    // Update phoneNumber sms count
+                    Hierarchies.update({_id: phoneNumberHier._id}, {$inc: {'phoneNumber.smsCount': 1}});
+                }
+                else {
+                    console.log('sms send error', err);
+                }
+            });
 
-  handlePlacementCall: function (placementId, data) {
-    // Get placement info
-    var placement = Placements.findOne({_id: placementId});
-    var job = Jobs.findOne({_id: placement.job});
-    var address = Addresses.findOne({_id: job.address});
+        });
+    },
 
-    // Craft the url
-    var callUrl = "https://hrckiosk.ngrok.io/" + "twilio/gatherPlacementResponse?id=" + placementId;
-
-    var res = new Twilio.TwimlResponse();
-    res.say('This is an automated call from Aida regarding a job you might be interested.', {voice: 'woman'});
-    res.pause({length: 1});
-    res.say('There is a position open at ' + job.clientDisplayName + ' for ' + job.jobTitleDisplayName + '.', {voice: 'woman'});
-    res.pause({length: 1});
-    res.say('This job will be performed at: ', {voice: 'woman'});
-    res.say(address.address + ", " + address.city + ", " + address.state + ", " + address.country + ".", {voice: 'woman'});
-    res.pause({length: 1});
-    res.gather({
-      action: callUrl,
-      numDigits: 1,
-      timeout: 5
-    }, function () {
-      this.say('If you are interested in the job, please press 1, otherwise you can disregard this call.', {voice: 'woman'});
-    });
-    res.hangup();
-
-    return res
-  },
-  gatherPlacementResponse: function (placementId) {
-    var res = new Twilio.TwimlResponse();
-    res.say('Thank you! A representative will soon get in contact with you.', {voice: 'woman'});
-    res.pause({length: 1});
-    res.hangup();
-
-    return res;
-  }
 };
+
+var _requestNumber = function () {
+    var newNumber;
+
+    if (!twilio) {
+        var fakeNumber = '+' + Math.round(Math.random() * Math.pow(10, 11));
+        newNumber = {
+            phoneNumber: fakeNumber,
+            friendlyName: fakeNumber //'(' + fakeNumber.slice(1, 4) + ') ' + fakeNumber.slice(5, 8) + '-' + fakeNumber.slice(8, 12)
+        };
+
+        console.warn('TWILIO: Fake number', newNumber);
+    }
+    else {
+        // Search for available phone numbers
+        var result = Meteor.wrapAsync(twilio.availablePhoneNumbers('US').local.get)({areaCode: '651'});
+
+        if (result.availablePhoneNumbers.length > 0) {
+          newNumber = Meteor.wrapAsync(twilio.incomingPhoneNumbers.create)({
+            phoneNumber: result.availablePhoneNumbers[0].phoneNumber,
+            areaCode: '651',
+            smsMethod: "GET",
+              smsUrl: Meteor.absoluteUrl('sms/reply'),
+              voiceUrl:  Meteor.absoluteUrl('voice/handle')
+
+          });
+
+        } else {
+          throw new Meteor.Error(500, 'There is no available number on Twilio');
+        }
+        //since the above code is failing)...create the twilio number manually using one already purchased
+        //newNumber = {
+        //    phoneNumber: "+16122356835",
+        //    friendlyName: "1-612-235-6835"
+        //}
+
+    }
+
+    return {
+        value: newNumber.phoneNumber,
+        displayName: newNumber.friendlyName
+    };
+};
+
+var _sendSMS = function (from, to, text, cb) {
+    if (!twilio) {
+        console.warn('TWILIO: Fake SMS send { from: ' + from + ', to: ' + to + ', text: ' + text + '}');
+        return;
+    }
+
+    twilio.sendSms({
+        to: to,
+        from: from,
+        body: text
+    }, Meteor.bindEnvironment(function (err) {
+        cb && cb.call({}, err);
+    }));
+};
+
+

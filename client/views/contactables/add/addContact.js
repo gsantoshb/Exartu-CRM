@@ -1,6 +1,8 @@
 /**
  * Created by ramiro on 21/07/15.
  */
+var contact;
+var client = new ReactiveVar();
 schemaAddContact = new SimpleSchema({
   'personFirstName': {
     type: String,
@@ -61,8 +63,23 @@ schemaAddContact = new SimpleSchema({
     }
   }
 });
-
+Template.addContact.created = function(){
+  client.set(false);
+  if(Router.current().params) {
+    contact = {};
+    contact.client = Router.current().params.query.client;
+  }
+  if(contact){
+    Meteor.call('getContactableById', contact.client, function(err, res){
+      if(res)
+        client.set(res);
+    })
+  }
+}
 Template.addContact.helpers({
+  'contact': function(){
+    return contact;
+  },
   'status': function(){
     var processArray = LookUps.find({lookUpCode:Enums.lookUpCodes.contact_status}).fetch()
     var toReturn = _.map(processArray, function(a){
@@ -82,7 +99,7 @@ Template.addContact.helpers({
         self.ready(_.map(result, function (r) {
             var text = r.organization.organizationName;
             if (r.Client) text = text + '/' + r.Client.department;
-            text = text + '/' + r._id;
+            text = text ;
             return {id: r._id, text: text};
           })
         );
@@ -104,43 +121,72 @@ Template.addContact.helpers({
     return _.map(LookUps.find({lookUpActions: Enums.lookUpAction.ContactMethod_Phone}).fetch(), function(r){
       return {label:r.displayName, value:r._id};
     })
+  },
+  'client': function(){
+    if(_.isEmpty(contact)){
+      return false
+    }
+    else{
+      if(client.get()){
+       return client.get().displayName;
+      }
+      else{
+       return false;
+      }
+    }
+
   }
 })
 
 AutoForm.hooks({
   addContact: {
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
-      debugger;
-
-         var contact = {}
-         contact.objNameArray = ["person", "Contact", "contactable"];
-         var person = {firstName:insertDoc.personFirstName,middleName: insertDoc.personMiddleName, lastName: insertDoc.personLastName, jobTitle: insertDoc.jobTitle,salutation:"", birthDate:null};
-         contact.person = person;
-         var lkActive = LookUps.findOne({lookUpCode:Enums.lookUpCodes.active_status,lookUpActions:Enums.lookUpAction.Implies_Active});
-         contact.activeStatus = lkActive._id;
-         var contactMethods = [];
-         if(insertDoc.phone){
-           contactMethods.push({value:insertDoc.phone, type:insertDoc.phoneType});
-         }
-         if(insertDoc.email){
-           contactMethods.push({value:insertDoc.email, type:insertDoc.emailType});
-         }
-         contact.contactMethods = contactMethods;
-         contact.hierId = Meteor.user().currentHierId;
-         contact.userId = Meteor.user()._id;
-         contact.createdBy = Meteor.user()._id;
-         contact.dateCreated = new Date();
-         contact.statusNote = insertDoc.statusNote;
-         contact.howHeardOf = null;
-       debugger;
-      Meteor.call('getContactableById', insertDoc.client, function(err,res){
-        contact.Contact = {client: res._id, clientName:res.displayName, status:res.Client.status}
-        Meteor.call('addContactable',contact, function(err, res){
-          Router.go('/contactable/' + res);
+      var contact = {}
+      contact.objNameArray = ["person", "Contact", "contactable"];
+      var person = {
+        firstName: insertDoc.personFirstName,
+        middleName: insertDoc.personMiddleName,
+        lastName: insertDoc.personLastName,
+        jobTitle: insertDoc.jobTitle,
+        salutation: "",
+        birthDate: null
+      };
+      contact.person = person;
+      var lkActive = LookUps.findOne({
+        lookUpCode: Enums.lookUpCodes.active_status,
+        lookUpActions: Enums.lookUpAction.Implies_Active
+      });
+      contact.activeStatus = lkActive._id;
+      var contactMethods = [];
+      if (insertDoc.phone) {
+        contactMethods.push({value: insertDoc.phone, type: insertDoc.phoneType});
+      }
+      if (insertDoc.email) {
+        contactMethods.push({value: insertDoc.email, type: insertDoc.emailType});
+      }
+      contact.contactMethods = contactMethods;
+      contact.hierId = Meteor.user().currentHierId;
+      contact.userId = Meteor.user()._id;
+      contact.createdBy = Meteor.user()._id;
+      contact.dateCreated = new Date();
+      contact.statusNote = insertDoc.statusNote;
+      contact.howHeardOf = null;
+      if (client) {
+        contact.Contact =  {client: client._id, clientName: client.displayName, status: client.Client.status}
+        Meteor.call('addContactable', contact, function (err, res) {
+          Router.go('/contactable/' + client._id);
         })
-      })
-
-      return false;
+        return false;
+      }
+      else {
+        Meteor.call('getContactableById', insertDoc.client, function (err, res) {
+          contact.Contact = {client: res._id, clientName: res.displayName, status: res.Client.status}
+          Meteor.call('addContactable', contact, function (err, res) {
+            Router.go('/contactable/' + res);
+          })
+        })
+        return false;
+      }
     }
   }
 })

@@ -1,0 +1,23 @@
+<template name="incomingCallModal">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Incoming call from  {{incomingName}} </h4>
+                </div>
+                <div class="modal-body" style="min-height: 100px;">
+                    {{#if contactable}}
+                 <a href="/contactable/{{contactable._id}}">Navigate to details for {{incomingName}} </a>
+
+                    {{>entityActivities entityId=contactable._id}}
+                    {{/if}}
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-success {{answerCallDisabled}}"  id="answerCall"> Answer </a>
+                    <a class="btn btn-danger" id="declineCall" data-dismiss="modal"> Decline </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

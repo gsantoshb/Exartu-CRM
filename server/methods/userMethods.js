@@ -109,6 +109,13 @@ Meteor.methods({
 
     Meteor.users.update({ _id: userId, 'hierRoles.hierId': loggedUser.currentHierId }, { $pull: { 'hierRoles.$.roleIds': roleId } });
 
+  },
+
+  setUserPhoneAvailability: function(available){
+    check(available, Boolean);
+    Meteor.users.update({ _id: this.userId },{ $set:
+      {'receiveCallAvailable': available }
+    });
   }
 
 

@@ -66,18 +66,18 @@ var options;
 var employeeId;
 var sending = new ReactiveVar(false);
 
-var createPlacement = function (objTypeName) {
-    options = Session.get('addOptions');
-    if (!options) options={};
-    var defaultStatus = LookUps.findOne({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode, isDefault: true});
-    if (!defaultStatus)   var defaultStatus = LookUps.findOne({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode});
-    if (defaultStatus) options.candidateStatus = defaultStatus._id;
-    if (options) {
-        Session.set('addOptions', undefined);
-    }
-    model = new dType.objTypeInstance(Session.get('objType'), options);
-    return model
-};
+//var createPlacement = function (objTypeName) {
+//    options = Session.get('addOptions');
+//    if (!options) options={};
+//    var defaultStatus = LookUps.findOne({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode, isDefault: true});
+//    if (!defaultStatus)   var defaultStatus = LookUps.findOne({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode});
+//    if (defaultStatus) options.candidateStatus = defaultStatus._id;
+//    if (options) {
+//        Session.set('addOptions', undefined);
+//    }
+//    model = new dType.objTypeInstance(Session.get('objType'), options);
+//    return model
+//};
 
 Template.addPlacementPage.helpers({
     candidateStatusOptions: function(){
@@ -90,12 +90,12 @@ Template.addPlacementPage.helpers({
     employeeId: function () {
         return employeeId;
     },
-    model: function () {
-        if (!model) {
-            model = createPlacement(Session.get('objType'));
-        }
-        return model;
-    },
+    //model: function () {
+    //    if (!model) {
+    //        model = createPlacement(Session.get('objType'));
+    //    }
+    //    return model;
+    //},
     objTypeName: function () {
         return Session.get('objType');
     },

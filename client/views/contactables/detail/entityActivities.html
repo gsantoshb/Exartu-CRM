@@ -44,7 +44,8 @@
 <template name="entityNoteAddActivity">
     <div class="left-part">
         <a class="list-type-7-icon" href="#"><i class="icon icon-pencil-3"></i></a>
-        <div class="list-type-7-title">{{displayUserName this.userId}} added a <a class="pointer note-link">note</a></div>
+        <div class="list-type-7-title" style="padding-bottom: 5px">{{displayUserName this.userId}} added a <a class="pointer note-link">note</a></div>
+        {{this.msg}}
     </div>
     {{>entityActivityDate}}
 </template>
