@@ -25,6 +25,9 @@ _.extend(TwilioManager, {
             Twilio.Device.incoming(function (conn) {
                 console.log("Incoming connection from " + conn.parameters.From);
                 currentTwilioConnection.set(conn);
+                conn.disconnect(function (conn) {
+                    currentTwilioConnection.set(undefined);
+                });
                 Utils.showModal('incomingCallModal');
 
             });

@@ -29,6 +29,7 @@ Template.incomingCallModal.created = function() {
 
 Template.incomingCallModal.helpers({
     incomingName : function(){
+        debugger;
         if(contactable.get())
             return contactable.get().displayName;
         else
@@ -38,7 +39,8 @@ Template.incomingCallModal.helpers({
         return contactable.get();
     },
     answerCallDisabled : function (){
-        connectionStatusDep.depend();
+        if(currentTwilioConnection.get() == undefined)
+        return 'disabled';
         if(currentTwilioConnection.get().status() != "pending")
          return 'disabled';
     }
