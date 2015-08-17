@@ -47,6 +47,7 @@ node-form-data
 
 shammar13:busboy
 aida:mongo-view
+aida:dtype@0.1.1
 aida:es@0.2.3
 
 meteorhacks:fast-render
@@ -73,4 +74,5 @@ joyride
 lukemadera:autoform-googleplace
 percolate:synced-cron
 edgee:slingshot
+mizzao:user-status
 peerlibrary:aws-sdk

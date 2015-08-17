@@ -9,7 +9,6 @@ Meteor.startup(function () {
 	if (Meteor.isClient){
 		indexName = __meteor_runtime_config__.indexName;
 	}
-	console.log('indexName', indexName);
 
 	ES.syncCollection({
 		collection: Contactables,

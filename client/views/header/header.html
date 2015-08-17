@@ -187,7 +187,12 @@
                     <span class="i-container"><i class="glyphicon glyphicon-indent-left"></i></span>
                 </a>
             </li>
-
+            {{#if currentTwilioConnectionNumber}}
+            <li>
+                Current call from {{currentTwilioConnectionNumber}}
+                <a class="btn btn-danger" id="cancelCall" > Hang </a>
+            </li>
+            {{/if}}
             <li>
                 <div class="list-actions-cell search-list no-tablet" style="margin-top:20px">
                     <div class="input-group" id="search-sort-btns">
@@ -212,28 +217,30 @@
                     </div>
                 </div>
             </li>
+<li>
+    <div class="no-tablet">
+        <div class="navbar-lastEntries" style="padding-top:3px;" id="pingeds">
+            {{#each lastEntryPinged}}
 
+                {{>lastEntryItem}}
+
+            {{/each}}
+        </div>
+        <div>
+            <div class="navbar-lastEntries" style="padding-top:3px" id="notPingeds">
+                {{#each lastEntryNotPinged}}
+                    <!--<div id="{{_id}}">-->
+                    {{>lastEntryItem}}
+                    <!--</div>-->
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</li>
 
 
         </ul>
-        <div class="no-tablet lastEntries-pinged">
-            <div class="navbar-lastEntries" style="padding-top:3px;" id="pingeds">
-                {{#each lastEntryPinged}}
 
-                        {{>lastEntryItem}}
-
-                {{/each}}
-            </div>
-            <div>
-                <div class="navbar-lastEntries" style="padding-top:3px" id="notPingeds">
-                    {{#each lastEntryNotPinged}}
-                        <!--<div id="{{_id}}">-->
-                            {{>lastEntryItem}}
-                        <!--</div>-->
-                    {{/each}}
-                </div>
-            </div>
-        </div>
 
      
 

@@ -113,12 +113,7 @@ var processPayment= function(request, cb, result){
     invalidPayments.insert({ ipn: data, invalidation: e.reason || e.message });
   }
 }
-var paypalAccountEmail=null
+var paypalAccountEmail=null;
 Meteor.startup(function(){
   paypalAccountEmail=process.env.paypalAccountEmail;
-  if(!paypalAccountEmail){
-    console.log('paypalAccountEmail NOT set')
-  }else{
-    console.log('paypalAccountEmail configured correctly')
-  }
 })
