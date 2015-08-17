@@ -187,6 +187,12 @@
                     <span class="i-container"><i class="glyphicon glyphicon-indent-left"></i></span>
                 </a>
             </li>
+            <li class="addWorkFlow {{getActiveClass 'dashboard' null}}">
+                <a href="workFlow/addWorkFlow">
+                    <span>{{_ "Work flow"}}</span>
+                    <span class="i-container"><i class="glyphicon glyphicon-random"></i></span>
+                </a>
+            </li>
             {{#if currentTwilioConnectionNumber}}
             <li>
                 Current call from {{currentTwilioConnectionNumber}}

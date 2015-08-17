@@ -365,6 +365,10 @@ Router.map(function () {
     path: 'timeEntry/timecard/:id',
     controller: TimeCardController
   });
+  this.route('addWorkFlow',{
+    path: 'workFlow/addWorkFlow',
+    controller: AddWorkFlowController
+  })
 });
 
 
