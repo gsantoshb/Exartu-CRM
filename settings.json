@@ -1,17 +1,4 @@
 {
-  "public": {
-
-  },
-  "cluster": {
-    "count": 8
-  },
-  "workers": {
-    "count": 10,
-    "monq": {
-    },
-    "cron": {
-      "log": false,
-      "disable": false
-    }
-  }
+  "AWSAccessKeyId": "AKIAJ32UVD2IEQFPT2CQ",
+  "AWSSecretAccessKey": "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"
 }
