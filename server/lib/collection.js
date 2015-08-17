@@ -91,3 +91,4 @@ Collections = {
     LastEntries: LastEntries
 };
 
+TwilioCalls = new Mongo.Collection('twilioCalls');
