@@ -15,4 +15,4 @@ WindowsInstall.bat
 /.idea/codeStyleSettings.xml
 /config.sh
 dump/
-server/settings.json
+settings.json
