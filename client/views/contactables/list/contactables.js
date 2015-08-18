@@ -1068,7 +1068,7 @@ var runESComputation = function () {
 
     // Contactable type
     if (query.objType.value)
-      filters.bool.must.push({term: {objNameArray: [query.objType.value.toLowerCase()]}});
+      filters.bool.must.push({term: {objNameArray: [query.objType.value]}});
 
     // Tags
     if (query.tags.value.length > 0) {
