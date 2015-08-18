@@ -32,7 +32,7 @@ TwilioManager = {
         // try for a hotlist of contactables
         var hotlist = HotLists.findOne({_id:id});
         if (hotlist) {
-            ids = hotlist.members;
+            ids = _.pluck(hotlist.members, 'id');
         }
         else ids = [id];
         // Validate user phone number
@@ -95,6 +95,9 @@ TwilioManager = {
                     throw new Meteor.Error(500, 'Invalid phone number');
                 destNumber=to;
             };
+            if (!destNumber){
+                return;
+            }
 
             // Send SMS
             _sendSMS(from, destNumber, msgText, function (err) {

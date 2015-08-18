@@ -115,6 +115,7 @@ Notes.after.insert(function (userId, doc) {
   newNote.userId = doc.userId;
   newNote.dateCreated = doc.dateCreated;
   newNote.remindDate = doc.remindDate;
+  newNote.isReply = doc.isReply;
   NotesView.insert(newNote);
 });
 

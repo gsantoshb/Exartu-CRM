@@ -23,7 +23,6 @@ var links,
 AutoForm.hooks({
   AddNoteRecord: {
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
-
       addDisabled.set(true);
       if (!hotlist) {
         var self = this;
@@ -44,7 +43,7 @@ AutoForm.hooks({
         var self = this;
         insertDoc.hierId = Meteor.user().currentHierId;
         insertDoc.userId = Meteor.user()._id;
-        Meteor.call('addNote', insertDoc, function () {
+        Meteor.call('addHotListNote', hotlist._id, insertDoc, function () {
           self.done();
           addDisabled.set(false);
         })

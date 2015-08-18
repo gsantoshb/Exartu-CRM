@@ -13,7 +13,7 @@ HotListManager = {
 
     return HotLists.insert(hotList);
   },
-    'hotListTextMessageSend': function(msg,id) {
+  'hotListTextMessageSend': function(msg,id) {
 
         console.log('hot list text message send',msg,id);
         throw new Meteor.Error('not ready to process this yet');
@@ -50,5 +50,20 @@ HotListManager = {
   },
   removeFromHotList: function (hotListId, contactableId) {
     HotLists.update({ _id: hotListId }, { $pull: { members: { id: contactableId  } } });
+  },
+  addNote: function (hotlistId, note) {
+
+    var hotlist = HotLists.findOne(hotlistId);
+
+    if (!hotlist){
+      throw new Error('hotlist not found');
+    }
+
+    if (note.sendAsSMS) {
+      // Send SMS to contactableId (which may be a contactable or a hotlist of contactables)
+      TwilioManager.sendSMSToContactable(hotlistId, note.userNumber, note.contactableNumber, note.msg, note.hotListFirstName);
+    }
+
+    Notes.insert(note);
   }
 };

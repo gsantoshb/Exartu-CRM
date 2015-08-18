@@ -54,5 +54,8 @@ Meteor.methods({
     var membersId = _.pluck(ContactablesView.find(filter, {_id:1}).fetch(),'_id');
 
     return HotListManager.addToHotlist(hotListId, membersId);
+  },
+  'addHotListNote': function (hotlistId, note) {
+    HotListManager.addNote(hotlistId, note)
   }
 });
