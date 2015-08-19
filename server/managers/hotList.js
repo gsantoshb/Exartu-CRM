@@ -64,6 +64,7 @@ HotListManager = {
       TwilioManager.sendSMSToContactable(hotlistId, note.userNumber, note.contactableNumber, note.msg, note.hotListFirstName);
     }
 
+    note.dateCreated = new Date();
     Notes.insert(note);
   }
 };
