@@ -108,8 +108,7 @@ TwilioManager = {
         // Update phoneNumber sms count
         Hierarchies.update({_id: phoneNumberHier._id}, {$inc: {'phoneNumber.smsCount': 1}});
       } catch (err) {
-        console.log('sms send error', err);
-
+        console.error(err);
       }
 
     });
@@ -160,7 +159,7 @@ var _requestNumber = function () {
   };
 };
 
-var _sendSMS = function (from, to, text, cb) {
+var _sendSMS = function (from, to, text) {
   if (!twilio) {
     console.warn('TWILIO: Fake SMS send { from: ' + from + ', to: ' + to + ', text: ' + text + '}');
     return;
