@@ -70,7 +70,7 @@ Template.notesTabAdd.events({
     showRemindDate.set(e.target.checked);
 
     // default to 'next weeks'
-    if (e.target.checked && !detectedSpan.get()){
+    if (e.target.checked && !detectedSpan.get()) {
       detectedSpan.set(timeSpanDictionary.nextWeek);
     }
   },
@@ -142,7 +142,7 @@ Template.notesTabAdd.helpers({
     return (field[0] && field[0].checked);
   },
   getRemindDate: function () {
-      return detectedSpan.get() ? detectedSpan.get().getTime() : null
+    return detectedSpan.get() ? detectedSpan.get().getTime() : null
   },
   showRemindDate: function () {
     return showRemindDate.get();
@@ -173,98 +173,62 @@ Template.notesTabList.created = function () {
   var self = this;
 
   self.autorun(function () {
-      searchQuery = {};
-      if (responsesOnly && hotlist) //means only get responses to a hotlist send
-      {
-        searchQuery['isReply'] = true;
-        searchQuery.links = {
-          $elemMatch: {
-            id: Session.get('entityId')
-          }
-        };
-        searchQuery.msg = {
-          $regex: query.searchString.value,
-          $options: 'i'
-        };
-
-        if (!NotesHandler) {
-          NotesHandler = Meteor.paginatedSubscribe('notesView', {filter: searchQuery});
-          NotesHandler.setFilter(searchQuery);
-
-
-        } else {
-          NotesHandler.setFilter(searchQuery);
-          //NotesHandler.setOptions(hotlist);
-
+    searchQuery = {};
+    if (responsesOnly && hotlist) { //means only get responses to a hotlist send
+      searchQuery['isReply'] = true;
+    } else if (hotlist) {
+      searchQuery['isReply'] = {$ne: true};
+      searchQuery.links = {
+        $elemMatch: {
+          id: Session.get('entityId')
         }
+      };
+    } else {
+      var options = {};
+      if (selectedSort.get()) {
+        var selected = selectedSort.get();
+        options.sort = {};
+        options.sort[selected.field] = selected.value;
+
+        if (selected.field == "remindDate") {
+          searchQuery.remindDate = {$ne: null};
+        }
+      } else {
+        delete options.sort;
       }
-      else if (hotlist) {
-        searchQuery['isReply'] = {$exists: false};
-        searchQuery.links = {
-          $elemMatch: {
-            id: Session.get('entityId')
-          }
-        };
-        searchQuery.msg = {
-          $regex: query.searchString.value,
-          $options: 'i'
-        };
-        if (!NotesHandler) {
-          NotesHandler = Meteor.paginatedSubscribe('notesView', {filter: searchQuery});
-          NotesHandler.setFilter(searchQuery);
 
-        } else {
-          NotesHandler.setFilter(searchQuery);
+      setTimeout(function () {
+        NotesHandler.setOptions(options);
+      }, 500);
+    }
 
-
-        }
+    searchQuery.links = {
+      $elemMatch: {
+        id: Session.get('entityId')
       }
-      else {
-
-        searchQuery.links = {
-          $elemMatch: {
-            id: Session.get('entityId')
-          }
-        };
-        searchQuery.msg = {
-          $regex: query.searchString.value,
-          $options: 'i'
-        };
-
-        var options ={};
-        if (selectedSort.get()) {
-          var selected = selectedSort.get();
-          options.sort = {};
-          options.sort[selected.field] = selected.value;
-
-          if (selected.field == "remindDate"){
-            searchQuery.remindDate = { $ne: null };
-          }
-        } else {
-          delete options.sort;
-        }
-
-        if (!NotesHandler) {
-          NotesHandler = Meteor.paginatedSubscribe('notesView', {filter: searchQuery});
-        } else {
-          NotesHandler.setFilter(searchQuery);
-        }
-        setTimeout(function () {
-          NotesHandler.setOptions(options);
-        }, 500);
-
-      }
-    });
+    };
+    if (query.searchString.value) {
+      searchQuery.msg = {
+        $regex: query.searchString.value,
+        $options: 'i'
+      };
+    }
+    if (!NotesHandler) {
+      NotesHandler = Meteor.paginatedSubscribe('notesView', {filter: searchQuery});
+    } else {
+      NotesHandler.setFilter(searchQuery);
+    }
+  });
 
   var contactable = Contactables.findOne(Session.get('entityId'));
-  if (contactable && (contactable.Client || contactable.Contact)){
+  if (contactable && (contactable.Client || contactable.Contact)) {
     self.autorun(function () {
       // if the user selected a time span or clicked the checkbox then i don't have to find a span in the text
       if (clickedCheckboxOrButton)
         return;
       var s = getMatchingTimeSpan(text.get());
       setSelectedTimeSpan(s);
-      showRemindDate.set(!! s);
+      showRemindDate.set(!!s);
     })
   }
 };
@@ -296,7 +260,7 @@ Template.notesTabList.helpers({
     return query;
   },
   showRemindDate: function () {
-    return   Session.get('showNotesRemindDate');
+    return Session.get('showNotesRemindDate');
   }
 });
 Template.notesTabList.events({
@@ -437,7 +401,7 @@ Template.linksAutoForm.helpers({
 
 var setSelectedTimeSpan = function (newVal) {
   //hack to force dateTimePicker to re-render with the new value
-  if (detectedSpan.curValue != newVal){
+  if (detectedSpan.curValue != newVal) {
     updatingRemindDate.set(true);
     setTimeout(function () {
       updatingRemindDate.set(false);
@@ -527,7 +491,7 @@ timeSpanDictionary = {
 // week days mornings
 _.each(moment.weekdays(), function (dayName, dayIndex) {
   timeSpanDictionary[dayName.toLowerCase() + 'Morning'] = {
-    regex: new RegExp('\\b('+ dayName.toLowerCase() + '\\smorning)\\b'),
+    regex: new RegExp('\\b(' + dayName.toLowerCase() + '\\smorning)\\b'),
     label: null,
     getTime: function () {
       var date = moment().day(dayIndex);
@@ -540,16 +504,13 @@ _.each(moment.weekdays(), function (dayName, dayIndex) {
 // week days
 _.each(moment.weekdays(), function (dayName, dayIndex) {
   timeSpanDictionary[dayName.toLowerCase()] = {
-    regex: new RegExp('\\b('+ dayName.toLowerCase() + ')\\b'),
+    regex: new RegExp('\\b(' + dayName.toLowerCase() + ')\\b'),
     label: null,
     getTime: function () {
       return moment().day(dayIndex).toDate();
     }
   }
 });
-
-
-
 
 
 // list sort
