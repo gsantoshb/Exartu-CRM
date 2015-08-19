@@ -104,5 +104,11 @@ PlacementManager = {
     else{
       return false;
     }
+  },
+  updatePlacement: function(placementId, update){
+    Placements.update({_id: placementId}, update);
+  },
+  placementsByJob: function(jobId){
+    return Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Placements.find({job:jobId}, {sort: {'dateCreated': -1}})).fetch();
   }
 };

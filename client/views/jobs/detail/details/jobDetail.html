@@ -142,6 +142,24 @@
                                                 {{/if}}
                                             </div>
                                         </li>
+                                        <li>
+                                            <div class="left-part">
+                                                {{_ "Available shift"}}:
+                                            </div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    <div class="form-group">
+                                                        {{> afQuickField label=false name="availableShift" options="allowed"}}
+                                                    </div>
+                                                {{else}}
+                                                    {{#if availableShift}}
+                                                        <strong>{{availableShift}}</strong>
+                                                    {{else}}
+                                                        <strong>Not set</strong>
+                                                    {{/if}}
+                                                {{/if}}
+                                            </div>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div class="col-md-6">

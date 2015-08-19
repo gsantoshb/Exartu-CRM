@@ -25,3 +25,4 @@ AllPlacements = new Meteor.Collection('allPlacements', {
 });
 
 PlacementsView = new Mongo.Collection("placementsView");
+//PlacementsByJob = new Mongo.Collection("placementsByJob");

@@ -62,7 +62,9 @@ LastEntries = new Mongo.Collection('lastEntries');
 
 KioskEmployees = new Mongo.Collection('kioskEmployees');
 
-ResumeSubscription = new Mongo.Collection('resumeSubscription')
+ResumeSubscription = new Mongo.Collection('resumeSubscription');
+
+WorkFlows = new Mongo.Collection('workFlows');
 
 Collections = {
     Hierarchies: Hierarchies,
@@ -88,6 +90,8 @@ Collections = {
     Addresses: Addresses,
     EmailTemplates: EmailTemplates,
     PastJobLeads: PastJobLeads,
-    LastEntries: LastEntries
+    LastEntries: LastEntries,
+    WorkFlows: WorkFlows
 };
 
+TwilioCalls = new Mongo.Collection('twilioCalls');

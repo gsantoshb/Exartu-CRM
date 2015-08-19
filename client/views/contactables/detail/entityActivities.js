@@ -34,6 +34,10 @@ UI.registerHelper('thisToJSON', function(ctx) {
  return JSON.stringify(ctx);
 });
 
+Template.entityNoteAddActivity.created = function(){
+  
+}
+
 Template.entityNoteAddActivity.events({
   'click .note-link': function () {
     Utils.showModal('addEditNote', this.entityId);

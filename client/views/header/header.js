@@ -2,13 +2,13 @@ var searchStringEntries = "";
 var searchStringEntriesDep = new Deps.Dependency();
 var sortEntries = new ReactiveVar(-1);
 
-Template.header.created = function() {
-  Meteor.autorun(function (){
-    searchStringEntriesDep.depend();
-      SubscriptionHandlers.LastEntriesHandler = Meteor.subscribe('lastEntries', searchStringEntries,sortEntries.get());
+Template.header.created = function () {
+    Meteor.autorun(function () {
+            searchStringEntriesDep.depend();
+            SubscriptionHandlers.LastEntriesHandler = Meteor.subscribe('lastEntries', searchStringEntries, sortEntries.get());
 
-  }
-)
+        }
+    )
 }
 
 Template.header.helpers({
@@ -37,6 +37,7 @@ Template.header.helpers({
     userEmail: function () {
         return Meteor.user().emails[0].address;
     },
+
     UnreadMessagesCount: function () {
         console.log('unreadmess');
         return Messages.find({
@@ -75,26 +76,26 @@ Template.header.helpers({
         var hier = Meteor.user() ? Hierarchies.findOne(Meteor.user().currentHierId) : undefined;
         return hier ? hier.name : '';
     },
-    currentLanguageLabel: function() {
+    currentLanguageLabel: function () {
         var user = Meteor.users.findOne({_id: Meteor.userId()});
         switch (user.language) {
-		case 'es':
-			return 'Español';
-		case 'cn':
-			return '简体中文';
-		default:
-			return 'English';
+            case 'es':
+                return 'Español';
+            case 'cn':
+                return '简体中文';
+            default:
+                return 'English';
         }
-		
+
     },
     latestHiers: function () {
-      var res = [];
-      if(Meteor.user().latestHiers) {
-        _.each(Meteor.user().latestHiers, function (hierId) {
-          res.push(Hierarchies.findOne({_id: hierId}));
-        });
-      }
-      return res;
+        var res = [];
+        if (Meteor.user().latestHiers) {
+            _.each(Meteor.user().latestHiers, function (hierId) {
+                res.push(Hierarchies.findOne({_id: hierId}));
+            });
+        }
+        return res;
     },
     latestHiersCount: function () {
         return Hierarchies.find({_id: {$in: Meteor.user().latestHiers || []}}).count();
@@ -106,14 +107,14 @@ Template.header.events({
             Router.go('/login');
         });
     },
-    'click #menu-settings > a[data-target="#menu-settings"]': function(e, ctx) {
+    'click #menu-settings > a[data-target="#menu-settings"]': function (e, ctx) {
         $('#menu-settings .sub-menu').hide();
     },
-    'click .dropdown-menu > li > a.trigger': function(e, ctx){
+    'click .dropdown-menu > li > a.trigger': function (e, ctx) {
         var current = $(e.currentTarget).next();
         var grandparent = $(e.currentTarget).parent().parent();
 
-        if( $(e.currentTarget).hasClass('left-caret') || $(e.currentTarget).hasClass('right-caret') )
+        if ($(e.currentTarget).hasClass('left-caret') || $(e.currentTarget).hasClass('right-caret'))
             $(e.currentTarget).toggleClass('right-caret left-caret');
 
         grandparent.find('.left-caret').not(e.currentTarget).toggleClass('right-caret left-caret');
@@ -122,31 +123,31 @@ Template.header.events({
         current.toggle();
         e.stopPropagation();
     },
-    'click .dropdown-menu > li > a:not(.trigger)': function(e, ctx){
+    'click .dropdown-menu > li > a:not(.trigger)': function (e, ctx) {
         var root = $(e.currentTarget).closest('.dropdown');
         root.find('.left-caret').toggleClass('right-caret left-caret');
         root.find('.sub-menu:visible').hide();
     },
     'click .changeHier': function () {
-      Meteor.call('changeCurrentHierId', this._id, function (err, result) {
-        if (err)
-          console.error(err);
-        else {
-          Meteor.disconnect();
-          Meteor.reconnect();
-        }
-      })
+        Meteor.call('changeCurrentHierId', this._id, function (err, result) {
+            if (err)
+                console.error(err);
+            else {
+                Meteor.disconnect();
+                Meteor.reconnect();
+            }
+        })
     },
-    'click #search-entry': function(e){
-      e.stopPropagation();
+    'click #search-entry': function (e) {
+        e.stopPropagation();
     },
-    'keyup #search-entry': function(e){
-      searchStringEntries = e.target.value;
-      searchStringEntriesDep.changed();
+    'keyup #search-entry': function (e) {
+        searchStringEntries = e.target.value;
+        searchStringEntriesDep.changed();
     },
-    'click #sort-Entries': function(e){
-      sortEntries.set(sortEntries.get()*-1);
-      e.stopPropagation();
+    'click #sort-Entries': function (e) {
+        sortEntries.set(sortEntries.get() * -1);
+        e.stopPropagation();
     }
 });
 
@@ -343,40 +344,38 @@ Template.sidebar.rendered = function () {
             stop();
         }
     }, 400));
-  //this.$('#pingeds').sortable({
-  //  stop: function(e, ui) {
-  //    // get the dragged html element and the one before
-  //    //   and after it
-  //    var el = ui.item.get(0);
-  //    var before = ui.item.prev().get(0);
-  //    var after = ui.item.next().get(0);
-  //    if(before) {
-  //      Meteor.call("updateIndex", el.id, before.id, function () {
-  //
-  //      })
-  //    }
-  //    else{
-  //      Meteor.call("updateIndex", el.id,undefined, function () {
-  //
-  //      })
-  //    }
-  //
-  //  }
-  //})
+    //this.$('#pingeds').sortable({
+    //  stop: function(e, ui) {
+    //    // get the dragged html element and the one before
+    //    //   and after it
+    //    var el = ui.item.get(0);
+    //    var before = ui.item.prev().get(0);
+    //    var after = ui.item.next().get(0);
+    //    if(before) {
+    //      Meteor.call("updateIndex", el.id, before.id, function () {
+    //
+    //      })
+    //    }
+    //    else{
+    //      Meteor.call("updateIndex", el.id,undefined, function () {
+    //
+    //      })
+    //    }
+    //
+    //  }
+    //})
 
 
 }
 Template.sidebar.helpers({
     isAdmin: function () {
-      return Utils.bUserIsAdmin();
+        return Utils.bUserIsAdmin();
     },
-    contactableTypes: function () {
-        return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
-    },
-    jobObjTypes: function () {
-        return dType.ObjTypes.find({
-            parent: Enums.objGroupType.job
-        });
+    currentTwilioConnectionNumber: function () {
+        if( currentTwilioConnection.get() != undefined){
+            return currentTwilioConnection.get().parameters.From;
+        }
+
     },
     getActiveClass: function (route, type) {
         var current = Router.current();
@@ -389,93 +388,107 @@ Template.sidebar.helpers({
         }
         return ''
     },
-    lastEntryNotPinged: function(){
-      return LastEntries.find({pinged:false},{sort:{dateCreated:sortEntries.get()}})
+    lastEntryNotPinged: function () {
+        return LastEntries.find({pinged: false}, {sort: {dateCreated: sortEntries.get()}})
     },
-    lastEntryPinged: function(){
-      return LastEntries.find({pinged:true},{sort:{index:1}})
+    lastEntryPinged: function () {
+        return LastEntries.find({pinged: true}, {sort: {index: 1}})
     },
-    inverseCrono: function(){
-      return sortEntries.get() === 1;
+    inverseCrono: function () {
+        return sortEntries.get() === 1;
+    }
+
+});
+Template.sidebar.events({
+    'click #cancelCall': function (e) {
+        if (currentTwilioConnection.get() != undefined) {
+            currentTwilioConnection.get().reject();
+            currentTwilioConnection.get().disconnect();
+        }
     }
 
 });
 
+
 Template.lastEntryItem.helpers({
-  isContactable:function(){
-    return this.type === Enums.linkTypes.contactable.value;
-  },
-  isJob: function(){
-    return this.type === Enums.linkTypes.job.value;
-  },
-  isHotList: function(){
-    return this.type === Enums.linkTypes.hotList.value;
-  },
-  isPlacement:function(){
-    return this.type === Enums.linkTypes.placement.value;
-  },
-  link:function(){
-    switch(this.type){
-      case Enums.linkTypes.contactable.value:{
-        return "/contactable/"+this.entity;
-        break;
-      }
-      case Enums.linkTypes.job.value:{
-        return "/job/"+this.entity;
-        break;
-      }
-      case Enums.linkTypes.hotList.value:{
-        return "/hotList/"+this.entity;
-        break;
-      }
-      case Enums.linkTypes.placement.value:{
-        return "/placement/"+this.entity;
-        break;
-      }
+    isContactable: function () {
+        return this.type === Enums.linkTypes.contactable.value;
+    },
+    isJob: function () {
+        return this.type === Enums.linkTypes.job.value;
+    },
+    isHotList: function () {
+        return this.type === Enums.linkTypes.hotList.value;
+    },
+    isPlacement: function () {
+        return this.type === Enums.linkTypes.placement.value;
+    },
+    link: function () {
+        switch (this.type) {
+            case Enums.linkTypes.contactable.value:
+            {
+                return "/contactable/" + this.entity;
+                break;
+            }
+            case Enums.linkTypes.job.value:
+            {
+                return "/job/" + this.entity;
+                break;
+            }
+            case Enums.linkTypes.hotList.value:
+            {
+                return "/hotList/" + this.entity;
+                break;
+            }
+            case Enums.linkTypes.placement.value:
+            {
+                return "/placement/" + this.entity;
+                break;
+            }
+        }
+    },
+    isPinged: function () {
+        return this.pinged;
     }
-  },
-  isPinged: function(){
-    return this.pinged;
-  }
 })
 
 Template.lastEntryItem.events({
-  "click #remove-entry":function(e){
-    Meteor.call("removeEntry",this._id,function(err,res){
+    "click #remove-entry": function (e) {
+        Meteor.call("removeEntry", this._id, function (err, res) {
 
-    })
-    e.stopPropagation();
-  },
-  "click #ping-entry": function(e){
-    Meteor.call("changePing",this._id,function(err,res){
+        })
+        e.stopPropagation();
+    },
+    "click #ping-entry": function (e) {
+        Meteor.call("changePing", this._id, function (err, res) {
 
-    })
-    e.stopPropagation();
-  },
-  "click .lastEntry-container": function(e){
-    switch(this.type) {
-      case Enums.linkTypes.contactable.value:
-      {
-        Router.go("/contactable/" + this.entity);
-        break;
-      }
-      case Enums.linkTypes.job.value:
-      {
-        Router.go("/job/" + this.entity);
-        break;
-      }
-      case Enums.linkTypes.hotList.value:
-      {
-        Router.go("/hotList/" + this.entity);
-        break;
-      }
-      case Enums.linkTypes.placement.value:
-      {
-        Router.go("/placement/" + this.entity);
-        break;
-      }
+        })
+        e.stopPropagation();
+    },
+    "click .lastEntry-container": function (e) {
+        switch (this.type) {
+            case Enums.linkTypes.contactable.value:
+            {
+                Router.go("/contactable/" + this.entity);
+                break;
+            }
+            case Enums.linkTypes.job.value:
+            {
+                Router.go("/job/" + this.entity);
+                break;
+            }
+            case Enums.linkTypes.hotList.value:
+            {
+                Router.go("/hotList/" + this.entity);
+                break;
+            }
+            case Enums.linkTypes.placement.value:
+            {
+                Router.go("/placement/" + this.entity);
+                break;
+            }
+        }
     }
-  }
 
 })
 

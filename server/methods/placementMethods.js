@@ -106,5 +106,11 @@ Meteor.methods({
   },
   isPlacedEmployee: function(employeeId){
     return PlacementManager.isPlacedEmployee(employeeId);
+  },
+  updatePlacement: function(placementId, update){
+    return PlacementManager.updatePlacement(placementId, update);
+  },
+  placementsByJob: function(jobId){
+    return PlacementManager.placementsByJob(jobId);
   }
 });

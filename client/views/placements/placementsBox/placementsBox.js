@@ -404,9 +404,9 @@ Template.placementList.helpers({
     placements: function () {
         return placementCollection.find({}, options);
     },
-    placementTypes: function () {
-        return dType.ObjTypes.find({parent: Enums.objGroupType.placement});
-    },
+    //placementTypes: function () {
+    //    return dType.ObjTypes.find({parent: Enums.objGroupType.placement});
+    //},
     listViewMode: function () {
         return listViewMode.get();
     },
@@ -487,8 +487,22 @@ Template.placementListSort.events({
 Template.placementPreviewTemp.events({
   'click #close-preview':function(e){
     placementPreview.set(false);
+  },
+  'click .makeTwilioCall': function () {
+    Meteor.call('twilioPlacementCall', this._id, function (err, res) {
+      if (err) {
+        // Show notification
+        $.gritter.add({
+          title:	'An error has occurred',
+          text:	err.reason ? err.reason : err.error,
+          image: 	'/img/logo.png',
+          sticky: false,
+          time: 5000
+        });
+      }
+    });
   }
-})
+});
 
 
 Template.placementPreviewTemp.helpers({

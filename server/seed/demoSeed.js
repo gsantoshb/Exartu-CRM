@@ -474,7 +474,7 @@ var loadContactables = function (hierId) {
 
 var loadJobs = function (hierId) {
     var clients = Contactables.find({objNameArray: 'Client', hierId: hierId}).fetch();
-    var jobTypes = dType.ObjTypes.find({parent: 'job'}).fetch()
+    //var jobTypes = dType.ObjTypes.find({parent: 'job'}).fetch()
     var industries = LookUps.find({lookUpCode: Enums.lookUpTypes.job.industry.lookUpCode, hierId: hierId}).fetch();
     var categories = LookUps.find({lookUpCode: Enums.lookUpTypes.job.category.lookUpCode, hierId: hierId}).fetch();
     var durations = LookUps.find({lookUpCode: Enums.lookUpTypes.job.duration.lookUpCode, hierId: hierId}).fetch();
