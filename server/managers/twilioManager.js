@@ -109,6 +109,7 @@ TwilioManager = {
         Hierarchies.update({_id: phoneNumberHier._id}, {$inc: {'phoneNumber.smsCount': 1}});
       } catch (err) {
         console.error(err);
+        console.error(err.stack);
       }
 
     });
