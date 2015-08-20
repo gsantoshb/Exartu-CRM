@@ -171,10 +171,10 @@ AutoForm.hooks({
       contact.dateCreated = new Date();
       contact.statusNote = insertDoc.statusNote;
       contact.howHeardOf = null;
-      if (client) {
-        contact.Contact =  {client: client._id, clientName: client.displayName, status: client.Client.status}
+      if (client.get()) {
+        contact.Contact =  {client: client.get()._id, clientName: client.get().displayName, status: client.get().Client.status}
         Meteor.call('addContactable', contact, function (err, res) {
-          Router.go('/contactable/' + client._id);
+          Router.go('/contactable/' + client.get()._id);
         })
         return false;
       }
