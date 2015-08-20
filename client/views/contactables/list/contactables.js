@@ -241,6 +241,16 @@ var setSortField = function (field) {
 Template.contactablesList.created = function () {
   paginationReady.set(false);
 
+  this.autorun(function () {
+    query.activeStatus.value = LookUps.find({
+      lookUpCode: Enums.lookUpCodes.active_status,
+      lookUpActions: Enums.lookUpAction.Implies_Active,
+      hierId: Meteor.user().currentHierId
+    }).map(function (status) {
+      return status._id;
+    });
+  });
+
   Meteor.autorun(function (c) {
     var urlQuery = new URLQuery();
     var searchQuery = {
@@ -641,6 +651,31 @@ Template.contactablesFilters.helpers({
     else {
       return SubscriptionHandlers.ContactablesViewHandler && SubscriptionHandlers.ContactablesViewHandler.totalCount();
     }
+  },
+  activeStatusOptions: function () {
+    return LookUps.find({lookUpCode: Enums.lookUpCodes.active_status, inactive:{$ne:true}}, {
+      sort: {
+        sortOrder: 1,
+        displayName: 1
+      }
+    });
+  },
+  isSelectedClass: function () {
+    if (query.activeStatus.value.indexOf(this._id) < 0){
+      return 'btn-default';
+    } else {
+      return 'btn-primary';
+    }
+  }
+});
+Template.contactablesFilters.events({
+  'click .active-status-filter': function (e, ctx) {
+    if (query.activeStatus.value.indexOf(this._id) < 0){
+      query.activeStatus.value.push(this._id);
+    } else {
+      query.activeStatus.value.splice(query.activeStatus.value.indexOf(this._id), 1);
+    }
+    query.activeStatus.dep.changed()
   }
 });
 

@@ -258,7 +258,19 @@
             {{#if isSelectedType 'Client'}}
                 {{> filter_lookUp title="Process status" code=14 lookUpValue=query.clientProcessStatus multi=true}}
             {{/if}}
-            {{> filter_lookUp title="Active status" code=13 lookUpValue=query.activeStatus multi=true}}
+
+
+            <div class="filter-item">
+                <div class="filter-title" id="filtersJobsTour">
+                    {{_ "Active Status"}}
+                </div>
+
+                {{#each activeStatusOptions}}
+                    <button class="btn btn-sm {{isSelectedClass}} active-status-filter" style="margin-bottom: 3px">
+                        {{displayName}}
+                    </button>
+                {{/each}}
+            </div>
 
 
             {{> filter_dateCreated selectedLimit=query.selectedLimit}}
