@@ -44,7 +44,7 @@ Router.map(function () {
                 }
                 else {
                     //Greet the user
-                    resp = resp.say('Thank you for calling. Your call is being transfered.',
+                    resp = resp.say('Thank you for calling. Your call is being transferred.',
                         {
                             voice: 'woman',
                             language: 'en-us'
@@ -52,9 +52,7 @@ Router.map(function () {
                 }
                 //Redirect to an active agent
                 _.forEach(availableUsers, function (user) {
-                    resp = resp.dial({
-
-                    }, function(node) {
+                    resp = resp.dial({}, function(node) {
                         node.client(user._id);
                     });
 
