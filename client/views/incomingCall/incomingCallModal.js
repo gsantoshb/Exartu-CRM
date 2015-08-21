@@ -1,5 +1,6 @@
 var contactable = new ReactiveVar();
 var accepted = new ReactiveVar();
+var callNote = new ReactiveVar('');
 
 Template.incomingCallModal.created = function () {
   var currentConnection = currentTwilioConnection.get();
@@ -27,6 +28,9 @@ Template.incomingCallModal.helpers({
   contactable: function () {
     return contactable.get();
   },
+  callNote: function () {
+    return callNote.get();
+  },
 
   accepted: function () {
     return accepted.get();
@@ -52,5 +56,35 @@ Template.incomingCallModal.events({
   },
   'click #hangupCall': function () {
     currentTwilioConnection.get().disconnect();
+  },
+  'keyup #incomingCallNote': _.debounce(function (e) {
+    callNote.set(e.target.value);
+  }, 300),
+  'click .saveAndClose': function () {
+    // Check if the user wrote a note
+    if (callNote.get()) {
+      var note = {
+        msg: callNote.get()
+      };
+
+      // Link the note to the contactable when available
+      if (contactable.get()) {
+        note.links = [{ id: contactable.get()._id, type: Enums.linkTypes.contactable.value }]
+      }
+
+      Meteor.call('addNote', note, function(err, res) {
+        if (!err) {
+          $.gritter.add({
+            title:	'Note saved',
+            text:	'The note was successfully saved',
+            image: 	'/img/logo.png',
+            sticky: false,
+            time: 2000
+          });
+        }
+      });
+    }
+
+    Utils.dismissModal();
   }
 });
