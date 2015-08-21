@@ -38,7 +38,7 @@ file-uploader
 
 rajit:bootstrap3-datepicker
 
-mrt:twilio-meteor
+abhiaiyer:meteor-twilio
 mrt:mask
 server-progress
 

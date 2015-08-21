@@ -10,6 +10,10 @@ Meteor.paginatedPublish(PlacementsView, function () {
   publicationName: 'placementsView'
 });
 
+//Meteor.publish("placementsByJob", function(jobId){
+//  console.log(jobId);
+  //return Utils.filterCollectionByUserHier.call(this, PlacementsView.find({job:jobId}, {sort: {dateCreated: -1}}));
+//})
 
 // Indexes
 PlacementsView._ensureIndex({placementId: 1});

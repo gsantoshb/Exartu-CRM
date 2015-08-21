@@ -252,6 +252,7 @@ Template.hotListMembersListItem.helpers({
     return matches.join('');
   },
   getAddedAt: function () {
+    var hotList = HotLists.findOne({_id: Session.get('entityId')});
     var member = _.findWhere((hotList && hotList.members)||[], {id: this._id});
     return member && member.addedAt;
   }

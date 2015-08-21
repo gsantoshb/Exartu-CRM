@@ -109,6 +109,8 @@ Meteor.methods({
   },
   updatePlacement: function(placementId, update){
     return PlacementManager.updatePlacement(placementId, update);
+  },
+  placementsByJob: function(jobId){
+    return PlacementManager.placementsByJob(jobId);
   }
-
 });
