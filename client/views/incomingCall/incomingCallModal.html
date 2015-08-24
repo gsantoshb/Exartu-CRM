@@ -26,6 +26,18 @@
                         <a href="/contactable/{{contactable._id}}">Navigate to details for {{incomingName}} </a>
 
                         {{>entityActivities entityId=contactable._id}}
+                    {{else}}
+                       <h4>
+                           Add number to contacts
+                       </h4>
+                        <ul>
+                            <li>
+                                <a href="/contactableAdd/Contact?phone={{number}}" class="pointer">add as a <b>contact</b></a>
+                            </li>
+                            <li>
+                                <a href="/contactableAdd/Employee?phone={{number}}" class="pointer">add as an <b>employee</b></a>
+                            </li>
+                        </ul>
                     {{/if}}
                 </div>
 

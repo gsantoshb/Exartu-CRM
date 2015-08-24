@@ -1,5 +1,5 @@
 <template name="addEmployee">
-   {{#autoForm schema="schemaAddEmployee" id="addEmployee" doc=this}}
+   {{#autoForm schema="schemaAddEmployee" id="addEmployee" doc=employee}}
        <div class="form-group {{#if afFieldIsInvalid name='personFirstName'}}has-error{{/if}}">
            First name:
            {{> afFieldInput  name='personFirstName' placeholder="First name" id="personFirstName" type="text" class="form-control"}}

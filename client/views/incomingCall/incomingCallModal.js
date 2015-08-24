@@ -1,4 +1,5 @@
 var contactable = new ReactiveVar();
+var number = new ReactiveVar();
 var accepted = new ReactiveVar();
 var callNote = new ReactiveVar('');
 
@@ -10,6 +11,7 @@ Template.incomingCallModal.created = function () {
       accepted.set(true);
     });
 
+    number.set(currentConnection.parameters.From);
     Meteor.call("getContactableFromPhoneNumber", currentConnection.parameters.From, function (err, result) {
       contactable.set(result);
     });
@@ -43,6 +45,9 @@ Template.incomingCallModal.helpers({
       return 'disabled';
     if (currentTwilioConnection.get().status() != "pending")
       return 'disabled';
+  },
+  number: function () {
+    return number.get();
   }
 });
 
