@@ -17,7 +17,7 @@ var OnBeforeActions = {
       TAPi18n.setLanguage(userInfo.language);
 
       $.cachedScript( "https://static.twilio.com/libs/twiliojs/1.2/twilio.js" ).done(function( script, textStatus ) {
-        TwilioManager.startReceivingCalls();
+        TwilioManager.setupTwilioDevice();
       });
 
 
