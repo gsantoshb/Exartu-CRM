@@ -40,6 +40,12 @@ Template.docCenterManagement.helpers({
   },
   isActivating: function () {
     return isActivating.get();
+  },
+  kioskNotification: function () {
+    if(Meteor.user().kioskNotification)
+      return 'checked';
+    else
+      return '';
   }
 });
 
@@ -57,5 +63,12 @@ Template.docCenterManagement.events({
   },
   'click #showPass': function () {
     showPass.set(true);
+  },
+  'click #setKioskNotification': function (e) {
+    if ($(e.currentTarget).prop('checked')) {
+      Meteor.call('setUserKioskNotification', true);
+    } else {
+      Meteor.call('setUserKioskNotification', false);
+    }
   }
 });
