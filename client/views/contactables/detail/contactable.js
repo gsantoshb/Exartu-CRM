@@ -430,6 +430,9 @@ Template.contactable_header.helpers({
         toReturn.phone = this.phone.value;
       }
       return toReturn;
+  },
+  twilioSetUp: function () {
+    return Hierarchies.findOne(Meteor.user().currentHierId).phoneNumber;
   }
 
 });
@@ -512,8 +515,18 @@ AutoForm.hooks({
 Template.contactable_header.events({
   "click #edit-mode-contactMethods": function () {
     editingContactMethods.set(!editingContactMethods.get());
+  },
+  'click .twilio-call': function () {
+    var hierPhoneNumber = Hierarchies.findOne(Meteor.user().currentHierId).phoneNumber;
+    hierPhoneNumber = hierPhoneNumber && hierPhoneNumber.value;
+    if (!hierPhoneNumber) return;
+
+    var phoneNumber = this.phone && this.phone.value;
+    if (!phoneNumber) return;
+    var connection = Twilio.Device.connect({"PhoneNumber": phoneNumber, "CallerId": hierPhoneNumber});
+    Utils.showModal('outgoingCall', connection);
   }
-})
+});
 // Details
 Template.contactable_details.helpers({
   collection: function () {
