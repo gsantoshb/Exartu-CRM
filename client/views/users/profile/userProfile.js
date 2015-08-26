@@ -104,6 +104,13 @@ Template.userProfile.helpers({
     },
     successMessage: function () {
         return successMessage.get();
+    },
+    kioskNotification: function () {
+      var u = Meteor.users.findOne(userId.get());
+      if(u.kioskNotification)
+        return 'checked';
+      else
+        return '';
     }
 });
 
@@ -130,6 +137,13 @@ Template.userProfile.events({
             return;
 
         Meteor.call('updateEmailVerification', pendingEmail);
+    },
+    'click #setKioskNotification': function (e) {
+      if ($(e.currentTarget).prop('checked')) {
+        Meteor.call('setUserKioskNotification', userId.get(), true);
+      } else {
+        Meteor.call('setUserKioskNotification', userId.get(), false);
+      }
     }
 });
 

@@ -118,8 +118,9 @@ Meteor.methods({
     });
   },
 
-  setUserKioskNotification: function (notify) {
+  setUserKioskNotification: function (userId, notify) {
+    check(userId, String);
     check(notify, Boolean);
-    Meteor.users.update({_id: this.userId}, {$set: {'kioskNotification': notify}});
+    Meteor.users.update({_id: userId}, {$set: {'kioskNotification': notify}});
   }
 });
