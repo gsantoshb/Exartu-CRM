@@ -18,4 +18,13 @@ Meteor.methods({
       throw new Meteor.Error(err.message);
     }
   }
+  //
+  //startWorkFlow: function(workFlowId){
+  //  check(workFlowId, String);
+  //  try {
+  //    return TwilioManager.makeWorkFlowCall(workFlowId);
+  //  } catch (err) {
+  //    throw new Meteor.Error(err.message);
+  //  }
+  //}
 });

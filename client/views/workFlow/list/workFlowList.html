@@ -1,0 +1,100 @@
+<template name="workFlowList">
+    <div id="content" class="network-content nicer-filters">
+        <div class="row-container">
+            <div class="row">
+                <div class="col-md-3 col-lg-3" id="column-filters">
+
+                </div>
+                <div class="col-md-9" id="column-list">
+                    <div class="list-container">
+                        <div class="list-holder">
+
+                            <div class="list-actions">
+                                <div class="list-actions-cell btn-add-to-list">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                                                title="Add" id="tourNetworksAdd">
+                                            <span class="fa fa-plus"></span>  {{_ "Add"}}
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li>
+                                                <a type="button" title="Job offer workFlow"
+                                                   href="/workFlow/addWorkFlow">{{_ "Job offer workflow"}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="list-header network-list-header" id="tourNetworksList" >
+                                <!--<div class="list-header-cell network-list-header-checkbox"><input type="checkbox" id="selectAll"></div>-->
+                                <div class="list-header-cell col-md-1 col-xs-1" style="flex:none;margin-left:0">{{_ ""}}</div>
+                                <div class="list-header-cell col-md-4 col-xs-4" style="flex:none;margin-left:0">{{_ "Type"}}</div>
+                                <div class="list-header-cell col-md-2 col-xs-2" style="flex:none;margin-left:0">{{_ "Called"}}</div>
+                                <div class="list-header-cell col-md-2 col-xs-2" style="flex:none;margin-left:0">{{_ "Status"}}</div>
+                                <div class="list-header-cell col-md-2 col-xs-2" style="flex:none;margin-left:0">{{_ "Owner"}}</div>
+                                <div class="list-header-cell col-md-1 col-xs-1" style="flex:none;margin-left:0">{{_ "Date"}}</div>
+                                <!--<div class="list-header-cell network-list-header-code">{{_ "Code"}}</div>-->
+                                <!--<div class="list-header-cell network-list-header-owner">{{_ "Owner"}}</div>-->
+                                <!--<div class="list-header-cell network-list-header-time">{{_ "Date"}}</div>-->
+                            </div>
+
+                            <div class="list-item-section">
+                            {{#each workFlows}}
+                               <div class="list-item-section">
+                                  {{> workFlowsListItem }}
+                               </div>
+                            {{/each}}
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="workFlowsListItem">
+     <div class="list-item network-list-item select-div" style="cursor:pointer">
+         <div class="row" style="width:100%;margin:0">
+            <div class="list-item-cell col-md-1 col-xs-1" style="flex:none;margin-left:0">
+                  <a class="item-icon item-icon-workFlows" href="workFlow/{{_id}}">
+                      <i class="glyphicon glyphicon-random"></i>
+                  </a>
+            </div>
+         <div class="list-item-cell col-md-4 col-xs-4" style="flex:none;margin-left:0;padding-left: 0">
+             <a class="item-title single" href="workFlow/{{_id}}" style="color:#000000">
+               {{getWorkFlowType}}
+             </a>
+         </div>
+         <div class="list-item-cell col-md-2 col-xs-2" style="flex:none;margin-left:0;padding-left: 0">
+              <span class="item-title single">
+                  {{numberCalled}}/{{totalToCall}}
+              </span>
+         </div>
+         <div class="list-item-cell col-md-2 col-xs-2" style="flex:none;margin-left:0;padding-left: 0">
+             <span class="item-label">
+                 {{#if isFinished}}
+                    Finished
+                 {{else}}
+                    In progress
+                 {{/if}}
+             </span>
+         </div>
+         <div class="list-item-cell col-md-2 col-xs-2" style="flex:none;margin-left:0;padding-left: 0">
+              <span>
+                 {{displayUserName userId}}
+              </span>
+         </div>
+         <div class="list-item-cell col-md-1 col-xs-1" style="flex:none;margin-left:0;padding-left: 0">
+               <span>
+                 {{formattedDate dateCreated "fromNow"}}
+               </span>
+         </div>
+         </div>
+        </div>
+</template>

@@ -42,6 +42,8 @@ ExartuConfig = {
   // TW Enterprise API URL
   TwEnterpriseAPI_URL: undefined,
   ResumeParserEmail:undefined,
-  ResumeParserEmailPassword:undefined
+  ResumeParserEmailPassword:undefined,
+  TW_accountSID:undefined,
+  TW_authToken: undefined
 
 };

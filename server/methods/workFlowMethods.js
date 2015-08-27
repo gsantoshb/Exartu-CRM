@@ -1,5 +1,5 @@
 Meteor.methods({
   insertWorkFlow: function(workFlow){
-    WorkFlowManager.insertWorkFlow(workFlow);
+    return WorkFlowManager.insertWorkFlow(Meteor.userId(), workFlow);
   }
 })

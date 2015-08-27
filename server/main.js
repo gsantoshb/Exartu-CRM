@@ -32,6 +32,9 @@ Meteor.startup(function () {
     Migrations.migrateTo('latest');
   }, 5000);
 
+  Meteor.setTimeout(function(){
+    WorkFlowManager.resumeInProgress()
+  }, 500)
   // Seed database
   // Execute all function defined in seedSystemObjTypes
   _.forEach(dbSeed, function (seedFn) {

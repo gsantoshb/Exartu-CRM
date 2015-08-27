@@ -1,3 +1,15 @@
+var getNextToCall = function (arrayFlow) {
+  console.log('nextCall');
+  for (var i = 0; (i < arrayFlow.length); i++) {
+
+    if (arrayFlow[i].called === false) {
+      return arrayFlow[i];
+    }
+  }
+
+
+}
+
 TwilioManager = {
   createHierarchyNumber: function (hierId) {
     // Get hierarchy
@@ -75,11 +87,13 @@ TwilioManager = {
         }
         var contactMethodsTypes = LookUps.find({
           lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
-          lookUpActions: {$in : [Enums.lookUpAction.ContactMethod_MobilePhone,
-            Enums.lookUpAction.ContactMethod_Phone,
-            Enums.lookUpAction.ContactMethod_HomePhone,
-            Enums.lookUpAction.ContactMethod_WorkPhone
-          ]}
+          lookUpActions: {
+            $in: [Enums.lookUpAction.ContactMethod_MobilePhone,
+              Enums.lookUpAction.ContactMethod_Phone,
+              Enums.lookUpAction.ContactMethod_HomePhone,
+              Enums.lookUpAction.ContactMethod_WorkPhone
+            ]
+          }
         }).fetch();
         _.every(contactable.contactMethods, function (cm) {
           var type = _.findWhere(contactMethodsTypes, {_id: cm.type});
@@ -113,8 +127,195 @@ TwilioManager = {
       }
 
     });
-  }
+  },
+  makePlacementCall: function (placementId) {
+    // Validate parameters
+    if (!placementId) throw new Error("Placement ID is required");
 
+    // Get placement
+    var placement = Utils.filterCollectionByUserHier2(Meteor.userId(), Placements.find({_id: placementId})).fetch()[0];
+    if (!placement) throw new Error("Invalid placement ID");
+
+    // Get employee
+    var employee = Utils.filterCollectionByUserHier2(Meteor.userId(), Contactables.find({_id: placement.employee})).fetch()[0];
+    if (!employee.contactMethods || employee.contactMethods.length == 0) throw new Error("Employee needs a phone contact method");
+
+    // Get employee phone number
+    var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
+    var phoneCMs = _.pluck(LookUps.find({
+      hierId: rootHier,
+      lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+      lookUpActions: Enums.lookUpAction.ContactMethod_Phone
+    }).fetch(), '_id');
+    var phone = _.find(employee.contactMethods, function (cm) {
+      return phoneCMs.indexOf(cm.type) != -1;
+    });
+    if (!phone) throw new Error("Employee needs a phone contact method");
+
+    //Get job
+    var job = Utils.filterCollectionByUserHier2(Meteor.userId(), Jobs.find({_id: placement.job})).fetch()[0];
+    if (!job.address) throw new Error("The job needs a worksite");
+    //Get job address
+    var address = Addresses.findOne({_id: job.address});
+    if (!address) throw new Error("The job needs a worksite");
+
+    // Get hierarchy phone number
+    var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
+    var hier = Hierarchies.findOne({_id: rootHier});
+    if (!hier.phoneNumber || !hier.phoneNumber.value) throw new Error("Hierarchy phone number is required");
+    // Check twilio credentials
+    if (!twilio) throw new Error("Twilio account credentials not set");
+
+    // Craft the url
+    var callUrl = Meteor.absoluteUrl("twilio/placementCall?id=" + placement._id);
+    // Make the twilio call
+    twilio.makeCall({
+      to: phone, // Any number Twilio can call
+      from: hier.phoneNumber.value, // A number you bought from Twilio and can use for outbound communication
+      url: callUrl // A URL that produces an XML document (TwiML) which contains instructions for the call
+    }, function (err, responseData) {
+      //executed when the call has been initiated.
+    });
+  },
+  handlePlacementCall: function (placementId, data) {
+    // Get placement info
+    var placement = Placements.findOne({_id: placementId});
+    var job = Jobs.findOne({_id: placement.job});
+    var address = Addresses.findOne({_id: job.address});
+
+    // Craft the url
+    var callUrl = Meteor.absoluteUrl("twilio/gatherPlacementResponse?id=" + placementId);
+    var res = new Twilio.TwimlResponse();
+    res.say('This is an automated call from Aida regarding a job you might be interested.', {voice: 'woman'});
+    res.pause({length: 1});
+    res.say('There is a position open at ' + job.clientDisplayName + ' for ' + job.jobTitleDisplayName + '.', {voice: 'woman'});
+    res.pause({length: 1});
+    res.say('This job will be performed at: ', {voice: 'woman'});
+    res.say(address.address + ", " + address.city + ", " + address.state + ", " + address.country + ".", {voice: 'woman'});
+    res.pause({length: 1});
+    res.gather({
+      action: callUrl,
+      numDigits: 1,
+      timeout: 5
+    }, function () {
+      this.say('If you are interested in the job, please press 1, otherwise you can disregard this call.', {voice: 'woman'});
+    });
+    res.hangup();
+    return res
+  },
+  gatherPlacementResponse: function (placementId, data) {
+    var res = new Twilio.TwimlResponse();
+    res.say('Thank you! A representative will soon get in contact with you.', {voice: 'woman'});
+    res.pause({length: 1});
+    res.hangup();
+
+    return res;
+  },
+  makeWorkFlowCall: function (userId, workFlowId) {
+    // Validate parameters
+    if (!workFlowId) throw new Error("Placement ID is required");
+
+    // Get placement
+    var workFlow = Utils.filterCollectionByUserHier2(userId, WorkFlows.find({_id: workFlowId})).fetch()[0];
+    if (!workFlow) throw new Error("Invalid placement ID");
+
+    // Get next call
+    var placement = getNextToCall(workFlow.flow);
+    //console.log('flow', workFlow.flow);
+    //console.log('placement', placement.placementId);
+    //console.log('placement', placement);
+    //var employee = Utils.filterCollectionByUserHier2(Meteor.userId(), Contactables.find({_id: placement.employee})).fetch()[0];
+    //if (!employee.contactMethods || employee.contactMethods.length == 0) throw new Error("Employee needs a phone contact method");
+
+    // Get employee phone number
+    //var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
+    //var phoneCMs = _.pluck(LookUps.find({
+    //  hierId: rootHier,
+    //  lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+    //  lookUpActions: Enums.lookUpAction.ContactMethod_Phone
+    //}).fetch(), '_id');
+    //var phone = _.find(employee.contactMethods, function (cm) {return phoneCMs.indexOf(cm.type) != -1;});
+    //console.log('phone', phone);
+    //if (!phone) throw new Error("Employee needs a phone contact method");
+    if (placement) {
+      //Get job
+      var job = Utils.filterCollectionByUserHier2(userId, Jobs.find({_id: workFlow.jobId})).fetch()[0];
+      if (!job.address) throw new Error("The job needs a worksite");
+      //console.log('job', job);
+      //Get job address
+      var address = Addresses.findOne({_id: job.address});
+      if (!address) throw new Error("The job needs a worksite");
+      //console.log('address', address);
+
+      // Get hierarchy phone number
+      var rootHier = Utils.getHierTreeRoot(workFlow.hierId);
+      var hier = Hierarchies.findOne({_id: rootHier});
+      if (!hier.phoneNumber || !hier.phoneNumber.value) throw new Error("Hierarchy phone number is required");
+      //console.log('hier', hier);
+      // Check twilio credentials
+      if (!twilio) throw new Error("Twilio account credentials not set");
+
+      // Craft the url
+      var callUrl = Meteor.absoluteUrl("twilio/workFlow?id=" + workFlowId + "&placementId=" + placement.placementId+"&userId="+userId);
+      // Make the twilio call
+      twilio.makeCall({
+        to: placement.phone, // Any number Twilio can call
+        from: hier.phoneNumber.value, // A number you bought from Twilio and can use for outbound communication
+        url: callUrl, // A URL that produces an XML document (TwiML) which contains instructions for the call
+        statusCallback : Meteor.absoluteUrl("twilio/callback?id="+workFlowId+"&placementId=" + placement.placementId+"&userId="+userId),
+        statusCallbackMethod: "POST",
+        statusCallbackEvent: ["answered", "completed"],
+        method: "GET",
+        ifMachine: "Hangup"
+      }, function (err, responseData) {
+        //executed when the call has been initiated.
+
+      });
+
+    }
+  },
+  handleWorkFlowCall: function (userId, workFlowId, placementId, data) {
+    // Get placement info
+    var placement = Placements.findOne({_id: placementId});
+    var job = Jobs.findOne({_id: placement.job});
+    var address = Addresses.findOne({_id: job.address});
+
+    // Craft the url
+    var callUrl = Meteor.absoluteUrl("twilio/gatherWorkFlowResponse?id=" + workFlowId + "&placementId=" + placementId+"&userId="+userId);
+    var res = new Twilio.TwimlResponse();
+    res.say('This is an automated call from Aida regarding a job you might be interested.', {voice: 'woman'});
+    res.pause({length: 1});
+    res.say('There is a position open at ' + job.clientDisplayName + ' for ' + job.jobTitleDisplayName + '.', {voice: 'woman'});
+    res.pause({length: 1});
+    res.say('This job will be performed at: ', {voice: 'woman'});
+    res.say(address.address + ", " + address.city + ", " + address.state + ", " + address.country + ".", {voice: 'woman'});
+    res.pause({length: 1});
+    res.gather({
+      action: callUrl,
+      numDigits: 1,
+      timeout: 5
+    }, function () {
+      this.say('If you are interested in the job, please press 1, otherwise you can disregard this call.', {voice: 'woman'});
+    });
+    res.hangup();
+    return res
+  },
+  gatherWorkFlowResponseTrue: function (workFlowId, placementId, data) {
+    var res = new Twilio.TwimlResponse();
+    //console.log('twilio response', data);
+    res.say('Thank you! A representative will soon get in contact with you.', {voice: 'woman'});
+    res.pause({length: 1});
+    res.hangup();
+    return res;
+  },
+  gatherWorkFlowResponseFalse: function (workFlowId, placementId, data) {
+    var res = new Twilio.TwimlResponse();
+    //console.log('twilio response', data);
+    res.say('Thank you! Good bye.', {voice: 'woman'});
+    res.pause({length: 1});
+    res.hangup();
+    return res;
+  }
 };
 
 var _requestNumber = function () {
@@ -134,6 +335,7 @@ var _requestNumber = function () {
     var result = Meteor.wrapAsync(twilio.availablePhoneNumbers('US').local.get)({areaCode: '651'});
 
     if (result.availablePhoneNumbers.length > 0) {
+      console.log('incomingPhone', twilio.incomingPhoneNumbers);
       newNumber = Meteor.wrapAsync(twilio.incomingPhoneNumbers.create)({
         phoneNumber: result.availablePhoneNumbers[0].phoneNumber,
         areaCode: '651',

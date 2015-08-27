@@ -1,0 +1,83 @@
+<template name="workFlowDetails">
+    <div id="content" class="details network-content">
+        <div class="row">
+            <!--<div class="col-md-3">-->
+                <!--<div class="sidebar">-->
+                    <!--<div class="go-back goBack">-->
+                        <!--<a href="/workFlows"><i class="fa fa-chevron-left"></i> {{_ "Back"}}</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="col-md-12">
+                {{#with workFlow}}
+                <div class="box-type-1">
+                    <div class="row">
+                    <div class="details-view-content">
+                        <div class="tab-pane active">
+                           <div class="col-md-8 col-md-offset-2">
+                               <h3>Details:</h3>
+                           </div>
+                           <div class="box-type-1-content col-md-8 col-md-offset-2">
+                              <div class="box-type-3">
+                                 <div class="box-type-2-content">
+                                     <div class="row">
+                                    <div class="col-md-1">
+                                      <a class="item-icon item-icon-jobs" href="/job/{{jobId}}" ><i class="icon-briefcase-2"></i></a>
+                                    </div>
+                                    <div class="col-md-9">
+                                         <h4>
+                                             {{jobDisplayName}}
+                                         </h4>
+                                    </div>
+                                     </div>
+                                 </div>
+                              </div>
+
+                              {{#each flow}}
+                              <div class="box-type-2">
+                                  <div class="box-type-2-content">
+                                      <div class="row">
+                                      <div class="col-md-1">
+                                          <a class="item-icon item-icon-network" href="/contactable/{{employeeId}}" >
+                                              <i class="icon-profile-business-man"></i>
+                                          </a>
+                                      </div>
+                                      <div class="col-md-9">
+                                          <h4>
+                                               {{employeeDisplayName}}
+                                          </h4>
+                                      </div>
+                                      <div class="col-md-2">
+                                          <h5>
+                                              <div class="margin-top-15">
+                                                  {{#if response}}
+                                                      <span class="label {{getResponseClass}}">{{getResponse}}</span>
+                                                  {{else}}
+                                                      <span class="label label-default">Not called</span>
+                                                  {{/if}}
+                                              </div>
+                                          </h5>
+                                      </div>
+                                  </div>
+                                  <div class="wysiwyg-text-align-left margin-top-15" >
+                                      {{#if phone}}
+                                          <a href="callto:{{phone}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone}}</a>
+                                      {{else}}
+                                          <span class="wysiwyg-color-red" title="This employee will be skipped from the work flow">No phone</span>
+                                      {{/if}}
+                                  </div>
+
+                                  </div>
+
+                              </div>
+                              {{/each}}
+                           </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                {{/with}}
+            </div>
+        </div>
+    </div>
+</template>

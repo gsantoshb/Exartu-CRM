@@ -1930,3 +1930,15 @@ div#activityChart #container text tspan { text-decoration: none !important; font
     .list-type-7-title { padding: 10px 0; }
     .list-type-7 .right-part { padding: 5px; }
 }
+
+.item-icon-workFlows {
+    padding-top: 8px;
+    background-image: -webkit-linear-gradient(top,#FF9900 0, #FF6600 100%);
+    background-image: -o-linear-gradient(top,#FF9900 0,#FF6600 100%);
+    background-image: -webkit-gradient(linear,left 0,left 100%,from(#FF9900),to(#FF6600));
+    background-image: -webkit-linear-gradient(top,#FF9900 0%,#FF6600 100%);
+    background-image: -moz-linear-gradient(top,#FF9900 0,#FF6600 100%);
+    background-image: linear-gradient(to bottom,#FF9900 0,#FF6600 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF9900',endColorstr='#FF6600',GradientType=0);
+}

@@ -30,7 +30,6 @@ Template.addWorkFlow.created = function(){
             if(resultado){
               var lkPhone = LookUps.find({lookUpActions:Enums.lookUpAction.ContactMethod_Phone}).fetch();
               _.forEach(resultado, function(c){
-                debugger;
                 if(_.contains(_.pluck(lkPhone, '_id'), c.type)){
                   r.phone = c.value;
                 }
@@ -38,7 +37,6 @@ Template.addWorkFlow.created = function(){
 
             }
             extendedRes.push(r);
-            debugger;
             placementByJob.set(extendedRes);
           })
         })
@@ -95,14 +93,18 @@ AutoForm.hooks({
       workFlow.flow = [];
       _.forEach(placementByJob.get(), function(p){
         if(p.phone) {
-          workFlow.flow.push({placementId: p._id, employeeId: p.employee, phone: p.phone, called: false});
+          workFlow.flow.push({placementId: p._id,employeeDisplayName: p.employeeDisplayName, employeeId: p.employee, phone: p.phone, called: false});
         }
       })
-      workFlow.dateCreated = new Date();
+      workFlow.jobDisplayName = placementByJob.get()[0].jobDisplayName;
+      //workFlow.dateCreated = new Date();
+      //workFlow.userId = Meteor.userId();
+      //workFlow.hierId = Meteor.user().currentHierId;
+      workFlow.type = Enums.workFlowTypes.jobOffer;
       Meteor.call('insertWorkFlow', workFlow, function(err, res){
-
+        debugger;
+        Router.go('/workFlow/' + res);
       })
-      debugger;
       return false
 
     }

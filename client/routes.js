@@ -365,14 +365,18 @@ Router.map(function () {
     path: 'timeEntry/timecard/:id',
     controller: TimeCardController
   });
-  //this.route('addWorkFlow',{
-  //  path: 'workFlow/addWorkFlow',
-  //  controller: AddWorkFlowController
-  //});
-  //this.route('workFlowList',{
-  //  path: 'workFlows',
-  //  controller: WorkFlowsController
-  //})
+  this.route('addWorkFlow',{
+    path: 'workFlow/addWorkFlow',
+    controller: AddWorkFlowController
+  });
+  this.route('workFlowList',{
+    path: 'workFlows',
+    controller: WorkFlowsController
+  });
+  this.route('workFlowDetails',{
+    path: 'workFlow/:id',
+    controller: workFlowDetailController
+  })
 });
 
 
