@@ -1,10 +1,22 @@
 WorkFlowManager = {
     insertWorkFlow: function(userId, workFlow){
-    var toReturn = WorkFlows.insert(workFlow);
-    _.defer(Meteor.bindEnvironment(function () {
-      WorkFlowManager.makeCalls(userId, toReturn)
-    }));
-    return toReturn;
+      var job = Jobs.findOne({_id: workFlow.jobId});
+      if(job.address) {
+        var hier = Hierarchies.findOne({_id:Meteor.user().hierId})
+        if(hier.phoneNumber) {
+          var toReturn = WorkFlows.insert(workFlow);
+          _.defer(Meteor.bindEnvironment(function () {
+            WorkFlowManager.makeCalls(userId, toReturn)
+          }));
+          return toReturn;
+        }
+        else{
+          throw new Error('Error, hierarchy has no number assigned');
+        }
+      }
+      else{
+        throw new Error("Error, job has no address");
+      }
   },
   makeCalls: function(userId, workFlowId){
     TwilioManager.makeWorkFlowCall(userId,workFlowId);
