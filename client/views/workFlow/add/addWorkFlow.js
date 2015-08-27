@@ -49,7 +49,6 @@ Template.addWorkFlow.created = function(){
 Template.addWorkFlow.helpers({
   'getJobs': function(){
     return {getCollection: function (string) {
-      debugger;
       var self = this;
 
       //todo: calculate method
@@ -67,7 +66,6 @@ Template.addWorkFlow.helpers({
   },
   'jobChanged': function(){
     return {selectionChanged: function (value) {
-      debugger;
       this.value = value;
     }
     }
@@ -104,7 +102,6 @@ AutoForm.hooks({
       //workFlow.hierId = Meteor.user().currentHierId;
       workFlow.type = Enums.workFlowTypes.jobOffer;
       Meteor.call('insertWorkFlow', workFlow, function(err, res){
-        debugger;
         Router.go('/workFlow/' + res);
       })
       return false
