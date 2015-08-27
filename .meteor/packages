@@ -13,7 +13,7 @@ iron:router
 matb33:collection-hooks
 mrt:googlemaps
 sacha:spin
-natestrauser:select2
+natestrauser:select2@3.5.1
 vjau:xml2js
 cfs:standard-packages
 percolatestudio:percolatestudio-migrations
