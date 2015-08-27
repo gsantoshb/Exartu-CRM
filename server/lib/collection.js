@@ -66,6 +66,8 @@ ResumeSubscription = new Mongo.Collection('resumeSubscription');
 
 WorkFlows = new Mongo.Collection('workFlows');
 
+Calls = new Mongo.Collection('calls');
+
 Collections = {
     Hierarchies: Hierarchies,
     Jobs: Jobs,

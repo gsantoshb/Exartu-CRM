@@ -116,7 +116,11 @@ Meteor.methods({
     Meteor.users.update({ _id: this.userId },{ $set:
       {'receiveCallAvailable': available }
     });
+  },
+
+  setUserKioskNotification: function (userId, notify) {
+    check(userId, String);
+    check(notify, Boolean);
+    Meteor.users.update({_id: userId}, {$set: {'kioskNotification': notify}});
   }
-
-
 });

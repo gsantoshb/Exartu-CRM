@@ -55,8 +55,19 @@ schemaAddEmployee = new SimpleSchema({
     }
   }
 });
+var employee;
+
+Template.addEmployee.created = function(){
+  if(Router.current().params) {
+    employee = {};
+    employee.phone = Router.current().params.query.phone;
+  }
+};
 
 Template.addEmployee.helpers({
+  'employee': function(){
+    return employee;
+  },
   'emailTypes': function(){
     return _.map(LookUps.find({lookUpActions: Enums.lookUpAction.ContactMethod_Email}).fetch(), function(r){
       return {label:r.displayName, value:r._id};

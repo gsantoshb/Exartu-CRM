@@ -68,6 +68,7 @@ Template.addContact.created = function(){
   if(Router.current().params) {
     contact = {};
     contact.client = Router.current().params.query.client;
+    contact.phone = Router.current().params.query.phone;
   }
   if(contact){
     Meteor.call('getContactableById', contact.client, function(err, res){

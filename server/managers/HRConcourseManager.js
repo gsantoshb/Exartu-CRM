@@ -346,6 +346,9 @@ HRConcourseManager = {
     // Save the documents to the employee
     syncDocs(hierId, instances, logRecordId, empId);
 
+    // Notify registered users
+    sendNewKioskUserNotification(empId);
+
     return empId;
   }
 };
@@ -410,4 +413,29 @@ var sendHrcAccountCreationEmail = function (email, hierId, displayName, pass) {
     + "A�da team";
 
   EmailManager.sendEmail(email, 'A�da - Invitation', text, false);
+};
+
+var sendNewKioskUserNotification = function (empId) {
+  var employee = Contactables.findOne({_id: empId});
+  if (!employee) return;
+
+  var hier = Hierarchies.findOne({_id: employee.hierId});
+
+  var subject = "New Kiosk User Registered - " + employee.person.firstName + " " + employee.person.lastName;
+  var url = (process.env.ROOT_URL || 'http://localhost:3000/') + 'contactable/' + empId;
+  var text = "Dear Aida user,\n\n"
+    + "A new employee has registered through the Kiosk application.\n"
+    + "Employee Name: " + employee.person.firstName + " " + employee.person.lastName + ".\n"
+    + "Hierarchy: " + hier.name + ".\n"
+    + "Please click the link below to see the details. Alternatively, copy the link into your browser.\n\n"
+    + url + "\n\n"
+    + "Thank you,\n"
+    + "Aida team";
+
+  // Send the email to every user in the hierarchy registered to get notifications
+  Meteor.users.find({hierId: employee.hierId, kioskNotification: true}).forEach(function (user) {
+    if (user.emails && user.emails[0]) {
+      EmailManager.sendEmail(user.emails[0].address, subject, text, false);
+    }
+  });
 };

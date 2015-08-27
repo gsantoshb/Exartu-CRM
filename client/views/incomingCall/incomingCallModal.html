@@ -2,20 +2,57 @@
     <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+
+                <!-- Header -->
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel">Incoming call from  {{incomingName}} </h4>
+                    <h4 class="modal-title"> Incoming call from {{incomingName}} </h4>
                 </div>
-                <div class="modal-body" style="min-height: 100px;">
-                    {{#if contactable}}
-                 <a href="/contactable/{{contactable._id}}">Navigate to details for {{incomingName}} </a>
 
-                    {{>entityActivities entityId=contactable._id}}
+                <!-- Body -->
+                <div class="modal-body">
+                    {{#if accepted}}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <legend>Write a call note</legend>
+                            </div>
+                            <div class="col-md-12">
+                                <textarea id="incomingCallNote" rows="4" style="width: 100%;"></textarea>
+                            </div>
+                        </div>
+                    {{/if}}
+
+                    {{#if contactable}}
+                        <a href="/contactable/{{contactable._id}}">Navigate to details for {{incomingName}} </a>
+
+                        {{>entityActivities entityId=contactable._id}}
+                    {{else}}
+                       <h4>
+                           Add number to contacts
+                       </h4>
+                        <ul>
+                            <li>
+                                <a href="/contactableAdd/Contact?phone={{number}}" class="pointer">add as a <b>contact</b></a>
+                            </li>
+                            <li>
+                                <a href="/contactableAdd/Employee?phone={{number}}" class="pointer">add as an <b>employee</b></a>
+                            </li>
+                        </ul>
                     {{/if}}
                 </div>
+
+                <!-- Footer -->
                 <div class="modal-footer">
-                    <a class="btn btn-success {{answerCallDisabled}}"  id="answerCall"> Answer </a>
-                    <a class="btn btn-danger" id="declineCall" data-dismiss="modal"> Decline </a>
+                    {{#unless callEnded}}
+                        {{#unless accepted}}
+                            <a class="btn btn-success {{answerCallDisabled}}" id="answerCall"> Answer </a>
+                            <a class="btn btn-danger" id="declineCall" data-dismiss="modal"> Decline </a>
+                        {{else}}
+                            <a class="btn btn-danger" id="hangupCall"> Hung Up </a>
+                        {{/unless}}
+                    {{else}}
+                        <a class="btn btn-primary saveAndClose">{{#if callNote}}Save & {{/if}}Close </a>
+                    {{/unless}}
                 </div>
             </div>
         </div>

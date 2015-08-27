@@ -29,6 +29,7 @@ ExartuConfig = {
   // Twilio
   TW_accountSID: undefined,
   TW_authToken: undefined,
+  TW_appSID: undefined,
   PageSize: 10,
   // Applicant Center URL
   ApplicantCenter_URL: undefined,
