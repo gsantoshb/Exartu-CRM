@@ -34,16 +34,19 @@ Template.addWorkFlow.created = function(){
                   r.phone = c.value;
                 }
               })
-
             }
             extendedRes.push(r);
             placementByJob.set(extendedRes);
           })
         })
-
       }
     });
   })
+}
+
+Template.addWorkFlow.destroyed = function(){
+  placementByJob.set([]);
+  reactiveJobId.set("");
 }
 
 Template.addWorkFlow.helpers({
@@ -91,6 +94,7 @@ AutoForm.hooks({
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
       var workFlow = {jobId: insertDoc.job};
       workFlow.flow = [];
+
       _.forEach(placementByJob.get(), function(p){
         if(p.phone) {
           workFlow.flow.push({placementId: p._id,employeeDisplayName: p.employeeDisplayName, employeeId: p.employee, phone: p.phone, called: false});
@@ -102,7 +106,14 @@ AutoForm.hooks({
       //workFlow.hierId = Meteor.user().currentHierId;
       workFlow.type = Enums.workFlowTypes.jobOffer;
       Meteor.call('insertWorkFlow', workFlow, function(err, res){
-        Router.go('/workFlow/' + res);
+        if(res) {
+          Router.go('/workFlow/' + res);
+        }
+        if(err){
+          Utils.showModal('basicModal', {
+            title: 'Error creating workflow',
+            message: err.error })
+        }
       })
       return false
 
