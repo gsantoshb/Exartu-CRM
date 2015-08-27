@@ -49,6 +49,7 @@ Template.addWorkFlow.created = function(){
 Template.addWorkFlow.helpers({
   'getJobs': function(){
     return {getCollection: function (string) {
+      debugger;
       var self = this;
 
       //todo: calculate method
@@ -66,6 +67,7 @@ Template.addWorkFlow.helpers({
   },
   'jobChanged': function(){
     return {selectionChanged: function (value) {
+      debugger;
       this.value = value;
     }
     }
