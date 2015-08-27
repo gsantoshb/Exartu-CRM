@@ -17,7 +17,7 @@ TwApi = {
       if (!error) {
         // Update the modified properties
         _.each(_.keys(employee), function (key) {
-          result[key] = employee[key];
+          if (key != 'dependantsCount') result[key] = employee[key];
         });
 
         // Sync the changes
@@ -26,6 +26,16 @@ TwApi = {
             throw new Error("TW Sync failed updating employee");
           }
         }));
+
+        // Sync dependants with it's own method
+        if (employee.dependantsCount) {
+          var dependants = {dependantsCount: employee.dependantsCount};
+          apiHelper.post('/Employees/' + employeeId + '/setDependants', dependants, Meteor.bindEnvironment(function (error, result) {
+            if (error) {
+              throw new Error("TW Sync failed updating employee dependants");
+            }
+          }));
+        }
       } else {
         throw new Error("TW Sync failed updating employee");
       }
