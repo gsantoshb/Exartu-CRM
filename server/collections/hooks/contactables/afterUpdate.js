@@ -395,6 +395,8 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
           if (fieldNames.indexOf('Employee') != -1) {
             if (this.previous.Employee.taxID != doc.Employee.taxID)
               data.ssn = doc.Employee.taxID.replace(/-/g,'');
+            if (this.previous.Employee.dependentNumber != doc.Employee.dependentNumber)
+              data.dependantsCount = doc.Employee.dependentNumber;
           }
 
           // Check if contact methods were modified
@@ -450,6 +452,7 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
           if (doc.person.firstName) data.firstName = doc.person.firstName;
           if (doc.person.lastName) data.lastName = doc.person.lastName;
           if (doc.Employee.taxID) data.ssn = doc.Employee.taxID.replace(/-/g,'');
+          if (doc.Employee.dependentNumber) data.dependantsCount = doc.Employee.dependentNumber;
           if (doc.contactMethods && doc.contactMethods.length > 0) {
             var hierFilter = Utils.filterByHiers(doc.hierId);
 
