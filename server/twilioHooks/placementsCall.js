@@ -289,9 +289,9 @@ Router.map(function() {
 });
 
 Router.map(function() {
-  this.route("callback" + api_version, {
+  this.route("callbackPlacementConfirm" + api_version, {
     where: 'server',
-    path: "/twilio/callback",
+    path: "/twilio/callbackPlacementConfirm",
     action: function() {
       var response = new RESTAPI.response(this.response);
       var callStatus;
@@ -316,7 +316,7 @@ Router.map(function() {
 
       try {
         var res = WorkFlowManager.getWorkFlowResponse( this.request.query.id, this.request.query.placementId);
-        if((res === 'Intrested')||(res === 'NotIntrested')){
+        if((res === 'Confirmed')||(res === 'NoConfirmed')){
           //nothing to do here
         }
         else{
@@ -324,7 +324,7 @@ Router.map(function() {
             case 'completed':{
               var res = WorkFlowManager.getWorkFlowResponse( this.request.query.id, this.request.query.placementId);
               if(res === 'Answered') {
-                WorkFlowManager.setWorkFlowCall(data.query.id, data.query.placementId, 'NotIntrested');
+                WorkFlowManager.setWorkFlowCall(data.query.id, data.query.placementId, 'NoConfirmed');
               }
               else{
                 WorkFlowManager.setWorkFlowCall(data.query.id, data.query.placementId, 'NoAnswer');
