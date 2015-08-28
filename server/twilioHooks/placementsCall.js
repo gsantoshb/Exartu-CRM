@@ -207,3 +207,141 @@ Router.map(function() {
   })
 });
 
+//twilio/callback
+Router.map(function() {
+  this.route('twilioWorkFlowPlacementConfirm' + api_version, {
+    where: 'server',
+    path: '/twilio/workFlowPlacementConfirm',
+    action: function() {
+      var response = new RESTAPI.response(this.response);
+
+      // Obtain data from the respective method executed
+      var data;
+      switch (this.request.method) {
+        case 'GET':
+          data = this.params.query;
+          break;
+
+        case 'POST':
+          data = this.request.body;
+          break;
+
+        default:
+          response.error('Method not supported');
+      }
+
+      try {
+        // Respond to twilio
+        var resp = TwilioManager.handleWorkFlowPlacementConfirmCall(this.request.query.userId, this.request.query.id, this.request.query.placementId, data);
+        WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answered');
+        response.end(resp.toString(), {type: 'xml', plain: true});
+      } catch (err) {
+        console.log(err);
+        response.error(err.message);
+      }
+    }
+  })
+});
+
+Router.map(function() {
+  this.route('gatherWorkFlowPlacementConfirm' + api_version, {
+    where: 'server',
+    path: '/twilio/gatherWorkFlowPlacementConfirm',
+    action: function() {
+      var response = new RESTAPI.response(this.response);
+
+      // Obtain data from the respective method executed
+      var data;
+      switch (this.request.method) {
+        case 'GET':
+          data = this.params.query;
+          break;
+
+        case 'POST':
+          data = this.request.body;
+
+          break;
+
+        default:
+          response.error('Method not supported');
+      }
+
+      try {
+        // Respond to twilio
+        var resp;
+        if(data.Digits === '1') {
+          resp = TwilioManager.gatherWorkFlowResponseTrue(this.request.query.id, this.request.query.placementId, data);
+          WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Confirmed');
+        }
+        else{
+          resp = TwilioManager.gatherWorkFlowResponseFalse(this.request.query.id, this.request.query.placementId, data);
+          WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'NoConfirmed');
+
+        }
+        response.end(resp.toString(), {type: 'xml', plain: true});
+        TwilioManager.makeWorkFlowCallPlacementConfirm(this.request.query.userId, this.request.query.id);
+      } catch (err) {
+        console.log(err);
+        response.error(err.message);
+      }
+    }
+  })
+});
+
+Router.map(function() {
+  this.route("callback" + api_version, {
+    where: 'server',
+    path: "/twilio/callback",
+    action: function() {
+      var response = new RESTAPI.response(this.response);
+      var callStatus;
+      // Obtain data from the respective method executed
+      var data;
+      switch (this.request.method) {
+        case 'GET':
+          callStatus = this.request.body.CallStatus;
+          data = this.request;
+          //data = this.params.query;
+          break;
+
+        case 'POST':
+          callStatus = this.request.body.CallStatus;
+          data = this.request;
+          //data = this.request.body;
+          break;
+
+        default:
+          response.error('Method not supported');
+      }
+
+      try {
+        var res = WorkFlowManager.getWorkFlowResponse( this.request.query.id, this.request.query.placementId);
+        if((res === 'Intrested')||(res === 'NotIntrested')){
+          //nothing to do here
+        }
+        else{
+          switch(callStatus){
+            case 'completed':{
+              var res = WorkFlowManager.getWorkFlowResponse( this.request.query.id, this.request.query.placementId);
+              if(res === 'Answered') {
+                WorkFlowManager.setWorkFlowCall(data.query.id, data.query.placementId, 'NotIntrested');
+              }
+              else{
+                WorkFlowManager.setWorkFlowCall(data.query.id, data.query.placementId, 'NoAnswer');
+              }
+              TwilioManager.makeWorkFlowCall(data.query.userId, data.query.id);
+              break;
+            }
+            case 'no-answer':{
+              WorkFlowManager.setWorkFlowCall(data.query.id, data.query.placementId, 'NoAnswer');
+              TwilioManager.makeWorkFlowCall(data.query.userId, data.query.id);
+            }
+          }
+        }
+      } catch (err) {
+        console.log(err);
+        response.error(err.message);
+      }
+    }
+  })
+});

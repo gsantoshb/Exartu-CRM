@@ -1,4 +1,4 @@
-AddWorkFlowController = RouteController.extend({
+AddWorkFlowControllerJobOffer = RouteController.extend({
   data: function(){
    },
   waitOn: function () {
@@ -19,6 +19,7 @@ schemaAddWorkField = new SimpleSchema({
     optional: false
   }
 })
+
 var placementByJob = new ReactiveVar([]);
 Template.addWorkFlow.created = function(){
   this.autorun(function(){

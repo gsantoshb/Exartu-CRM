@@ -6,7 +6,13 @@ WorkFlowManager = {
         if(hier.phoneNumber) {
           var toReturn = WorkFlows.insert(workFlow);
           _.defer(Meteor.bindEnvironment(function () {
-            WorkFlowManager.makeCalls(userId, toReturn)
+            if(workFlow.type === Enums.workFlowTypes.jobOffer){
+              WorkFlowManager.makeCalls(userId, toReturn)
+            }
+            else{
+              WorkFlowManager.makeCallsPlacementConfirm(userId, toReturn);
+            }
+
           }));
           return toReturn;
         }
@@ -17,6 +23,9 @@ WorkFlowManager = {
       else{
         throw new Error("Error, job has no address");
       }
+  },
+  makeCallsPlacementConfirm: function(userId, toReturn){
+    TwilioManager.makeWorkFlowCallPlacementConfirm(userId,workFlowId);
   },
   makeCalls: function(userId, workFlowId){
     TwilioManager.makeWorkFlowCall(userId,workFlowId);

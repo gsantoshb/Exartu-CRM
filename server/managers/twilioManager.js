@@ -315,6 +315,78 @@ TwilioManager = {
     res.pause({length: 1});
     res.hangup();
     return res;
+  },
+  makeWorkFlowCallPlacementConfirm: function(userId,workFlowId){
+      // Validate parameters
+      if (!workFlowId) throw new Error("Placement ID is required");
+
+      // Get placement
+      var workFlow = Utils.filterCollectionByUserHier2(userId, WorkFlows.find({_id: workFlowId})).fetch()[0];
+      if (!workFlow) throw new Error("Invalid placement ID");
+
+      // Get next call
+      var placement = getNextToCall(workFlow.flow);
+
+      if (placement) {
+        //Get job
+        var job = Utils.filterCollectionByUserHier2(userId, Jobs.find({_id: workFlow.jobId})).fetch()[0];
+        if (!job.address) throw new Error("The job needs a worksite");
+        //Get job address
+        var address = Addresses.findOne({_id: job.address});
+        if (!address) throw new Error("The job needs a worksite");
+        //console.log('address', address);
+
+        // Get hierarchy phone number
+        var rootHier = Utils.getHierTreeRoot(workFlow.hierId);
+        var hier = Hierarchies.findOne({_id: rootHier});
+        if (!hier.phoneNumber || !hier.phoneNumber.value) throw new Error("Hierarchy phone number is required");
+        // Check twilio credentials
+        if (!twilio) throw new Error("Twilio account credentials not set");
+
+        // Craft the url
+        var callUrl = Meteor.absoluteUrl("twilio/workFlowPlacementConfirm?id=" + workFlowId + "&placementId=" + placement.placementId+"&userId="+userId);
+        // Make the twilio call
+        twilio.makeCall({
+          to: placement.phone, // Any number Twilio can call
+          from: hier.phoneNumber.value, // A number you bought from Twilio and can use for outbound communication
+          url: callUrl, // A URL that produces an XML document (TwiML) which contains instructions for the call
+          statusCallback : Meteor.absoluteUrl("twilio/callbackPlacementConfirm?id="+workFlowId+"&placementId=" + placement.placementId+"&userId="+userId),
+          statusCallbackMethod: "POST",
+          statusCallbackEvent: ["answered", "completed"],
+          method: "GET",
+          ifMachine: "Hangup"
+        }, function (err, responseData) {
+          //executed when the call has been initiated.
+
+        });
+
+      }
+  },
+  handleWorkFlowPlacementConfirmCall: function (userId, workFlowId, placementId, data) {
+    // Get placement info
+    var placement = Placements.findOne({_id: placementId});
+    var job = Jobs.findOne({_id: placement.job});
+    var address = Addresses.findOne({_id: job.address});
+
+    // Craft the url
+    var callUrl = Meteor.absoluteUrl("twilio/gatherWorkFlowPlacementConfirm?id=" + workFlowId + "&placementId=" + placementId+"&userId="+userId);
+    var res = new Twilio.TwimlResponse();
+    res.say('This is an automated call from Aida to confirm you are going to work at', {voice: 'woman'});
+    res.pause({length: 1});
+    res.say('' + job.clientDisplayName + ' for ' + job.jobTitleDisplayName + '.', {voice: 'woman'});
+    res.pause({length: 1});
+    res.say('This job will be performed at: ', {voice: 'woman'});
+    res.say(address.address + ", " + address.city + ", " + address.state + ", " + address.country + ".", {voice: 'woman'});
+    res.pause({length: 1});
+    res.gather({
+      action: callUrl,
+      numDigits: 1,
+      timeout: 5
+    }, function () {
+      this.say('To confirm your assistance, please press 1, otherwise you can disregard this call.', {voice: 'woman'});
+    });
+    res.hangup();
+    return res
   }
 };
 
