@@ -24,7 +24,7 @@ WorkFlowManager = {
         throw new Error("Error, job has no address");
       }
   },
-  makeCallsPlacementConfirm: function(userId, toReturn){
+  makeCallsPlacementConfirm: function(userId, workFlowId){
     TwilioManager.makeWorkFlowCallPlacementConfirm(userId,workFlowId);
   },
   makeCalls: function(userId, workFlowId){
