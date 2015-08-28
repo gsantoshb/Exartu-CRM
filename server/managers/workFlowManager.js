@@ -69,7 +69,13 @@ WorkFlowManager = {
       }
 
       if(!finished){
-        WorkFlowManager.makeCalls(w.userId, w._id)
+        if(w.type === Enums.workFlowTypes.jobOffer) {
+          WorkFlowManager.makeCalls(w.userId, w._id);
+        }
+        else if(w.type === Enums.workFlowTypes.placementConfirm){
+          WorkFlowManager.makeCallsPlacementConfirm(w.userId, w._id);
+
+        }
       }
     })
 

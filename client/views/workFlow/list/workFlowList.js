@@ -23,11 +23,16 @@ Template.workFlowList.helpers({
 Template.workFlowsListItem.helpers({
   'getWorkFlowType': function(){
     switch (this.type){
-      case Enums.workFlowTypes.jobOffer:{
+      case Enums.workFlowTypes.jobOffer:
+      {
         return 'Job offer';
         break;
       }
-
+      case Enums.workFlowTypes.placementConfirm:
+      {
+        return 'Confirm placement';
+        break;
+      }
     }
   },
   'numberCalled': function(){

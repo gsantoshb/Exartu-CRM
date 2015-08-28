@@ -39,6 +39,13 @@ Template.workFlowDetails.helpers({
     else if(this.response === "Intrested"){
       return "label-success";
     }
+    else if(this.response === "Confirmed"){
+      return "label-success";
+    }
+    else if(this.response === "NoConfirmed"){
+      return "label-danger";
+    }
+
   },
   'getResponse': function(){
     if(this.response === "NotIntrested"){
@@ -52,6 +59,12 @@ Template.workFlowDetails.helpers({
     }
     else if(this.response === "Intrested"){
       return "Intrested";
+    }
+    else if(this.response === "Confirmed"){
+      return "Confirmed";
+    }
+    else if(this.response === "NoConfirmed"){
+      return "Not confirmed";
     }
   }
 
