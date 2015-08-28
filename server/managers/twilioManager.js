@@ -383,7 +383,7 @@ TwilioManager = {
       numDigits: 1,
       timeout: 5
     }, function () {
-      this.say('To confirm your assistance, please press 1, otherwise you can disregard this call.', {voice: 'woman'});
+      this.say('To confirm your assistance, please press 1, to cancel press 2, otherwise you can disregard this call.', {voice: 'woman'});
     });
     res.hangup();
     return res

@@ -45,6 +45,9 @@ Template.workFlowDetails.helpers({
     else if(this.response === "NoConfirmed"){
       return "label-danger";
     }
+    else if(this.response === "Canceled"){
+      return "label-danger";
+    }
 
   },
   'getResponse': function(){
@@ -65,6 +68,9 @@ Template.workFlowDetails.helpers({
     }
     else if(this.response === "NoConfirmed"){
       return "Not confirmed";
+    }
+    else if(this.response === "Canceled"){
+      return "Canceled";
     }
   }
 

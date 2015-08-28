@@ -229,7 +229,6 @@ Router.map(function() {
         default:
           response.error('Method not supported');
       }
-
       try {
         // Respond to twilio
         var resp = TwilioManager.handleWorkFlowPlacementConfirmCall(this.request.query.userId, this.request.query.id, this.request.query.placementId, data);
@@ -272,6 +271,10 @@ Router.map(function() {
         if(data.Digits === '1') {
           resp = TwilioManager.gatherWorkFlowResponseTrue(this.request.query.id, this.request.query.placementId, data);
           WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Confirmed');
+        }
+        else if(data.Digits === '2'){
+          resp = TwilioManager.gatherWorkFlowResponseTrue(this.request.query.id, this.request.query.placementId, data);
+          WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Canceled');
         }
         else{
           resp = TwilioManager.gatherWorkFlowResponseFalse(this.request.query.id, this.request.query.placementId, data);
@@ -316,7 +319,7 @@ Router.map(function() {
 
       try {
         var res = WorkFlowManager.getWorkFlowResponse( this.request.query.id, this.request.query.placementId);
-        if((res === 'Confirmed')||(res === 'NoConfirmed')){
+        if((res === 'Confirmed')||(res === 'NoConfirmed')||(res === 'Canceled')){
           //nothing to do here
         }
         else{
