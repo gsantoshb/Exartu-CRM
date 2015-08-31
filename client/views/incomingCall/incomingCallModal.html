@@ -32,10 +32,10 @@
                        </h4>
                         <ul>
                             <li>
-                                <a href="/contactableAdd/Contact?phone={{number}}" class="pointer">add as a <b>contact</b></a>
+                                <a href="/contactableAdd/Contact?phone={{number}}" class="pointer close-modal">add as a <b>contact</b></a>
                             </li>
                             <li>
-                                <a href="/contactableAdd/Employee?phone={{number}}" class="pointer">add as an <b>employee</b></a>
+                                <a href="/contactableAdd/Employee?phone={{number}}" class="pointer close-modal">add as an <b>employee</b></a>
                             </li>
                         </ul>
                     {{/if}}
@@ -48,7 +48,7 @@
                             <a class="btn btn-success {{answerCallDisabled}}" id="answerCall"> Answer </a>
                             <a class="btn btn-danger" id="declineCall" data-dismiss="modal"> Decline </a>
                         {{else}}
-                            <a class="btn btn-danger" id="hangupCall"> Hung Up </a>
+                            <a class="btn btn-danger" id="hangupCall"> End Call </a>
                         {{/unless}}
                     {{else}}
                         <a class="btn btn-primary saveAndClose">{{#if callNote}}Save & {{/if}}Close </a>

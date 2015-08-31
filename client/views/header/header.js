@@ -372,10 +372,10 @@ Template.sidebar.helpers({
         return Utils.bUserIsAdmin();
     },
     currentTwilioConnectionNumber: function () {
-        if( currentTwilioConnection.get() != undefined){
-            return currentTwilioConnection.get().parameters.From;
+        var connection = currentTwilioConnection.get();
+        if( connection != undefined){
+            return connection.parameters.From || "outgoing call";
         }
-
     },
     getActiveClass: function (route, type) {
         var current = Router.current();
