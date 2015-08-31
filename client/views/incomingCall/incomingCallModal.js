@@ -24,8 +24,8 @@ Template.incomingCallModal.helpers({
   incomingName: function () {
     if (contactable.get())
       return contactable.get().displayName;
-    else if (currentTwilioConnection.get())
-      return currentTwilioConnection.get().parameters.From;
+    else
+      return number.get();
   },
   contactable: function () {
     return contactable.get();
