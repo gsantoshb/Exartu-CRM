@@ -10,13 +10,57 @@ WorkFlowsController = RouteController.extend({
   }
 });
 
+var reactFinished = new ReactiveVar(true);
+var reactInProgress = new ReactiveVar(true);
+
 Template.workFlowList.created = function(){
-  SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows',{});
+  Meteor.autorun(function(){
+    var filterOr = [];
+    if(reactFinished.get()){
+      filterOr.push({flow:{$not:{$elemMatch:{called:!reactFinished.get()}}}})
+    }
+    if(reactInProgress.get()){
+      filterOr.push({flow:{$elemMatch:{called:!reactInProgress.get()}}})
+    }
+    if(reactFinished.get()||reactInProgress.get()) {
+       SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows', {filter: {$or: filterOr}});
+    }
+    else{
+      SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows');
+    }
+
+  })
 }
 
 Template.workFlowList.helpers({
+  'totalCount': function(){
+    return SubscriptionHandlers.WorkFlowsHandler.totalCount()
+  },
   'workFlows': function(){
     return WorkFlows.find({}, {sort:{dateCreated:-1}});
+  },
+  'getFinishedClass': function(){
+    if( reactFinished.get() )
+       return 'btn-primary';
+    else{
+       return 'btn-default'
+    }
+  },
+  'getInProgressClass': function(){
+    if( reactInProgress.get() )
+      return 'btn-primary';
+    else{
+      return 'btn-default'
+    }
+  }
+})
+
+Template.workFlowList.events({
+  'click #inProgress': function(){
+    reactInProgress.set(!reactInProgress.get())
+  },
+  'click #finished': function(){
+    reactFinished.set(!reactFinished.get())
   }
 })
 

@@ -3,7 +3,22 @@
         <div class="row-container">
             <div class="row">
                 <div class="col-md-3 col-lg-3" id="column-filters">
+                    <div class="page-title" >
+                        <h1><span>{{totalCount}}</span> Workflow</h1>
+                    </div>
+                    <div class="filter">
+                        <div class="filter-list" id="filter-body">
+                            <div class="filter-item">
+                                <div class="filter-title">
+                                    <!--<i class="fa fa-group"></i>-->
+                                    Status
+                                </div>
+                                <button type="button" class="typeSelect btn btn-sm {{getFinishedClass}}" id="finished">Finished</button>
+                                <button type="button" class="typeSelect btn btn-sm {{getInProgressClass}}" id="inProgress">In progress</button>
 
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-9" id="column-list">
                     <div class="list-container">
