@@ -52,8 +52,14 @@
                             {{/each}}
                             <div class="form-group text-center top-30">
                                 <button class="btn btn-success btn-lg" disabled="{{hasNoPlacement}}">Start</button>
+                                {{#if hasNoPlacement}}
+                                    <div class="form-group has-error has-feedback">
+                                        <label class="control-label" for="inputError">
+                                            No placement
+                                        </label>
+                                    </div>
+                                {{/if}}
                             </div>
-
                         {{/autoForm}}
                     </div>
                 </div>
