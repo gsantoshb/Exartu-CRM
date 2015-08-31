@@ -91,5 +91,6 @@ Template.incomingCallModal.events({
     }
 
     Utils.dismissModal();
-  }
+  },
+  'click .close-modal': Utils.dismissModal
 });
