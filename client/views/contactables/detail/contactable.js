@@ -524,7 +524,12 @@ Template.contactable_header.events({
     var phoneNumber = this.phone && this.phone.value;
     if (!phoneNumber) return;
     var connection = Twilio.Device.connect({"PhoneNumber": phoneNumber, "CallerId": hierPhoneNumber});
-    Utils.showModal('outgoingCall', connection);
+
+    connection.disconnect(function (conn) {
+      currentTwilioConnection.set(undefined);
+    });
+
+    currentTwilioConnection.set(connection);
   }
 });
 // Details
