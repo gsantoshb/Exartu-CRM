@@ -32,10 +32,27 @@ WorkFlowManager = {
   },
   setWorkFlowCall: function(workFlowId, placementId,response){
     var workFlow = WorkFlows.findOne({_id: workFlowId});
+
     _.each(workFlow.flow, function(f){
       if(f.placementId === placementId){
-        f.response = response;
-        f.called = true;
+        if(response === "noAnswer"){
+           if(f.response == false){
+             f.response = "retry 1";
+             //f.called = true;
+           }
+          else if(f.response === "retry 1"){
+             f.response = "retry 2"
+          }
+          else if(f.response === "retry 2"){
+             f.response = "retry 3"
+
+           }
+          else if(f.response === "retry 3"){
+             f.response = "noAnswer";
+             f.called = true;
+           }
+        }
+
       }
     })
     WorkFlows.update({_id: workFlowId}, {$set:workFlow});
