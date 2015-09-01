@@ -12,17 +12,22 @@ WorkFlowsController = RouteController.extend({
 
 var reactFinished = new ReactiveVar(true);
 var reactInProgress = new ReactiveVar(true);
+var reactCanceled = new ReactiveVar(true);
 
 Template.workFlowList.created = function(){
   Meteor.autorun(function(){
     var filterOr = [];
     if(reactFinished.get()){
-      filterOr.push({flow:{$not:{$elemMatch:{called:!reactFinished.get()}}}})
+      //get all workflow that have each element of flow called and status isn't canceled
+      filterOr.push({$and:[{flow:{$not:{$elemMatch:{called:!reactFinished.get()}}}},{status:{$ne:'canceled'}}]})
     }
     if(reactInProgress.get()){
-      filterOr.push({flow:{$elemMatch:{called:!reactInProgress.get()}}})
+      filterOr.push({$and:[{flow:{$elemMatch:{called:!reactInProgress.get()}}},{status:{$ne:'canceled'}}]})
     }
-    if(reactFinished.get()||reactInProgress.get()) {
+    if(reactCanceled.get()){
+      filterOr.push({status:'canceled'})
+    }
+    if(reactFinished.get()||reactInProgress.get()||reactCanceled.get()) {
        SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows', {filter: {$or: filterOr}});
     }
     else{
@@ -52,6 +57,13 @@ Template.workFlowList.helpers({
     else{
       return 'btn-default'
     }
+  },
+  'getCanceledClass': function(){
+    if( reactCanceled.get() )
+      return 'btn-primary';
+    else{
+      return 'btn-default'
+    }
   }
 })
 
@@ -61,6 +73,9 @@ Template.workFlowList.events({
   },
   'click #finished': function(){
     reactFinished.set(!reactFinished.get())
+  },
+  'click #canceled': function(){
+    reactCanceled.set(!reactCanceled.get())
   }
 })
 
@@ -99,5 +114,8 @@ Template.workFlowsListItem.helpers({
       }
     })
     return (count === this.flow.length);
+  },
+  'isCanceled': function(){
+    return this.status === 'canceled';
   }
 })
