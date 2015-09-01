@@ -35,7 +35,7 @@ WorkFlowManager = {
 
     _.each(workFlow.flow, function(f){
       if(f.placementId === placementId){
-        if(response === "noAnswer"){
+        if(response === "NoAnswer"){
            if(f.response == false){
              f.response = "retry 1";
              //f.called = true;
@@ -48,9 +48,13 @@ WorkFlowManager = {
 
            }
           else if(f.response === "retry 3"){
-             f.response = "noAnswer";
+             f.response = "NoAnswer";
              f.called = true;
            }
+        }
+        else{
+          f.response = response;
+          f.called = true;
         }
 
       }
