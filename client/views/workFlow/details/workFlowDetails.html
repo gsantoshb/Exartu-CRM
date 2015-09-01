@@ -74,8 +74,19 @@
                            </div>
                         </div>
                     </div>
+                        {{#if isCanceled}}
+                           <div class="col-md-2 col-md-offset-8">
+                               <button class="btn btn-default"  style="float:right">Canceled</button>
+                           </div>
+                        {{else}}
+                            <div class="col-md-2 col-md-offset-8">
+                                <button id="cancel-workflow" class="btn btn-danger disabled"  style="float:right">Cancel</button>
+                            </div>
+                        {{/if}}
                     </div>
+
                 </div>
+
                 {{/with}}
             </div>
         </div>

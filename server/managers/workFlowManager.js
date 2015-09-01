@@ -55,6 +55,7 @@ WorkFlowManager = {
       var revertAnswerStatus = false;
       var finished = true;
       var flowArray = [];
+      if(w.status !== 'canceled'){
       _.each(w.flow, function(f){
          if(f.response === "Answered"){
            f.response = undefined;
@@ -77,17 +78,11 @@ WorkFlowManager = {
 
         }
       }
+      }
     })
 
+  },
+  cancelWorkFlow: function(workFlowId){
+    WorkFlows.update({_id: workFlowId},{$set:{status: "canceled"}});
   }
-  //setWorkFlowCalled: function(workFlowId, placementId){
-  //  var workFlow = WorkFlows.findOne({_id:workFlowId});
-  //  _.each(workFlow.flow, function(f){
-  //    if(f.placementId === placementId){
-  //      console.log('placementSetCalled', placementId);
-  //      return f.response;
-  //    }
-  //  })
-  //}
-
 }

@@ -15,6 +15,9 @@ workFlowDetailController = RouteController.extend({
 });
 
 Template.workFlowDetails.helpers({
+  'isCanceled': function(){
+    return this.status === 'canceled';
+  },
   'workFlow': function(){
      return WorkFlows.findOne({_id:workflowId})
   },
@@ -74,4 +77,12 @@ Template.workFlowDetails.helpers({
     }
   }
 
+})
+
+Template.workFlowDetails.events({
+  'click #cancel-workflow': function(){
+    Meteor.call('cancelWorkFlow', this._id, function(err, res){
+
+    });
+  }
 })
