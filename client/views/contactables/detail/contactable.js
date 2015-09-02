@@ -526,6 +526,7 @@ Template.contactable_header.events({
     var connection = Twilio.Device.connect({"PhoneNumber": phoneNumber, "CallerId": hierPhoneNumber});
 
     connection.disconnect(function (conn) {
+      Meteor.call('logTwilioCall', conn.parameters.CallSid, phoneNumber, Session.get("entityId"));
       currentTwilioConnection.set(undefined);
     });
 

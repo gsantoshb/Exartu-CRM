@@ -23,8 +23,6 @@ Router.map(function () {
       }
 
       try {
-
-
         var hier = HierarchyManager.getHierByPhoneNumber(data.To);
 
         //Find if there is an available user to answer the call
@@ -75,11 +73,16 @@ Router.map(function () {
           });
         }
 
+        console.log('contactable', contactable);
         Calls.insert({
           twCallId: this.request.body.CallSid,
           incoming: true,
+          phone: data.From,
           hierId: hier._id,
-          availableUsers: _.pluck(availableUsers, '_id')
+          availableUsers: _.pluck(availableUsers, '_id'),
+          contactableId: contactable && contactable._id,
+          contactableName:  contactable && ContactableManager.getDisplayName(contactable),
+          dateCreated: new Date()
         });
 
         response.end(resp.toString(), {type: 'xml', plain: true});
@@ -96,6 +99,9 @@ Router.map(function () {
     path: 'dialFinished',
     action: function () {
       var response = new RESTAPI.response(this.response);
+      console.log('=============================');
+      console.log('this.request.body', this.request.body);
+      console.log('=============================');
 
       // if no one picked up send to voice mail
       if (_.include(['no-answer', 'busy'], this.request.body.DialCallStatus)) {
@@ -122,7 +128,8 @@ Router.map(function () {
           twCallId: this.request.body.CallSid
         },{
           $set: {
-            status:  this.request.body.DialCallStatus
+            status:  this.request.body.DialCallStatus,
+            duration:  this.request.body.DialCallDuration
           }
         });
       }
@@ -144,3 +151,26 @@ Router.map(function () {
     }
   });
 });
+
+
+Meteor.methods({
+  'logTwilioCall': function (callId, phoneNumber, contactableId) {
+    //var client = Twilio(ExartuConfig.TW_accountSID, ExartuConfig.TW_authToken);
+    var user = Meteor.user();
+
+    var contactable = Contactables.findOne(contactableId);
+
+    //console.log('callId', callId);
+    //client.calls(callId).get(function(err, call) {
+    //  console.log("call", call);
+    Calls.insert({
+      twCallId: callId,
+      phone: phoneNumber,
+      hierId: user.currentHierId,
+      contactableId: contactable && contactable._id,
+      contactableName:  contactable && ContactableManager.getDisplayName(contactable),
+      dateCreated: new Date()
+    });
+    //});
+  }
+})

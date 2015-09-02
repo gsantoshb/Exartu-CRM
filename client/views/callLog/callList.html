@@ -1,0 +1,149 @@
+<template name="callList">
+    <div class="network-content nicer-filters" id="content">
+        <div class="row">
+
+            <div class="col-md-3">
+
+                <aside class="sidebar">
+
+                    <div class="page-title-2" id="tourActivitiesWelcome">
+                        <h1 class="welcome">
+                           Calls
+                        </h1>
+                    </div>
+                </aside><!-- /.sidebar -->
+            </div><!-- /.col-md-3 -->
+
+
+            <div class="col-md-9">
+                <div class="list-container">
+                    <div class="list-holder">
+                        <div class="list-actions">
+                            <div class="list-actions-cell search-list">
+                                <div class="input-group">
+                                    <span class="prop-input">
+                                        <input id="searchString" class="form-control" placeholder= {{_ "Search activity"}}>
+                                        <span class="text text-danger"></span>
+                                    </span>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-search" type="button">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div><!-- /.search-list -->
+
+                            <div class="list-actions-cell order-list filter-list" style="display: block">
+                                <div class="btn-group" id="activityFilter">
+                                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false">{{_ "All activity"}} <span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-custom-1">
+                                        <li class="head">
+                                            <input class="activityFilter-option" id="feed-all" name="activityFilter[]" type="checkbox" checked="" value="all"> <label for="feed-all">{{_ "All activity"}}</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-network" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeContactable}}"> <label for="feed-network">{{_ "Network"}}</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-jobs" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeJobs}}"> <label for="feed-jobs">{{_ "Jobs"}}</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-notes" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeNotes}}"> <label for="feed-notes">{{_ "Notes"}}</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-tasks" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeTasks}}"> <label for="feed-tasks">{{_ "Tasks"}}</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-placements" name="activityFilter[]" type="checkbox" checked="" value="{{getTypePlacements}}"> <label for="feed-placements">{{_ "Placements"}}</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-files" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeFiles}}"> <label for="feed-files">{{_ "Files"}}</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div><!-- .list-actions -->
+
+                        <div class="list-item-section" >
+                            <div class="clearfix" id="tourActivitiesList">
+                                {{>fastPagination name="activities" containerClass="magic-pager pull-right"}}
+                            </div>
+
+                            <ul class="list-type-7 activity-feed">
+                                {{#each activities}}
+                                    <li>
+                                        <div class="left-part">
+                                            <!-- Note information -->
+
+                                            <a class="list-type-7-icon note-link" id="Nah32dYQnnisnQxhv" href="#">
+                                                {{#if incoming}}
+                                                    {{#if voiceMail}}
+                                                        {{logThis}}
+                                                        {{#if voiceMailUrl}}
+                                                            <i class="icon icon-mail-recieved-2" style="color: green"></i>
+                                                        {{else}}
+                                                            <i class="icon icon-call-delete" style="color: red"></i>
+                                                        {{/if}}
+                                                    {{else}}
+                                                        <i class="icon icon-call-in" style="color: orange"></i>
+                                                    {{/if}}
+                                                {{else}}
+                                                    <i class="icon icon-call-out" style="color: green"></i>
+                                                {{/if}}
+                                            </a>
+                                            <div class="list-type-7-title">
+
+                                                <a class="note-link" href="{{#if contactableId }}/contactable/{{contactableId}}{{/if}}">
+                                                    {{#if contactableName }}
+                                                        {{contactableName}}
+                                                    {{else}}
+                                                        {{phone}}
+                                                    {{/if}}
+                                                </a>
+                                                {{#if duration}}
+                                                    <span class="desc"> - {{duration}} seconds</span>
+                                                {{/if}}
+                                            </div>
+
+
+                                        </div><!-- /.left-part -->
+                                        <div class="right-part"><span class="date">{{dateCreated}}</span></div>
+                                    </li>
+                                {{/each}}
+                            </ul><!-- /.list-type-7 -->
+                        </div><!-- /.list-item-section -->
+
+                    </div><!-- /.list-holder -->
+                </div><!-- /.list-container -->
+            </div><!-- /.col-md-6 -->
+
+        </div><!-- /.row -->
+
+    </div>
+</template>
+
+<template name="dashboard_filters">
+
+    <div class="nicer-filters">
+    <div class="filter">
+    <div class="filter-list">
+
+        <div class="filter-item">
+            <div class="filter-title">
+                <i class="fa fa-user"></i>
+                {{_ 'user'}}
+            </div>
+                <span class="prop-input">
+                    <select class="form-control filter-by-user">
+                        <option value="">--{{_ "select"}}--</option>
+                        {{#each users}}
+                            <option value="{{_id}}">{{displayUserName _id}}</option>
+                        {{/each}}
+                    </select>
+                    <span class="text text-danger"></span>
+
+            </span>
+        </div>
+    </div>
+    </div>
+    </div>
+</template>
