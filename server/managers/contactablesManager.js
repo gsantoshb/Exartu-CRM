@@ -150,6 +150,17 @@ ContactableManager = {
 
         return contactable ? contactable.contactMethods : [];
     },
+    getDisplayName: function (contactable) {
+        var displayName;
+        if (contactable.person) {
+            displayName = contactable.person.lastName + ', ' + contactable.person.firstName;
+            if (contactable.person.middleName) contactable.displayName += ' ' + contactable.person.middleName;
+        }
+        if (contactable.organization) {
+            displayName = contactable.organization.organizationName;
+        }
+        return displayName;
+    },
 
     isTaxIdUnused: function (taxid, hierid) {
         if (!taxid) return true;

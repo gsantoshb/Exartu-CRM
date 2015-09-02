@@ -381,6 +381,10 @@ Router.map(function () {
     path: 'workFlow/:id',
     controller: workFlowDetailController
   })
+  this.route('callList',{
+    path: 'callList',
+    controller: CallListController
+  })
 });
 
 
