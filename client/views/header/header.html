@@ -1,10 +1,13 @@
 <template name="header">
-    <!--{{>connectionBanner}}-->
+
+    {{>twilioHangButton}}
+
     <div name="headerVM" style="position: relative;">
         <div id="user-nav" class="navbar-right pull-right">
             <ul class="btn-group">
                 <li class="hidden-xs">
-                    <a href="/user/{{user._id}}" style="display: inline-flex" data-toggle="dropdown" class="dropdown-toggle">
+                    <a href="/user/{{user._id}}" style="display: inline-flex" data-toggle="dropdown"
+                       class="dropdown-toggle">
                         <span class="user-menu-thumb" id="tourActivitieslog">
                             <img class="img-responsive" style="max-height:26px; max-width:26px" src="{{userThumbnail}}">
                         </span>
@@ -22,20 +25,26 @@
                     <ul class="dropdown-menu pull-right">
 
                         <li>
-                            <a href="/userProfile" ><i class="fa fa-user"></i> {{_ "My profile"}}</a>
+                            <a href="/userProfile"><i class="fa fa-user"></i> {{_ "My profile"}}</a>
                         </li>
                         <li class="divider"></li>
                         <li>
                             <a class="pointer trigger"><i class="fa fa-flag"></i> {{currentLanguageLabel}}</a>
                             <ul class="dropdown-menu sub-menu">
-                                <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'en'}});">English</a></li>
-                                <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'es'}});">Español</a></li>
-                                <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'cn'}});">简体中文</a></li>
+                                <li><a class="pointer"
+                                       onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'en'}});">English</a>
+                                </li>
+                                <li><a class="pointer"
+                                       onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'es'}});">Español</a>
+                                </li>
+                                <li><a class="pointer"
+                                       onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'cn'}});">简体中文</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="/hierarchyManagement" ><i class="fa fa-sitemap"></i> {{_ "Hierarchies"}}</a>
+                            <a href="/hierarchyManagement"><i class="fa fa-sitemap"></i> {{_ "Hierarchies"}}</a>
                         </li>
 
 
@@ -64,7 +73,8 @@
 
                 <!--mobile user menu-->
                 <li class="visible-xs">
-                    <a href="/user/{{user._id}}" style="display: inline-flex" data-toggle="dropdown" class="dropdown-toggle">
+                    <a href="/user/{{user._id}}" style="display: inline-flex" data-toggle="dropdown"
+                       class="dropdown-toggle">
                         <span class="user-menu-thumb" id="tourActivitieslog">
                             <img class="img-responsive" style="max-height:26px; max-width:26px" src="{{userThumbnail}}">
                         </span>
@@ -74,15 +84,21 @@
                     <ul class="dropdown-menu pull-right">
 
                         <li>
-                            <a href="/userProfile" ><i class="fa fa-user"></i> {{_ "My profile"}}</a>
+                            <a href="/userProfile"><i class="fa fa-user"></i> {{_ "My profile"}}</a>
                         </li>
                         <li class="divider"></li>
                         <li>
                             <a class="pointer trigger"><i class="fa fa-flag"></i> {{currentLanguageLabel}}</a>
                             <ul class="dropdown-menu sub-menu">
-                                <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'en'}});">English</a></li>
-                                <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'es'}});">Español</a></li>
-                                <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'cn'}});">简体中文</a></li>
+                                <li><a class="pointer"
+                                       onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'en'}});">English</a>
+                                </li>
+                                <li><a class="pointer"
+                                       onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'es'}});">Español</a>
+                                </li>
+                                <li><a class="pointer"
+                                       onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'cn'}});">简体中文</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="divider"></li>
@@ -95,11 +111,8 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="/hierarchyManagement" ><i class="fa fa-sitemap"></i> {{_ "Hierarchies"}}</a>
+                            <a href="/hierarchyManagement"><i class="fa fa-sitemap"></i> {{_ "Hierarchies"}}</a>
                         </li>
-
-
-
 
                         {{#if latestHiersCount}}
                             <li class="divider"></li>
@@ -141,11 +154,20 @@
 
 </template>
 
+<template name="twilioHangButton">
+    {{#if currentTwilioConnectionNumber}}
+        <div style="position: fixed; bottom: 10px; left: 10px; z-index: 30; padding: 5px 10px; background-color: white; border: solid 1px #D2D0D0; border-radius: 5px; box-shadow: 3px -2px 4px rgba(136, 136, 136, 0.33);">
+            Current call {{currentTwilioConnectionNumber}}
+            <a class="btn btn-danger" id="cancelCall" style="display: block"> Hang </a>
+        </div>
+    {{/if}}
+</template>
+
 <template name="sidebar">
     <a id="menu-trigger" href="#">
         <i class="fa fa-align-justify"></i>
     </a>
-<!--//sidebar-->
+
     <div class="spanel-menu" id="sidebar">
 
         <ul class="navbar navbar-inverse nav-stacked">
@@ -187,68 +209,54 @@
                     <span class="i-container"><i class="glyphicon glyphicon-indent-left"></i></span>
                 </a>
             </li>
-            <!--<li class="workFlows {{getActiveClass 'workFlows' null}}">-->
-                <!--<a href="/workFlows">-->
-                    <!--<span>{{_ "Call-Em"}}</span>-->
-                    <!--<span class="i-container"><i class="glyphicon glyphicon-random"></i></span>-->
-                <!--</a>-->
-            <!--</li>-->
-            {{#if currentTwilioConnectionNumber}}
-            <li>
-                Current call from {{currentTwilioConnectionNumber}}
-                <a class="btn btn-danger" id="cancelCall" > Hang </a>
-            </li>
-            {{/if}}
             <li>
                 <div class="list-actions-cell search-list no-tablet" style="margin-top:20px">
                     <div class="input-group" id="search-sort-btns">
-                                    <span class="prop-input">
-                                        <input class="form-control" id="search-entry" placeholder="History search">
-                                        <span class="text text-danger"></span>
-                                    </span>
-                                    <span class="input-group-btn">
-                                       <button class="btn btn-default" id="sort-Entries" type="button">
-                                       {{#if inverseCrono}}
-                                           <i class="fa fa-sort-amount-asc"></i>
-                                       {{else}}
-                                           <i class="fa fa-sort-amount-desc"></i>
-                                       {{/if}}
-                                       </button>
-                                    </span>
-                                    <!--<div class="dropdown input-group-btn">-->
-                                    <!--<button type="button" class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">-->
-                                        <!--<span class="caret"></span>-->
-                                    <!--</button>-->
-                                    <!--</div>-->
+                        <span class="prop-input">
+                            <input class="form-control" id="search-entry" placeholder="History search">
+                            <span class="text text-danger"></span>
+                        </span>
+                        <span class="input-group-btn">
+                           <button class="btn btn-default" id="sort-Entries" type="button">
+                               {{#if inverseCrono}}
+                                   <i class="fa fa-sort-amount-asc"></i>
+                               {{else}}
+                                   <i class="fa fa-sort-amount-desc"></i>
+                               {{/if}}
+                           </button>
+                        </span>
+                        <!--<div class="dropdown input-group-btn">-->
+                        <!--<button type="button" class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">-->
+                        <!--<span class="caret"></span>-->
+                        <!--</button>-->
+                        <!--</div>-->
                     </div>
                 </div>
             </li>
-<li>
-    <div class="no-tablet">
-        <div class="navbar-lastEntries" style="padding-top:3px;" id="pingeds">
-            {{#each lastEntryPinged}}
+            <li>
+                <div class="no-tablet">
+                    <div class="navbar-lastEntries" style="padding-top:3px;" id="pingeds">
+                        {{#each lastEntryPinged}}
 
-                {{>lastEntryItem}}
+                            {{>lastEntryItem}}
 
-            {{/each}}
-        </div>
-        <div>
-            <div class="navbar-lastEntries" style="padding-top:3px" id="notPingeds">
-                {{#each lastEntryNotPinged}}
-                    <!--<div id="{{_id}}">-->
-                    {{>lastEntryItem}}
-                    <!--</div>-->
-                {{/each}}
-            </div>
-        </div>
-    </div>
-</li>
+                        {{/each}}
+                    </div>
+                    <div>
+                        <div class="navbar-lastEntries" style="padding-top:3px" id="notPingeds">
+                            {{#each lastEntryNotPinged}}
+                                <!--<div id="{{_id}}">-->
+                                {{>lastEntryItem}}
+                                <!--</div>-->
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            </li>
 
 
         </ul>
 
-
-     
 
     </div>
 
@@ -258,43 +266,44 @@
     <div id="{{_id}}" class="lastEntry-container" style="cursor: pointer">
         <div class="row lastEntries-item">
             <div>
-            <div class="" style="padding-left:0px;float:left;width:20%">
-                {{#if isContactable}}
-                    <a class="item-icon" href="{{link}}" style="padding:0px;color:inherit;height:inherit">
-                        <i class="icon-profile-business-man" title="Contactable" style="font-size:16px"></i>
-                    </a>
-                {{/if}}
-                {{#if isJob}}
-                    <a class="item-icon" href="{{link}}" style="padding:0px;color:inherit;height:inherit">
-                        <i class="icon icon-briefcase" title="Job" style="font-size:16px"></i>
-                    </a>
-                {{/if}}
-                {{#if isPlacement}}
-                    <a class="item-icon" href="{{link}}" style="padding:0px;color:inherit;height:inherit">
-                        <i class="icon icon-suitcase-1" title="Placement"  style="font-size:16px"></i>
-                    </a>
-                {{/if}}
-                {{#if isHotList}}
-                    <a class="item-icon" href="{{link}}" style="padding:0px;color:inherit;height:inherit">
-                        <i class="icon-list-4" title="Hot list"  style="font-size:16px"></i>
-                    </a>
-                {{/if}}
-            </div>
-            <div class="show-onHover" style="width:100%">
-                <div style="float:right">
-                    {{#if isPinged}}
-                        <i class="glyphicon glyphicon-pushpin" id="ping-entry"
-                           style="color:#FFFAA4;cursor: pointer"></i>
-                    {{else}}
-                        <i class="glyphicon glyphicon-pushpin" id="ping-entry"
-                           style="color:rgba(255,255,255,0.55);cursor: pointer"></i>
+                <div class="" style="padding-left:0px;float:left;width:20%">
+                    {{#if isContactable}}
+                        <a class="item-icon" href="{{link}}" style="padding:0px;color:inherit;height:inherit">
+                            <i class="icon-profile-business-man" title="Contactable" style="font-size:16px"></i>
+                        </a>
                     {{/if}}
-                    <i class="glyphicon glyphicon-remove-sign" id="remove-entry"
-                       style="color:rgba(255,255,255,0.55);cursor: pointer"></i>
+                    {{#if isJob}}
+                        <a class="item-icon" href="{{link}}" style="padding:0px;color:inherit;height:inherit">
+                            <i class="icon icon-briefcase" title="Job" style="font-size:16px"></i>
+                        </a>
+                    {{/if}}
+                    {{#if isPlacement}}
+                        <a class="item-icon" href="{{link}}" style="padding:0px;color:inherit;height:inherit">
+                            <i class="icon icon-suitcase-1" title="Placement" style="font-size:16px"></i>
+                        </a>
+                    {{/if}}
+                    {{#if isHotList}}
+                        <a class="item-icon" href="{{link}}" style="padding:0px;color:inherit;height:inherit">
+                            <i class="icon-list-4" title="Hot list" style="font-size:16px"></i>
+                        </a>
+                    {{/if}}
+                </div>
+                <div class="show-onHover" style="width:100%">
+                    <div style="float:right">
+                        {{#if isPinged}}
+                            <i class="glyphicon glyphicon-pushpin" id="ping-entry"
+                               style="color:#FFFAA4;cursor: pointer"></i>
+                        {{else}}
+                            <i class="glyphicon glyphicon-pushpin" id="ping-entry"
+                               style="color:rgba(255,255,255,0.55);cursor: pointer"></i>
+                        {{/if}}
+                        <i class="glyphicon glyphicon-remove-sign" id="remove-entry"
+                           style="color:rgba(255,255,255,0.55);cursor: pointer"></i>
+                    </div>
                 </div>
             </div>
-            </div>
-            <div class="" style="width:100%;padding-left:5px;overflow:hidden; white-space: nowrap;text-overflow: ellipsis;">
+            <div class=""
+                 style="width:100%;padding-left:5px;overflow:hidden; white-space: nowrap;text-overflow: ellipsis;">
                 <a style="color:inherit" href="{{link}}">
                     <span title="{{displayName}}" style="margin-top:5px">
                         {{displayName}}

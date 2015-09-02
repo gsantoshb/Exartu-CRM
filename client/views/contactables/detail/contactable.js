@@ -530,6 +530,7 @@ Template.contactable_header.events({
       currentTwilioConnection.set(undefined);
     });
 
+    connection.phoneNumber = phoneNumber;
     currentTwilioConnection.set(connection);
   }
 });
