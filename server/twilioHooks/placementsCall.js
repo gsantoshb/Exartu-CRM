@@ -90,6 +90,7 @@ Router.map(function() {
       }
       try {
         // Respond to twilio
+        console.log('data',data);
         if(data.AnsweredBy === "human") {
           var resp = TwilioManager.handleWorkFlowCall(this.request.query.userId, this.request.query.id, this.request.query.placementId, data);
           WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answered');
@@ -236,6 +237,7 @@ Router.map(function() {
       }
       try {
         // Respond to twilio
+
         if(data.AnsweredBy === "human") {
           var resp = TwilioManager.handleWorkFlowPlacementConfirmCall(this.request.query.userId, this.request.query.id, this.request.query.placementId, data);
           WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answered');
