@@ -33,6 +33,9 @@ Template.workFlowDetails.helpers({
     if(this.response === "NotIntrested"){
       return "label-danger";
     }
+    if(this.response === "Answer machine"){
+      return "label-warning";
+    }
     else if(this.response === "retry 1"){
       return "label-primary"
     }
@@ -63,6 +66,9 @@ Template.workFlowDetails.helpers({
 
   },
   'getResponse': function(){
+    if(this.response === "Answer machine"){
+      return "Answer machine";
+    }
     if(this.response === "NotIntrested"){
       return "Not intrested";
     }

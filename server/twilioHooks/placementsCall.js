@@ -91,7 +91,6 @@ Router.map(function() {
       try {
         // Respond to twilio
         if(data.AnsweredBy === "human") {
-          console.log('data', data);
           var resp = TwilioManager.handleWorkFlowCall(this.request.query.userId, this.request.query.id, this.request.query.placementId, data);
           WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answered');
           response.end(resp.toString(), {type: 'xml', plain: true});
@@ -237,9 +236,15 @@ Router.map(function() {
       }
       try {
         // Respond to twilio
-        var resp = TwilioManager.handleWorkFlowPlacementConfirmCall(this.request.query.userId, this.request.query.id, this.request.query.placementId, data);
-        WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answered');
-        response.end(resp.toString(), {type: 'xml', plain: true});
+        if(data.AnsweredBy === "human") {
+          var resp = TwilioManager.handleWorkFlowPlacementConfirmCall(this.request.query.userId, this.request.query.id, this.request.query.placementId, data);
+          WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answered');
+          response.end(resp.toString(), {type: 'xml', plain: true});
+        }
+        else{
+          WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answer machine');
+          TwilioManager.makeWorkFlowCall(this.request.query.userId, this.request.query.id);
+        }
       } catch (err) {
         console.log(err);
         response.error(err.message);
