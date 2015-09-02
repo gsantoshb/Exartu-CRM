@@ -89,12 +89,13 @@ Router.map(function() {
         default:
           response.error('Method not supported');
       }
-
       try {
         // Respond to twilio
+        console.log('data',data);
         var resp = TwilioManager.handleWorkFlowCall(this.request.query.userId, this.request.query.id, this.request.query.placementId, data);
         WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answered');
         response.end(resp.toString(), {type: 'xml', plain: true});
+
       } catch (err) {
         console.log(err);
         response.error(err.message);

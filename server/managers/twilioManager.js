@@ -270,7 +270,7 @@ TwilioManager = {
         statusCallbackMethod: "POST",
         statusCallbackEvent: ["answered", "completed"],
         method: "GET",
-        ifMachine: "Hangup"
+        ifMachine: "Continue"
       }, function (err, responseData) {
         //executed when the call has been initiated.
 
@@ -360,7 +360,7 @@ TwilioManager = {
           statusCallbackMethod: "POST",
           statusCallbackEvent: ["answered", "completed"],
           method: "GET",
-          ifMachine: "Hangup"
+          ifMachine: "Continue"
         }, function (err, responseData) {
           //executed when the call has been initiated.
 
