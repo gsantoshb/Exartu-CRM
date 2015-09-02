@@ -182,6 +182,7 @@ Router.map(function() {
       }
 
       try {
+        console.log('data callback', data)
         var res = WorkFlowManager.getWorkFlowResponse( this.request.query.id, this.request.query.placementId);
         if((res === 'Intrested')||(res === 'NotIntrested')||(res === 'Answer machine')){
             //nothing to do here
@@ -331,6 +332,7 @@ Router.map(function() {
       }
 
       try {
+        console.log('data callback', data)
         var res = WorkFlowManager.getWorkFlowResponse( this.request.query.id, this.request.query.placementId);
         if((res === 'Confirmed')||(res === 'NoConfirmed')||(res === 'Canceled')){
           //nothing to do here
