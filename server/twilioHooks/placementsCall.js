@@ -90,8 +90,8 @@ Router.map(function() {
       }
       try {
         // Respond to twilio
+        console.log('data',data);
         if(data.AnsweredBy === "human") {
-          console.log('data', data);
           var resp = TwilioManager.handleWorkFlowCall(this.request.query.userId, this.request.query.id, this.request.query.placementId, data);
           WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answered');
           response.end(resp.toString(), {type: 'xml', plain: true});
@@ -182,6 +182,7 @@ Router.map(function() {
       }
 
       try {
+        console.log('data callback', data)
         var res = WorkFlowManager.getWorkFlowResponse( this.request.query.id, this.request.query.placementId);
         if((res === 'Intrested')||(res === 'NotIntrested')||(res === 'Answer machine')){
             //nothing to do here
@@ -237,9 +238,16 @@ Router.map(function() {
       }
       try {
         // Respond to twilio
-        var resp = TwilioManager.handleWorkFlowPlacementConfirmCall(this.request.query.userId, this.request.query.id, this.request.query.placementId, data);
-        WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answered');
-        response.end(resp.toString(), {type: 'xml', plain: true});
+
+        if(data.AnsweredBy === "human") {
+          var resp = TwilioManager.handleWorkFlowPlacementConfirmCall(this.request.query.userId, this.request.query.id, this.request.query.placementId, data);
+          WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answered');
+          response.end(resp.toString(), {type: 'xml', plain: true});
+        }
+        else{
+          WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answer machine');
+          TwilioManager.makeWorkFlowCall(this.request.query.userId, this.request.query.id);
+        }
       } catch (err) {
         console.log(err);
         response.error(err.message);
@@ -324,6 +332,7 @@ Router.map(function() {
       }
 
       try {
+        console.log('data callback', data)
         var res = WorkFlowManager.getWorkFlowResponse( this.request.query.id, this.request.query.placementId);
         if((res === 'Confirmed')||(res === 'NoConfirmed')||(res === 'Canceled')){
           //nothing to do here
