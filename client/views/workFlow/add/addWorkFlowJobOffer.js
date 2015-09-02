@@ -12,6 +12,8 @@ AddWorkFlowControllerJobOffer = RouteController.extend({
 });
 
 var reactiveJobId = new ReactiveVar("");
+var dep=new Deps.Dependency;
+//hack, it fixes a reactivity problem when you create two workflow consecutive with the same job
 
 schemaAddWorkField = new SimpleSchema({
   'job': {
@@ -21,6 +23,7 @@ schemaAddWorkField = new SimpleSchema({
 })
 
 var placementByJob = new ReactiveVar([]);
+
 Template.addWorkFlow.created = function(){
   this.autorun(function(){
     Meteor.call('placementsByJob', reactiveJobId.get(), function(err, res){
@@ -48,6 +51,7 @@ Template.addWorkFlow.created = function(){
 Template.addWorkFlow.destroyed = function(){
   placementByJob.set([]);
   reactiveJobId.set("");
+
 }
 
 Template.addWorkFlow.helpers({
@@ -70,12 +74,15 @@ Template.addWorkFlow.helpers({
   },
   'jobChanged': function(){
     return {selectionChanged: function (value) {
+      dep.changed()
       this.value = value;
     }
     }
   },
   'getId': function(){
+    dep.depend()
     reactiveJobId.set(AutoForm.getFieldValue('job'));
+
   },
   'placementsByJob': function(){
     return placementByJob.get();

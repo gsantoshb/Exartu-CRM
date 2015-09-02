@@ -21,7 +21,6 @@ Router.map(function() {
         default:
           response.error('Method not supported');
       }
-
       try {
         // Respond to twilio
         var resp = TwilioManager.handlePlacementCall(this.request.query.id, data);
@@ -89,12 +88,19 @@ Router.map(function() {
         default:
           response.error('Method not supported');
       }
-
       try {
         // Respond to twilio
-        var resp = TwilioManager.handleWorkFlowCall(this.request.query.userId, this.request.query.id, this.request.query.placementId, data);
-        WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answered');
-        response.end(resp.toString(), {type: 'xml', plain: true});
+        if(data.AnsweredBy === "human") {
+          console.log('data', data);
+          var resp = TwilioManager.handleWorkFlowCall(this.request.query.userId, this.request.query.id, this.request.query.placementId, data);
+          WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answered');
+          response.end(resp.toString(), {type: 'xml', plain: true});
+        }
+        else{
+          WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answer machine');
+          TwilioManager.makeWorkFlowCall(this.request.query.userId, this.request.query.id);
+        }
+
       } catch (err) {
         console.log(err);
         response.error(err.message);
@@ -177,7 +183,7 @@ Router.map(function() {
 
       try {
         var res = WorkFlowManager.getWorkFlowResponse( this.request.query.id, this.request.query.placementId);
-        if((res === 'Intrested')||(res === 'NotIntrested')){
+        if((res === 'Intrested')||(res === 'NotIntrested')||(res === 'Answer machine')){
             //nothing to do here
         }
         else{

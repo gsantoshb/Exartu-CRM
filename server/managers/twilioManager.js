@@ -220,7 +220,11 @@ TwilioManager = {
     if (!workFlow) throw new Error("Invalid placement ID");
 
     // Get next call
-    var placement = getNextToCall(workFlow.flow);
+    var placement;
+    // Get next call
+    if(workFlow.status != 'canceled') {
+      placement = getNextToCall(workFlow.flow);
+    }
     //console.log('flow', workFlow.flow);
     //console.log('placement', placement.placementId);
     //console.log('placement', placement);
@@ -266,7 +270,7 @@ TwilioManager = {
         statusCallbackMethod: "POST",
         statusCallbackEvent: ["answered", "completed"],
         method: "GET",
-        ifMachine: "Hangup"
+        ifMachine: "Continue"
       }, function (err, responseData) {
         //executed when the call has been initiated.
 
@@ -324,9 +328,11 @@ TwilioManager = {
       var workFlow = Utils.filterCollectionByUserHier2(userId, WorkFlows.find({_id: workFlowId})).fetch()[0];
       if (!workFlow) throw new Error("Invalid placement ID");
 
+      var placement;
       // Get next call
-      var placement = getNextToCall(workFlow.flow);
-
+      if(workFlow.status != 'canceled') {
+        placement = getNextToCall(workFlow.flow);
+      }
       if (placement) {
         //Get job
         var job = Utils.filterCollectionByUserHier2(userId, Jobs.find({_id: workFlow.jobId})).fetch()[0];
@@ -354,7 +360,7 @@ TwilioManager = {
           statusCallbackMethod: "POST",
           statusCallbackEvent: ["answered", "completed"],
           method: "GET",
-          ifMachine: "Hangup"
+          ifMachine: "Continue"
         }, function (err, responseData) {
           //executed when the call has been initiated.
 

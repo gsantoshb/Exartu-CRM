@@ -15,6 +15,9 @@ workFlowDetailController = RouteController.extend({
 });
 
 Template.workFlowDetails.helpers({
+  'isCanceled': function(){
+    return this.status === 'canceled';
+  },
   'workFlow': function(){
      return WorkFlows.findOne({_id:workflowId})
   },
@@ -29,6 +32,15 @@ Template.workFlowDetails.helpers({
   'getResponseClass': function(){
     if(this.response === "NotIntrested"){
       return "label-danger";
+    }
+    else if(this.response === "retry 1"){
+      return "label-primary"
+    }
+    else if(this.response === "retry 2"){
+      return "label-primary"
+    }
+    else if(this.response === "retry 3"){
+      return "label-primary"
     }
     else if(this.response === "Answered"){
       return "label-primary";
@@ -57,6 +69,15 @@ Template.workFlowDetails.helpers({
     else if(this.response === "Answered"){
       return "Answered";
     }
+    else if(this.response === "retry 1"){
+      return "Retring 1"
+    }
+    else if(this.response === "retry 2"){
+      return "Retring 2"
+    }
+    else if(this.response === "retry 3"){
+      return "Retring 3"
+    }
     else if(this.response === "NoAnswer"){
       return "No answer";
     }
@@ -74,4 +95,12 @@ Template.workFlowDetails.helpers({
     }
   }
 
+})
+
+Template.workFlowDetails.events({
+  'click #cancel-workflow': function(){
+    Meteor.call('cancelWorkFlow', this._id, function(err, res){
+
+    });
+  }
 })
