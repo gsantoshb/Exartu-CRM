@@ -25,7 +25,7 @@ schemaAddWorkField = new SimpleSchema({
 var placementByJob = new ReactiveVar([]);
 
 Template.addWorkFlow.created = function(){
-  Meteor.autorun(function(){
+  this.autorun(function(){
     Meteor.call('placementsByJob', reactiveJobId.get(), function(err, res){
       if(res) {
         var extendedRes = [];
