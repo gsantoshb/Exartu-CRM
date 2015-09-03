@@ -9,14 +9,21 @@ WorkFlowsController = RouteController.extend({
   onAfterAction: function() {
   }
 });
-
+var entityId;
+var entityType;
 var reactFinished = new ReactiveVar(true);
 var reactInProgress = new ReactiveVar(true);
 var reactCanceled = new ReactiveVar(true);
 
-Template.workFlowList.created = function(){
+Template.workFlowListBox.created = function(){
+  entityId = Session.get('entityId');
+  entityType = Utils.getEntityTypeFromRouter();
+  console.log("entityId", entityId);
+  console.log("entityType", entityType);
+
   Meteor.autorun(function(){
     var filterOr = [];
+    var filterJob = {};
     if(reactFinished.get()){
       //get all workflow that have each element of flow called and status isn't canceled
       filterOr.push({$and:[{flow:{$not:{$elemMatch:{called:!reactFinished.get()}}}},{status:{$ne:'canceled'}}]})
@@ -27,17 +34,32 @@ Template.workFlowList.created = function(){
     if(reactCanceled.get()){
       filterOr.push({status:'canceled'})
     }
-    if(reactFinished.get()||reactInProgress.get()||reactCanceled.get()) {
-       SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows', {filter: {$or: filterOr}});
+    if(entityType === Enums.linkTypes.job.value){
+      filterJob = {jobId: entityId};
+      if(reactFinished.get()||reactInProgress.get()||reactCanceled.get()) {
+        SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows', {filter: {$and:[{$or: filterOr},filterJob]}});
+      }
+      else{
+        SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows', {filter:filterJob});
+      }
+
     }
-    else{
-      SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows');
+    else {
+      if (reactFinished.get() || reactInProgress.get() || reactCanceled.get()) {
+        SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows', {filter: {$or: filterOr}});
+      }
+      else {
+        SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows');
+      }
     }
 
   })
 }
 
-Template.workFlowList.helpers({
+Template.workFlowListBox.helpers({
+  'entityId': function(){
+    return entityId;
+  },
   'totalCount': function(){
     return SubscriptionHandlers.WorkFlowsHandler.totalCount()
   },
@@ -64,10 +86,18 @@ Template.workFlowList.helpers({
     else{
       return 'btn-default'
     }
+  },
+  'showAdd': function() {
+    if (entityType === Enums.linkTypes.job.value){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 })
 
-Template.workFlowList.events({
+Template.workFlowListBox.events({
   'click #inProgress': function(){
     reactInProgress.set(!reactInProgress.get())
   },

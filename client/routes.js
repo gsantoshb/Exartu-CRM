@@ -366,11 +366,11 @@ Router.map(function () {
     controller: TimeCardController
   });
   this.route('addWorkFlowJobOffer',{
-    path: 'workFlow/addWorkFlow/JobOffer',
+    path: 'workFlow/addWorkFlow/JobOffer/:entityId',
     controller: AddWorkFlowControllerJobOffer
   });
   this.route('addWorkFlowPlacementConfirm',{
-    path: 'workFlow/addWorkFlow/PlacementConfirm',
+    path: 'workFlow/addWorkFlow/PlacementConfirm/:entityId',
     controller: AddWorkFlowControllerPlacementConfirm
   });
   this.route('workFlowList',{

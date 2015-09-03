@@ -160,6 +160,9 @@ Template.job_nav.helpers({
                 id: 'placements', displayName: 'Placements', template: 'job_placements', info: function () {
                 return JobCounter.findOne('placements').count;
             }
+            },
+            {
+               id: 'call-em', displayName:'call-em', template:'job_call-em'
             }
         ];
         return tabs;
