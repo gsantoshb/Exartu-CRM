@@ -90,7 +90,6 @@ Router.map(function() {
       }
       try {
         // Respond to twilio
-        console.log('data',data);
         if(data.AnsweredBy === "human") {
           var resp = TwilioManager.handleWorkFlowCall(this.request.query.userId, this.request.query.id, this.request.query.placementId, data);
           WorkFlowManager.setWorkFlowCall(this.request.query.id, this.request.query.placementId, 'Answered');
@@ -182,7 +181,7 @@ Router.map(function() {
       }
 
       try {
-        console.log('data callback', data)
+
         var res = WorkFlowManager.getWorkFlowResponse( this.request.query.id, this.request.query.placementId);
         if((res === 'Intrested')||(res === 'NotIntrested')||(res === 'Answer machine')){
             //nothing to do here
@@ -201,6 +200,11 @@ Router.map(function() {
                break;
              }
              case 'no-answer':{
+               WorkFlowManager.setWorkFlowCall(data.query.id, data.query.placementId, 'NoAnswer');
+               TwilioManager.makeWorkFlowCall(data.query.userId, data.query.id);
+               break;
+             }
+             case 'busy':{
                WorkFlowManager.setWorkFlowCall(data.query.id, data.query.placementId, 'NoAnswer');
                TwilioManager.makeWorkFlowCall(data.query.userId, data.query.id);
              }
@@ -326,13 +330,11 @@ Router.map(function() {
           data = this.request;
           //data = this.request.body;
           break;
-
         default:
           response.error('Method not supported');
       }
 
       try {
-        console.log('data callback', data)
         var res = WorkFlowManager.getWorkFlowResponse( this.request.query.id, this.request.query.placementId);
         if((res === 'Confirmed')||(res === 'NoConfirmed')||(res === 'Canceled')){
           //nothing to do here
@@ -351,6 +353,11 @@ Router.map(function() {
               break;
             }
             case 'no-answer':{
+              WorkFlowManager.setWorkFlowCall(data.query.id, data.query.placementId, 'NoAnswer');
+              TwilioManager.makeWorkFlowCall(data.query.userId, data.query.id);
+              break;
+            }
+            case 'busy':{
               WorkFlowManager.setWorkFlowCall(data.query.id, data.query.placementId, 'NoAnswer');
               TwilioManager.makeWorkFlowCall(data.query.userId, data.query.id);
             }
