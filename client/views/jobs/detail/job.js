@@ -162,7 +162,9 @@ Template.job_nav.helpers({
             }
             },
             {
-               id: 'call-em', displayName:'call-em', template:'job_call-em'
+               id: 'call-em', displayName:'call-em', template:'job_call-em', info: function(){
+              return JobCounter.findOne('workFlows').count;
+            }
             }
         ];
         return tabs;
