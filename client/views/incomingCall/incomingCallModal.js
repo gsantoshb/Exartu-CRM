@@ -57,6 +57,7 @@ Template.incomingCallModal.events({
   },
   'click #declineCall': function () {
     currentTwilioConnection.get().reject();
+    currentTwilioConnection.set(null);
     Utils.dismissModal();
   },
   'click #hangupCall': function () {
