@@ -50,7 +50,7 @@ Router.map(function () {
             action: 'newVoiceMessage'
           });
         }else{
-          if (contactable) {
+          if (contactable && contactable.person) {
             resp = resp.say('Thank you for calling ' + contactable.person.firstName + ' ' + contactable.person.lastName + '.Your call is being transfered', {
               voice: 'woman',
               language: 'en-us'
