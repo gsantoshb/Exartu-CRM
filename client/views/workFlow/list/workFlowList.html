@@ -28,7 +28,17 @@
                             <button type="button" class="typeSelect btn btn-sm {{getCanceledClass}}" id="canceled">
                                 Canceled
                             </button>
-
+                        </div>
+                        <div class="filter-item">
+                            <div class="filter-title">
+                                Type
+                            </div>
+                            <button type="button" class="typeSelect btn btn-sm {{getJobOfferClass}}" id="jobOfferFilter">
+                                Job offer
+                            </button>
+                            <button type="button" class="typeSelect btn btn-sm {{getConfirmPlacementClass}}" id="confirmPlacementFilter">
+                                Confirm placement
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -43,7 +53,7 @@
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-success dropdown-toggle"
                                                 data-toggle="dropdown"
-                                                title="Add" id="tourNetworksAdd">
+                                                title="Add" id="">
                                             <span class="fa fa-plus"></span>  {{_ "Add"}}
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
@@ -58,7 +68,6 @@
                                         </ul>
                                     </div>
                                 {{/if}}
-
                             </div>
                             {{>fastPagination name="workFlows" containerClass="magic-pager"}}
                         </div>

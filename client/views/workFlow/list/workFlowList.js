@@ -1,3 +1,9 @@
+var reactFinished = new ReactiveVar(true);
+var reactInProgress = new ReactiveVar(true);
+var reactCanceled = new ReactiveVar(true);
+var reactJobOffer = new ReactiveVar(true);
+var reactPlacementConfirm = new ReactiveVar(true);
+
 WorkFlowsController = RouteController.extend({
   data: function(){
   },
@@ -5,15 +11,58 @@ WorkFlowsController = RouteController.extend({
   },
   action: function () {
     this.render('workFlowList');
+    if(this.params.query.jobOfferStatus === "false"){
+      reactJobOffer.set(false);
+    }
+    if(this.params.query.placementConfirmStatus === "false"){
+      reactPlacementConfirm.set(false);
+    }
+    if(this.params.query.finished === "false"){
+      reactFinished.set(false);
+    }
+    if(this.params.query.inProgress === "false"){
+      reactInProgress.set(false);
+    }
+    if(this.params.query.canceled === "false"){
+      reactCanceled.set(false);
+    }
   },
   onAfterAction: function() {
   }
 });
+
 var entityId;
 var entityType;
-var reactFinished = new ReactiveVar(true);
-var reactInProgress = new ReactiveVar(true);
-var reactCanceled = new ReactiveVar(true);
+
+var reload = function(){
+ var aux = {}
+ if(!reactJobOffer.get()){
+   aux.jobOfferStatus = "false"
+ }
+ if(!reactPlacementConfirm.get()){
+   aux.placementConfirmStatus = "false"
+ }
+ if(!reactFinished.get()){
+   aux.finished = "false"
+ }
+ if(!reactInProgress.get()){
+   aux.inProgress = "false"
+ }
+ if(!reactCanceled.get()){
+   aux.canceled = "false"
+ }
+
+
+ var paramsString =  $.param(aux);
+ if(paramsString != "") {
+   Router.go("/workFlows?" + paramsString);
+ }
+ else{
+   Router.go("/workFlows");
+ }
+}
+
+var depFilter = new Deps.Dependency;
 
 Template.workFlowListBox.created = function(){
   entityId = Session.get('entityId');
@@ -23,7 +72,7 @@ Template.workFlowListBox.created = function(){
 
   Meteor.autorun(function(){
     var filterOr = [];
-    var filterJob = {};
+    var filterType = [];
     if(reactFinished.get()){
       //get all workflow that have each element of flow called and status isn't canceled
       filterOr.push({$and:[{flow:{$not:{$elemMatch:{called:!reactFinished.get()}}}},{status:{$ne:'canceled'}}]})
@@ -34,25 +83,36 @@ Template.workFlowListBox.created = function(){
     if(reactCanceled.get()){
       filterOr.push({status:'canceled'})
     }
-    if(entityType === Enums.linkTypes.job.value){
-      filterJob = {jobId: entityId};
-      if(reactFinished.get()||reactInProgress.get()||reactCanceled.get()) {
-        SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows', {filter: {$and:[{$or: filterOr},filterJob]}});
+    if(reactJobOffer.get()){
+      filterType.push({type:Enums.workFlowTypes.jobOffer})
+
+    }
+    if(reactPlacementConfirm.get()){
+      filterType.push({type:Enums.workFlowTypes.placementConfirm})
+    }
+
+    if(SubscriptionHandlers.WorkFlowsHandler){
+      if(filterType.length>0) {
+        if(filterOr.length>0){
+          SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterType}, {$or:filterOr}]});
+        }
+        else{
+          SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterType}]});
+        }
+
       }
       else{
-        SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows', {filter:filterJob});
+        if(filterOr.length>0){
+          SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterOr}]});
+        }
+        else {
+          SubscriptionHandlers.WorkFlowsHandler.setFilter({});
+        }
       }
-
     }
     else {
-      if (reactFinished.get() || reactInProgress.get() || reactCanceled.get()) {
-        SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows', {filter: {$or: filterOr}});
-      }
-      else {
-        SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows');
-      }
+      SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows');
     }
-
   })
 }
 
@@ -92,7 +152,21 @@ Template.workFlowListBox.helpers({
       return true;
     }
     else{
-      return false;
+        return false;
+    }
+  },
+  'getJobOfferClass': function(){
+    if(reactJobOffer.get())
+      return 'btn-primary';
+    else{
+      return 'btn-default'
+    }
+  },
+  'getConfirmPlacementClass': function(){
+    if(reactPlacementConfirm.get())
+      return 'btn-primary';
+    else{
+      return 'btn-default'
     }
   }
 })
@@ -100,12 +174,23 @@ Template.workFlowListBox.helpers({
 Template.workFlowListBox.events({
   'click #inProgress': function(){
     reactInProgress.set(!reactInProgress.get())
+    reload();
   },
   'click #finished': function(){
     reactFinished.set(!reactFinished.get())
+    reload();
   },
   'click #canceled': function(){
     reactCanceled.set(!reactCanceled.get())
+    reload();
+  },
+  'click #jobOfferFilter': function(){
+    reactJobOffer.set(!reactJobOffer.get())
+    reload();
+  },
+  'click #confirmPlacementFilter': function(){
+    reactPlacementConfirm.set(!reactPlacementConfirm.get())
+    reload();
   }
 })
 
