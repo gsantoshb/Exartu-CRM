@@ -20,54 +20,24 @@
                     <div class="list-holder">
                         <div class="list-actions">
                             <div class="list-actions-cell search-list">
-                                <div class="input-group">
-                                    <span class="prop-input">
-                                        <input id="searchString" class="form-control" placeholder= {{_ "Search activity"}}>
-                                        <span class="text text-danger"></span>
-                                    </span>
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-search" type="button">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                    </span>
-                                </div>
+                                <!--<div class="input-group">-->
+                                    <!--<span class="prop-input">-->
+                                        <!--<input id="searchString" class="form-control" placeholder= {{_ "Search activity"}}>-->
+                                        <!--<span class="text text-danger"></span>-->
+                                    <!--</span>-->
+                                    <!--<span class="input-group-btn">-->
+                                        <!--<button class="btn btn-search" type="button">-->
+                                            <!--<i class="fa fa-search"></i>-->
+                                        <!--</button>-->
+                                    <!--</span>-->
+                                <!--</div>-->
                             </div><!-- /.search-list -->
-
-                            <div class="list-actions-cell order-list filter-list" style="display: block">
-                                <div class="btn-group" id="activityFilter">
-                                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false">{{_ "All activity"}} <span class="caret"></span></button>
-                                    <ul class="dropdown-menu dropdown-custom-1">
-                                        <li class="head">
-                                            <input class="activityFilter-option" id="feed-all" name="activityFilter[]" type="checkbox" checked="" value="all"> <label for="feed-all">{{_ "All activity"}}</label>
-                                        </li>
-                                        <li>
-                                            <input class="activityFilter-option" id="feed-network" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeContactable}}"> <label for="feed-network">{{_ "Network"}}</label>
-                                        </li>
-                                        <li>
-                                            <input class="activityFilter-option" id="feed-jobs" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeJobs}}"> <label for="feed-jobs">{{_ "Jobs"}}</label>
-                                        </li>
-                                        <li>
-                                            <input class="activityFilter-option" id="feed-notes" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeNotes}}"> <label for="feed-notes">{{_ "Notes"}}</label>
-                                        </li>
-                                        <li>
-                                            <input class="activityFilter-option" id="feed-tasks" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeTasks}}"> <label for="feed-tasks">{{_ "Tasks"}}</label>
-                                        </li>
-                                        <li>
-                                            <input class="activityFilter-option" id="feed-placements" name="activityFilter[]" type="checkbox" checked="" value="{{getTypePlacements}}"> <label for="feed-placements">{{_ "Placements"}}</label>
-                                        </li>
-                                        <li>
-                                            <input class="activityFilter-option" id="feed-files" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeFiles}}"> <label for="feed-files">{{_ "Files"}}</label>
-                                        </li>
-                                    </ul>
-                                </div>
+                            <div class="clearfix">
+                                {{>fastPagination name="callList" containerClass="magic-pager pull-right"}}
                             </div>
                         </div><!-- .list-actions -->
 
                         <div class="list-item-section" >
-                            <div class="clearfix" id="tourActivitiesList">
-                                {{>fastPagination name="activities" containerClass="magic-pager pull-right"}}
-                            </div>
-
                             <ul class="list-type-7 activity-feed">
                                 {{#each activities}}
                                     <li>

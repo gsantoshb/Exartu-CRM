@@ -2,15 +2,17 @@
 CallListController = RouteController.extend({
   layoutTemplate: 'mainLayout'
 });
-
+var handler = null;
 Template.callList.created = function () {
-  this.subscribe('callList');
+  handler = handler || Meteor.paginatedSubscribe('callList');
 };
 
 Template.callList.rendered = function() {
 };
 
 Template.callList.destroyed = function () {
+  handler && handler.stop();
+  handler = null;
 };
 
 Template.callList.helpers({
