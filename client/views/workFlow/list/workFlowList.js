@@ -99,7 +99,6 @@ Template.workFlowListBox.created = function(){
         else{
           SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterType}]});
         }
-
       }
       else{
         if(filterOr.length>0){
