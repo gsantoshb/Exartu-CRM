@@ -79,7 +79,9 @@
                                                     {{#if voiceMail}}
                                                         {{logThis}}
                                                         {{#if voiceMailUrl}}
-                                                            <i class="icon icon-mail-recieved-2" style="color: green"></i>
+                                                            <a target="_blank" href="{{voiceMailUrl}}">
+                                                                <i class="icon icon-mail-recieved-2" style="color: green"></i>
+                                                            </a>
                                                         {{else}}
                                                             <i class="icon icon-call-delete" style="color: red"></i>
                                                         {{/if}}
