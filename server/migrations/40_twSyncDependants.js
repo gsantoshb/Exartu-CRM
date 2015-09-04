@@ -21,7 +21,7 @@ Migrations.add({
 
         // Sync the information
         var dependants = {dependantsCount: emp.Employee.dependentNumber};
-        apiHelper.post('/Employees/' + emp._id + '/setDependants', dependants, Meteor.bindEnvironment(function (error, result) {
+        apiHelper.post('/Employees/' + emp.externalId + '/setDependants', dependants, Meteor.bindEnvironment(function (error, result) {
           if (error) {
             throw new Error("Failed updating dependants for employee " + emp._id);
           }

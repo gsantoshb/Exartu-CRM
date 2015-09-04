@@ -11,22 +11,13 @@ AddWorkFlowControllerJobOffer = RouteController.extend({
   }
 });
 
-var reactiveJobId = new ReactiveVar("");
-var dep=new Deps.Dependency;
-//hack, it fixes a reactivity problem when you create two workflow consecutive with the same job
-
-schemaAddWorkField = new SimpleSchema({
-  'job': {
-    type: String,
-    optional: false
-  }
-})
+var jobId;
 
 var placementByJob = new ReactiveVar([]);
 
 Template.addWorkFlow.created = function(){
-  this.autorun(function(){
-    Meteor.call('placementsByJob', reactiveJobId.get(), function(err, res){
+  jobId = Router.current().params.entityId;
+  Meteor.call('placementsByJob', jobId, function(err, res){
       if(res) {
         var extendedRes = [];
         _.each(res, function(r){
@@ -45,45 +36,13 @@ Template.addWorkFlow.created = function(){
         })
       }
     });
-  })
 }
 
 Template.addWorkFlow.destroyed = function(){
-  placementByJob.set([]);
-  reactiveJobId.set("");
 
 }
 
 Template.addWorkFlow.helpers({
-  'getJobs': function(){
-    return {getCollection: function (string) {
-      var self = this;
-
-      //todo: calculate method
-      Meteor.call('findJob', string, function (err, result) {
-        if (err)
-          return console.log(err);
-
-        self.ready(_.map(result, function (r) {
-            var text = r.publicJobTitle;
-            return {id: r._id, text: text};
-          })
-        );
-      });
-    }}
-  },
-  'jobChanged': function(){
-    return {selectionChanged: function (value) {
-      dep.changed()
-      this.value = value;
-    }
-    }
-  },
-  'getId': function(){
-    dep.depend()
-    reactiveJobId.set(AutoForm.getFieldValue('job'));
-
-  },
   'placementsByJob': function(){
     return placementByJob.get();
   },
@@ -93,14 +52,15 @@ Template.addWorkFlow.helpers({
   },
   'hasNoPlacement': function(){
     return placementByJob.get().length === 0;
+  },
+  'jobId': function(){
+    return jobId;
   }
 })
 
-
-AutoForm.hooks({
-  addWorkFlow: {
-    onSubmit: function (insertDoc, updateDoc, currentDoc) {
-      var workFlow = {jobId: insertDoc.job};
+Template.addWorkFlow.events({
+  'click #saveWorkflow': function(){
+    var workFlow = {jobId: jobId};
       workFlow.flow = [];
 
       _.forEach(placementByJob.get(), function(p){
@@ -109,9 +69,6 @@ AutoForm.hooks({
         }
       })
       workFlow.jobDisplayName = placementByJob.get()[0].jobDisplayName;
-      //workFlow.dateCreated = new Date();
-      //workFlow.userId = Meteor.userId();
-      //workFlow.hierId = Meteor.user().currentHierId;
       workFlow.type = Enums.workFlowTypes.jobOffer;
       Meteor.call('insertWorkFlow', workFlow, function(err, res){
         if(res) {
@@ -124,7 +81,8 @@ AutoForm.hooks({
         }
       })
       return false
-
     }
-  }
+
 })
+
+

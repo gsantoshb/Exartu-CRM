@@ -268,13 +268,20 @@ TwilioManager = {
         url: callUrl, // A URL that produces an XML document (TwiML) which contains instructions for the call
         statusCallback : Meteor.absoluteUrl("twilio/callback?id="+workFlowId+"&placementId=" + placement.placementId+"&userId="+userId),
         statusCallbackMethod: "POST",
-        statusCallbackEvent: ["answered", "completed"],
+        statusCallbackEvent: ["answered", "completed", "failed"],
         method: "GET",
         ifMachine: "Continue"
-      }, function (err, responseData) {
+      }, Meteor.bindEnvironment(function (err, responseData) {
+        //console.log('err',err)
+        //console.log('responseData',responseData)
+        if(err){
+          WorkFlowManager.setWorkFlowCall(workFlowId,  placement.placementId, 'Error');
+          WorkFlowManager.setErrorStatus(workFlowId, placement.placementId, err.code);
+          TwilioManager.makeWorkFlowCall(userId, workFlowId);
+        }
         //executed when the call has been initiated.
 
-      });
+      }));
 
     }
   },
@@ -358,13 +365,17 @@ TwilioManager = {
           url: callUrl, // A URL that produces an XML document (TwiML) which contains instructions for the call
           statusCallback : Meteor.absoluteUrl("twilio/callbackPlacementConfirm?id="+workFlowId+"&placementId=" + placement.placementId+"&userId="+userId),
           statusCallbackMethod: "POST",
-          statusCallbackEvent: ["answered", "completed"],
+          statusCallbackEvent: ["answered", "completed", "failed"],
           method: "GET",
           ifMachine: "Continue"
-        }, function (err, responseData) {
-          //executed when the call has been initiated.
+        }, Meteor.bindEnvironment(function (err, responseData) {
+          if(err){
+            WorkFlowManager.setWorkFlowCall(workFlowId,  placement.placementId, 'Error');
+            WorkFlowManager.setErrorStatus(workFlowId, placement.placementId, err.code);
+            TwilioManager.makeWorkFlowCall(userId, workFlowId);
+          }
 
-        });
+        }));
 
       }
   },

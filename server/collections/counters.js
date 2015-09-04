@@ -13,7 +13,9 @@ Meteor.publish("jobCounters", function (jobId) {
   var cursors = [
     Notes.find({'links.id': jobId}),
     Tasks.find({'links.id': jobId}),
-    Placements.find({job: jobId})
+    Placements.find({job: jobId}),
+    WorkFlows.find({jobId: jobId})
+
   ];
 
   generateCounterPublish(this, 'jobCounters', cursors);

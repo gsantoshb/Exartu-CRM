@@ -105,5 +105,14 @@ WorkFlowManager = {
   },
   cancelWorkFlow: function(workFlowId){
     WorkFlows.update({_id: workFlowId},{$set:{status: "canceled"}});
+  },
+  setErrorStatus: function(workFlowId, placementId, errorStatus){
+    var workFlow = WorkFlows.findOne({_id: workFlowId});
+    _.each(workFlow.flow, function(f){
+      if(f.placementId === placementId) {
+        f.errorStatus = errorStatus;
+      }
+    })
+    WorkFlows.update({_id: workFlowId}, {$set:workFlow});
   }
 }
