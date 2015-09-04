@@ -64,14 +64,14 @@ Router.map(function () {
             });
           }
           //Redirect to an active agent
-          _.forEach(availableUsers, function (user) {
             resp = resp.dial({
               action: '/dialFinished'
             }, function (node) {
-              node.client(user._id);
+              _.forEach(availableUsers, function (user) {
+                node.client(user._id);
+              });
             });
 
-          });
         }
 
         console.log('contactable', contactable);
