@@ -2,49 +2,64 @@
     <div class="network-content nicer-filters" id="content">
         <div class="row">
 
-            <div class="col-md-3">
+            <div class="col-md-3 col-lg-3" id="column-filters">
+                <div class="page-title">
+                    <h1>Calls</h1>
+                </div>
 
-                <aside class="sidebar">
+                <div class="filter">
+                    <div class="filter-list">
+                        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+                            <strong><i class="fa fa-filter"></i></strong>
+                        </a>
+                        <div class="filter-item">
+                            <div class="filter-title" id="filtersJobsTour">
+                                {{_ "Type"}}
+                            </div>
 
-                    <div class="page-title-2" id="tourActivitiesWelcome">
-                        <h1 class="welcome">
-                           Calls
-                        </h1>
+                            {{#each callTypeOptions}}
+                                <button class="btn btn-sm {{isSelectedClass}} type-filter" style="margin-bottom: 3px">
+                                    {{displayName}}
+                                </button>
+                            {{/each}}
+                        </div>
                     </div>
-                </aside><!-- /.sidebar -->
-            </div><!-- /.col-md-3 -->
-
-
+                </div>
+            </div>
             <div class="col-md-9">
                 <div class="list-container">
                     <div class="list-holder">
                         <div class="list-actions">
                             <div class="list-actions-cell search-list">
-                                <!--<div class="input-group">-->
-                                    <!--<span class="prop-input">-->
-                                        <!--<input id="searchString" class="form-control" placeholder= {{_ "Search activity"}}>-->
-                                        <!--<span class="text text-danger"></span>-->
-                                    <!--</span>-->
-                                    <!--<span class="input-group-btn">-->
-                                        <!--<button class="btn btn-search" type="button">-->
-                                            <!--<i class="fa fa-search"></i>-->
-                                        <!--</button>-->
-                                    <!--</span>-->
-                                <!--</div>-->
-                            </div><!-- /.search-list -->
+                                <div class="input-group">
+                                    <span class="prop-input">
+                                        <input id="searchString" class="form-control" placeholder= {{_ "Search"}}>
+                                        <span class="text text-danger"></span>
+                                    </span>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-search" type="button">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- /.search-list -->
                             <div class="clearfix">
                                 {{>fastPagination name="callList" containerClass="magic-pager pull-right"}}
                             </div>
-                        </div><!-- .list-actions -->
+                        </div>
+                        <!-- .list-actions -->
 
-                        <div class="list-item-section" >
+                        <div class="list-item-section">
                             <ul class="list-type-7 activity-feed">
                                 {{#each activities}}
                                     <li>
                                         <div class="left-part">
                                             <!-- Note information -->
 
-                                            <a class="list-type-7-icon note-link" id="Nah32dYQnnisnQxhv" href="{{#if voiceMailUrl}}{{voiceMailUrl}}{{else}}#{{/if}}" target="_blank">
+                                            <a class="list-type-7-icon note-link" id="Nah32dYQnnisnQxhv"
+                                               href="{{#if voiceMailUrl}}{{voiceMailUrl}}{{else}}#{{/if}}"
+                                               target="_blank">
                                                 {{#if incoming}}
                                                     {{#if voiceMail}}
                                                         {{#if voiceMailUrl}}
@@ -61,9 +76,11 @@
                                                     <i class="icon icon-call-out" style="color: green"></i>
                                                 {{/if}}
                                             </a>
+
                                             <div class="list-type-7-title">
 
-                                                <a class="note-link" href="{{#if contactableId }}/contactable/{{contactableId}}{{/if}}">
+                                                <a class="note-link"
+                                                   href="{{#if contactableId }}/contactable/{{contactableId}}{{/if}}">
                                                     {{#if contactableName }}
                                                         {{contactableName}}
                                                     {{else}}
@@ -71,23 +88,31 @@
                                                     {{/if}}
                                                 </a>
                                                 {{#if duration}}
-                                                    <span class="desc"> - {{duration}} seconds</span>
+                                                    <span class="desc"> - {{getDuration}}</span>
                                                 {{/if}}
                                             </div>
 
 
-                                        </div><!-- /.left-part -->
-                                        <div class="right-part"><span class="date">{{formattedDate dateCreated 'llll'}}</span></div>
+                                        </div>
+                                        <!-- /.left-part -->
+                                        <div class="right-part"><span
+                                                class="date">{{formattedDate dateCreated 'llll'}}</span></div>
                                     </li>
                                 {{/each}}
-                            </ul><!-- /.list-type-7 -->
-                        </div><!-- /.list-item-section -->
+                            </ul>
+                            <!-- /.list-type-7 -->
+                        </div>
+                        <!-- /.list-item-section -->
 
-                    </div><!-- /.list-holder -->
-                </div><!-- /.list-container -->
-            </div><!-- /.col-md-6 -->
+                    </div>
+                    <!-- /.list-holder -->
+                </div>
+                <!-- /.list-container -->
+            </div>
+            <!-- /.col-md-6 -->
 
-        </div><!-- /.row -->
+        </div>
+        <!-- /.row -->
 
     </div>
 </template>
