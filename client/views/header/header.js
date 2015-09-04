@@ -411,6 +411,7 @@ Template.twilioHangButton.events({
     if (currentTwilioConnection.get() != undefined) {
       currentTwilioConnection.get().reject();
       currentTwilioConnection.get().disconnect();
+      currentTwilioConnection.set(null);
     }
   }
 

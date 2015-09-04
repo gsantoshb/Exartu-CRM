@@ -16,6 +16,7 @@ Router.map(function () {
 
         case 'POST':
           data = this.request.body;
+          _.extend(data,this.request.bodyFields);
           break;
 
         default:
@@ -49,7 +50,7 @@ Router.map(function () {
             action: 'newVoiceMessage'
           });
         }else{
-          if (contactable) {
+          if (contactable && contactable.person) {
             resp = resp.say('Thank you for calling ' + contactable.person.firstName + ' ' + contactable.person.lastName + '.Your call is being transfered', {
               voice: 'woman',
               language: 'en-us'
@@ -63,14 +64,14 @@ Router.map(function () {
             });
           }
           //Redirect to an active agent
-          _.forEach(availableUsers, function (user) {
             resp = resp.dial({
               action: '/dialFinished'
             }, function (node) {
-              node.client(user._id);
+              _.forEach(availableUsers, function (user) {
+                node.client(user._id);
+              });
             });
 
-          });
         }
 
         console.log('contactable', contactable);
