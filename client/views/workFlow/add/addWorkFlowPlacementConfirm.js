@@ -13,11 +13,16 @@ AddWorkFlowControllerPlacementConfirm = RouteController.extend({
 
 
 var jobId;
-
+var job = new ReactiveVar();
 var placementByJob = new ReactiveVar([]);
 
 Template.addWorkFlowPlacementConfirm.created = function() {
   jobId = Router.current().params.entityId;
+  Meteor.call('getJobById', jobId, function(err,res){
+    if(res){
+      job.set(res);
+    }
+  })
   var lkPlaced = LookUps.findOne({lookUpActions:Enums.lookUpAction.Candidate_Placed});
   Meteor.call('placementsByJob', jobId, function (err, res) {
     if (res) {
@@ -58,8 +63,10 @@ Template.addWorkFlowPlacementConfirm.helpers({
   'hasNoPlacement': function(){
     return placementByJob.get().length === 0;
   },
-  'jobId': function(){
-    return jobId;
+  'jobDisplayName': function(){
+    if(job.get()){
+      return job.get().displayName;
+    }
   }
 })
 

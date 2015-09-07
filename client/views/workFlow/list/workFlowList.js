@@ -1,3 +1,10 @@
+var reactFinished = new ReactiveVar(true);
+var reactInProgress = new ReactiveVar(true);
+var reactCanceled = new ReactiveVar(true);
+var reactJobOffer = new ReactiveVar(true);
+var reactCreatedBy = new ReactiveVar("");
+var reactPlacementConfirm = new ReactiveVar(true);
+
 WorkFlowsController = RouteController.extend({
   data: function(){
   },
@@ -5,15 +12,75 @@ WorkFlowsController = RouteController.extend({
   },
   action: function () {
     this.render('workFlowList');
+    if(this.params.query.jobOfferStatus === "false"){
+      reactJobOffer.set(false);
+    }
+    if(this.params.query.placementConfirmStatus === "false"){
+      reactPlacementConfirm.set(false);
+    }
+    if(this.params.query.finished === "false"){
+      reactFinished.set(false);
+    }
+    if(this.params.query.inProgress === "false"){
+      reactInProgress.set(false);
+    }
+    if(this.params.query.canceled === "false"){
+      reactCanceled.set(false);
+    }
+    if(this.params.query.createdBy != ""){
+      reactCreatedBy.set(this.params.query.createdBy);
+    }
   },
   onAfterAction: function() {
   }
 });
+
 var entityId;
 var entityType;
-var reactFinished = new ReactiveVar(true);
-var reactInProgress = new ReactiveVar(true);
-var reactCanceled = new ReactiveVar(true);
+
+var reload = function(){
+ var aux = {}
+ if(!reactJobOffer.get()){
+   aux.jobOfferStatus = "false"
+ }
+ if(!reactPlacementConfirm.get()){
+   aux.placementConfirmStatus = "false"
+ }
+ if(!reactFinished.get()){
+   aux.finished = "false"
+ }
+ if(!reactInProgress.get()){
+   aux.inProgress = "false"
+ }
+ if(!reactCanceled.get()){
+   aux.canceled = "false"
+ }
+ if(reactCreatedBy.get() != ""){
+   aux.createdBy = reactCreatedBy.get();
+ }
+
+
+ var paramsString =  $.param(aux);
+ if(paramsString != "") {
+   Router.go("/workFlows?" + paramsString);
+ }
+ else{
+   Router.go("/workFlows");
+ }
+}
+
+var depFilter = new Deps.Dependency;
+
+Template.workFlowListBox.rendered = function(){
+  this.$('#userId').select2({
+    //data: options,
+    //multiple: this.data.multi,
+    //allowClear: true,
+    //placeholder: this.data.title,
+    //initSelection: this.data.initSelection
+  })
+}
+
 
 Template.workFlowListBox.created = function(){
   entityId = Session.get('entityId');
@@ -23,7 +90,8 @@ Template.workFlowListBox.created = function(){
 
   Meteor.autorun(function(){
     var filterOr = [];
-    var filterJob = {};
+    var filterType = [];
+    var filterCreatedBy = {};
     if(reactFinished.get()){
       //get all workflow that have each element of flow called and status isn't canceled
       filterOr.push({$and:[{flow:{$not:{$elemMatch:{called:!reactFinished.get()}}}},{status:{$ne:'canceled'}}]})
@@ -34,24 +102,54 @@ Template.workFlowListBox.created = function(){
     if(reactCanceled.get()){
       filterOr.push({status:'canceled'})
     }
-    if(entityType === Enums.linkTypes.job.value){
-      filterJob = {jobId: entityId};
-      if(reactFinished.get()||reactInProgress.get()||reactCanceled.get()) {
-        SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows', {filter: {$and:[{$or: filterOr},filterJob]}});
-      }
-      else{
-        SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows', {filter:filterJob});
-      }
+    if(reactJobOffer.get()){
+      filterType.push({type:Enums.workFlowTypes.jobOffer})
 
     }
-    else {
-      if (reactFinished.get() || reactInProgress.get() || reactCanceled.get()) {
-        SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows', {filter: {$or: filterOr}});
-      }
-      else {
-        SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows');
-      }
+    if(reactPlacementConfirm.get()){
+      filterType.push({type:Enums.workFlowTypes.placementConfirm})
     }
+    if(reactCreatedBy.get() != ""){
+      filterCreatedBy.userId = reactCreatedBy.get();
+    }
+
+    if(!SubscriptionHandlers.WorkFlowsHandler) {
+       SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows');
+    }
+
+      if(filterType.length>0) {
+        if(filterOr.length>0){
+          if(_.isEmpty(filterCreatedBy))
+            SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterType}, {$or:filterOr}]});
+          else{
+            SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterType}, {$or:filterOr}, filterCreatedBy]});
+          }
+        }
+        else{
+          if(_.isEmpty(filterCreatedBy))
+             SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterType}]});
+          else{
+            SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterType}, filterCreatedBy]});
+          }
+        }
+      }
+      else{
+        if(filterOr.length>0){
+          if(_.isEmpty(filterCreatedBy))
+            SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterOr}]});
+          else{
+            SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterOr}, filterCreatedBy]});
+          }
+        }
+        else {
+          if(_.isEmpty(filterCreatedBy))
+            SubscriptionHandlers.WorkFlowsHandler.setFilter({});
+          else{
+            SubscriptionHandlers.WorkFlowsHandler.setFilter(filterCreatedBy);
+          }
+        }
+      }
+
 
   })
 }
@@ -92,20 +190,60 @@ Template.workFlowListBox.helpers({
       return true;
     }
     else{
-      return false;
+        return false;
     }
+  },
+  'getJobOfferClass': function(){
+    if(reactJobOffer.get())
+      return 'btn-primary';
+    else{
+      return 'btn-default'
+    }
+  },
+  'getConfirmPlacementClass': function(){
+    if(reactPlacementConfirm.get())
+      return 'btn-primary';
+    else{
+      return 'btn-default'
+    }
+  },
+  users: function () {
+    return Meteor.users.find({inactive:{$ne: true}}).fetch()
+
   }
+  //userChanged: function () {
+  //  var self = this;
+  //  return function (value) {
+  //    addTag.call(self, value);
+  //    Template.instance().$('input[type=hidden]').data().select2.clear();
+  //  }
+  //}
 })
 
 Template.workFlowListBox.events({
   'click #inProgress': function(){
     reactInProgress.set(!reactInProgress.get())
+    reload();
   },
   'click #finished': function(){
     reactFinished.set(!reactFinished.get())
+    reload();
   },
   'click #canceled': function(){
     reactCanceled.set(!reactCanceled.get())
+    reload();
+  },
+  'click #jobOfferFilter': function(){
+    reactJobOffer.set(!reactJobOffer.get())
+    reload();
+  },
+  'click #confirmPlacementFilter': function(){
+    reactPlacementConfirm.set(!reactPlacementConfirm.get())
+    reload();
+  },
+  'change #userId': function(e, ctx){
+    reactCreatedBy.set(e.target.value);
+    reload();
   }
 })
 
@@ -149,3 +287,38 @@ Template.workFlowsListItem.helpers({
     return this.status === 'canceled';
   }
 })
+//
+//Template.select2.rendered = function () {
+//  if (this.data && _.isArray(this.data.options)) {
+//    var options = this.data.options;
+//    Template.instance().$('#input').select2({
+//      data: options,
+//      multiple: this.data.multi,
+//      allowClear: true,
+//      placeholder: this.data.title,
+//      initSelection: this.data.initSelection
+//    });
+//  }
+//  if (this.data && _.isFunction(this.data.options)) {
+//    Meteor.autorun(_.bind(function () {
+//      var options = this.data.options();
+//      if (_.isArray(options)) {
+//        Template.instance().$('#input').select2({
+//          data: options,
+//          allowClear: true
+//        });
+//      }
+//    }, this));
+//  }
+//};
+//
+//Template.select2.created = function () {
+//  this.data.selected = this.data.multi ? [] : null;
+//};
+//
+//Template.select2.events({
+//  'change #input': function (e, ctx) {
+//    ctx.data.selected = e.val;
+//    ctx.data && ctx.data.onSelected && ctx.data.onSelected(ctx.data.selected);
+//  }
+//});

@@ -7,16 +7,20 @@ AddWorkFlowControllerJobOffer = RouteController.extend({
     this.render('addWorkFlow');
   },
   onAfterAction: function() {
-
   }
 });
 
 var jobId;
-
+var job = new ReactiveVar();
 var placementByJob = new ReactiveVar([]);
 
 Template.addWorkFlow.created = function(){
   jobId = Router.current().params.entityId;
+  Meteor.call('getJobById', jobId, function(err,res){
+    if(res){
+      job.set(res);
+    }
+  })
   Meteor.call('placementsByJob', jobId, function(err, res){
       if(res) {
         var extendedRes = [];
@@ -53,8 +57,10 @@ Template.addWorkFlow.helpers({
   'hasNoPlacement': function(){
     return placementByJob.get().length === 0;
   },
-  'jobId': function(){
-    return jobId;
+  'jobDisplayName': function(){
+    if(job.get()){
+      return job.get().displayName;
+    }
   }
 })
 

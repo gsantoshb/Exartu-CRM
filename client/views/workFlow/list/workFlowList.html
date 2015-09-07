@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-md-3 col-lg-3" id="column-filters">
                 <div class="page-title">
-                    <h1><span>{{totalCount}}</span> Workflow</h1>
+                    <h1><span>{{totalCount}}</span> Call-em</h1>
                 </div>
                 <div class="filter">
                     <div class="filter-list" id="filter-body">
@@ -28,8 +28,32 @@
                             <button type="button" class="typeSelect btn btn-sm {{getCanceledClass}}" id="canceled">
                                 Canceled
                             </button>
-
                         </div>
+                        <div class="filter-item">
+                            <div class="filter-title">
+                                Type
+                            </div>
+                            <button type="button" class="typeSelect btn btn-sm {{getJobOfferClass}}" id="jobOfferFilter">
+                                Job offer
+                            </button>
+                            <button type="button" class="typeSelect btn btn-sm {{getConfirmPlacementClass}}" id="confirmPlacementFilter">
+                                Confirm placement
+                            </button>
+                        </div>
+                        <div class="filter-item">
+                            <div class="filter-title">
+                                Created by
+                            </div>
+                            <div>
+                                <select id="userId" class="form-control">
+                                    <option value="" selected="{{isUserSelected}}">--{{_ "select"}}--</option>
+                                    {{#each users}}
+                                       <option value="{{_id}}" selected="{{isUserSelected}}">{{displayUserName _id}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -43,7 +67,7 @@
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-success dropdown-toggle"
                                                 data-toggle="dropdown"
-                                                title="Add" id="tourNetworksAdd">
+                                                title="Add" id="">
                                             <span class="fa fa-plus"></span>  {{_ "Add"}}
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
@@ -58,7 +82,6 @@
                                         </ul>
                                     </div>
                                 {{/if}}
-
                             </div>
                             {{>fastPagination name="workFlows" containerClass="magic-pager"}}
                         </div>
@@ -75,7 +98,7 @@
                             <div class="list-header-cell col-md-2 col-xs-2"
                                  style="flex:none;margin-left:0">{{_ "Status"}}</div>
                             <div class="list-header-cell col-md-2 col-xs-2"
-                                 style="flex:none;margin-left:0">{{_ "Owner"}}</div>
+                                 style="flex:none;margin-left:0">{{_ "Created by"}}</div>
                             <div class="list-header-cell col-md-1 col-xs-1"
                                  style="flex:none;margin-left:0">{{_ "Date"}}</div>
                             <!--<div class="list-header-cell network-list-header-code">{{_ "Code"}}</div>-->
