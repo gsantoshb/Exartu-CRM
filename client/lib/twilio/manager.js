@@ -1,4 +1,10 @@
 TwilioManager = {};
+
+Meteor.startup(function () {
+  $.cachedScript( "https://static.twilio.com/libs/twiliojs/1.2/twilio.js" ).done(function( script, textStatus ) {
+    TwilioManager.setupTwilioDevice();
+  });
+});
 currentTwilioConnection = new ReactiveVar();
 
 _.extend(TwilioManager, {
