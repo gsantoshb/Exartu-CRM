@@ -317,7 +317,24 @@ Template.placementsBox.events({
      Meteor.call('getPlacementPreview', this.placementId, function (er, res) {
        placementPreview.set(res);
      })
-   }
+   },
+   'click #more-menu':function(e,ctx){
+     this.$('.dropdown-toggle').dropdown()
+     e.stopPropagation();
+   },
+  'click #delete-placement': function(e,ctx){
+    var lkInactive = LookUps.findOne({lookUpActions:Enums.lookUpAction.Implies_Inactive});
+    Meteor.call('updatePlacement', this.placementId, {$set:{activeStatus:lkInactive._id}}, function(){
+
+    })
+
+  },
+  'click #active-placement': function(e,ctx){
+    var lkActive = LookUps.findOne({lookUpActions:Enums.lookUpAction.Implies_Active});
+    Meteor.call('updatePlacement', this.placementId, {$set:{activeStatus:lkActive._id}}, function(){
+    })
+  }
+
 })
 
 
@@ -431,6 +448,10 @@ Template.placementListItem.helpers({
 
     listViewMode: function () {
         return listViewMode.get();
+    },
+    isActivePlacement:function(){
+      var lkActive = LookUps.findOne({lookUpActions:Enums.lookUpAction.Implies_Active});
+      return lkActive._id === this.activeStatus;
     }
 });
 
