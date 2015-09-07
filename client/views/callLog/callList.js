@@ -92,5 +92,23 @@ Template.callList.events({
   },
   'keyup #searchString': _.debounce(function (e, ctx) {
     searchString.set(e.target.value);
-  }, 200)
+  }, 200),
+
+  'click .twilio-call': function () {
+    var hierPhoneNumber = Hierarchies.findOne(Meteor.user().currentHierId).phoneNumber;
+    hierPhoneNumber = hierPhoneNumber && hierPhoneNumber.value;
+    if (!hierPhoneNumber) return;
+
+    var phoneNumber = this.phone;
+    if (!phoneNumber) return;
+    var connection = Twilio.Device.connect({"PhoneNumber": phoneNumber, "CallerId": hierPhoneNumber});
+
+    connection.disconnect(function (conn) {
+      Meteor.call('logTwilioCall', conn.parameters.CallSid, phoneNumber, Session.get("entityId"));
+      currentTwilioConnection.set(undefined);
+    });
+
+    connection.phoneNumber = phoneNumber;
+    currentTwilioConnection.set(connection);
+  }
 });
