@@ -15,8 +15,36 @@ workFlowDetailController = RouteController.extend({
 });
 
 Template.workFlowDetails.helpers({
+  'getStatus': function(){
+    if(this.status === "canceled"){
+       return "Canceled"
+    }
+    else{
+      var finished = true;
+      _.each(this.flow, function(f){
+        finished = finished && f.called;
+      })
+      if(finished){
+        return "Finished"
+      }
+      else{
+        return "In progress"
+      }
+    }
+
+  },
   'isCanceled': function(){
     return this.status === 'canceled';
+  },
+  'isFinished': function(){
+    if(this.status === "canceled"){
+      return "Canceled"
+    }
+    var finished = true;
+    _.each(this.flow, function(f){
+      finished = finished && f.called;
+    })
+    return finished;
   },
   'workFlow': function(){
      return WorkFlows.findOne({_id:workflowId})
