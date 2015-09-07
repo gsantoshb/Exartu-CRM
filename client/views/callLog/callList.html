@@ -57,15 +57,11 @@
                                         <div class="left-part">
                                             <!-- Note information -->
 
-                                            <a class="list-type-7-icon note-link" id="Nah32dYQnnisnQxhv"
-                                               href="{{#if voiceMailUrl}}{{voiceMailUrl}}{{else}}#{{/if}}"
-                                               target="_blank">
+                                            <div class="list-type-7-icon note-link">
                                                 {{#if incoming}}
                                                     {{#if voiceMail}}
                                                         {{#if voiceMailUrl}}
-                                                            <a target="_blank" href="{{voiceMailUrl}}">
-                                                                <i class="icon icon-tape" style="color: green"></i>
-                                                            </a>
+                                                            <i class="icon icon-tape" style="color: green"></i>
                                                         {{else}}
                                                             <i class="icon icon-call-delete" style="color: red"></i>
                                                         {{/if}}
@@ -75,7 +71,7 @@
                                                 {{else}}
                                                     <i class="icon icon-call-out" style="color: green"></i>
                                                 {{/if}}
-                                            </a>
+                                            </div>
 
                                             <div class="list-type-7-title">
 
@@ -90,13 +86,20 @@
                                                 {{#if duration}}
                                                     <span class="desc"> - {{getDuration}}</span>
                                                 {{/if}}
+
+                                                <!-- Call button -->
+                                                <button class="btn btn-default twilio-call"> CALL </button>
+
+                                                <!-- Voicemail button -->
+                                                {{#if voiceMailUrl}}
+                                                    <a class="btn btn-default" href="{{voiceMailUrl}}" target="_blank">LISTEN VOICEMAIL</a>
+                                                {{/if}}
                                             </div>
 
 
                                         </div>
                                         <!-- /.left-part -->
-                                        <div class="right-part"><span
-                                                class="date">{{formattedDate dateCreated 'llll'}}</span></div>
+                                        <div class="right-part"><span class="date">{{formattedDate dateCreated 'llll'}}</span></div>
                                     </li>
                                 {{/each}}
                             </ul>
