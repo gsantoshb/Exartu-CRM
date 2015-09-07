@@ -40,12 +40,19 @@
                                 Confirm placement
                             </button>
                         </div>
-                        <!--<div class="filter-item">-->
-                            <!--<div class="filter-title">-->
-                                <!--Created by-->
-                            <!--</div>-->
-                            <!---->
-                        <!--</div>-->
+                        <div class="filter-item">
+                            <div class="filter-title">
+                                Created by
+                            </div>
+                            <div>
+                                <select id="userId" class="form-control">
+                                    <option value="" selected="{{isUserSelected}}">--{{_ "select"}}--</option>
+                                    {{#each users}}
+                                       <option value="{{_id}}" selected="{{isUserSelected}}">{{displayUserName _id}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
 
                     </div>
                 </div>

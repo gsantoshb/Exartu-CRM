@@ -2,6 +2,7 @@ var reactFinished = new ReactiveVar(true);
 var reactInProgress = new ReactiveVar(true);
 var reactCanceled = new ReactiveVar(true);
 var reactJobOffer = new ReactiveVar(true);
+var reactCreatedBy = new ReactiveVar("");
 var reactPlacementConfirm = new ReactiveVar(true);
 
 WorkFlowsController = RouteController.extend({
@@ -25,6 +26,9 @@ WorkFlowsController = RouteController.extend({
     }
     if(this.params.query.canceled === "false"){
       reactCanceled.set(false);
+    }
+    if(this.params.query.createdBy != ""){
+      reactCreatedBy.set(this.params.query.createdBy);
     }
   },
   onAfterAction: function() {
@@ -51,6 +55,9 @@ var reload = function(){
  if(!reactCanceled.get()){
    aux.canceled = "false"
  }
+ if(reactCreatedBy.get() != ""){
+   aux.createdBy = reactCreatedBy.get();
+ }
 
 
  var paramsString =  $.param(aux);
@@ -64,6 +71,17 @@ var reload = function(){
 
 var depFilter = new Deps.Dependency;
 
+Template.workFlowListBox.rendered = function(){
+  this.$('#userId').select2({
+    //data: options,
+    //multiple: this.data.multi,
+    //allowClear: true,
+    //placeholder: this.data.title,
+    //initSelection: this.data.initSelection
+  })
+}
+
+
 Template.workFlowListBox.created = function(){
   entityId = Session.get('entityId');
   entityType = Utils.getEntityTypeFromRouter();
@@ -73,6 +91,7 @@ Template.workFlowListBox.created = function(){
   Meteor.autorun(function(){
     var filterOr = [];
     var filterType = [];
+    var filterCreatedBy = {};
     if(reactFinished.get()){
       //get all workflow that have each element of flow called and status isn't canceled
       filterOr.push({$and:[{flow:{$not:{$elemMatch:{called:!reactFinished.get()}}}},{status:{$ne:'canceled'}}]})
@@ -90,28 +109,48 @@ Template.workFlowListBox.created = function(){
     if(reactPlacementConfirm.get()){
       filterType.push({type:Enums.workFlowTypes.placementConfirm})
     }
+    if(reactCreatedBy.get() != ""){
+      filterCreatedBy.userId = reactCreatedBy.get();
+    }
 
-    if(SubscriptionHandlers.WorkFlowsHandler){
+    if(!SubscriptionHandlers.WorkFlowsHandler) {
+       SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows');
+    }
+
       if(filterType.length>0) {
         if(filterOr.length>0){
-          SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterType}, {$or:filterOr}]});
+          if(_.isEmpty(filterCreatedBy))
+            SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterType}, {$or:filterOr}]});
+          else{
+            SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterType}, {$or:filterOr}, filterCreatedBy]});
+          }
         }
         else{
-          SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterType}]});
+          if(_.isEmpty(filterCreatedBy))
+             SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterType}]});
+          else{
+            SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterType}, filterCreatedBy]});
+          }
         }
       }
       else{
         if(filterOr.length>0){
-          SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterOr}]});
+          if(_.isEmpty(filterCreatedBy))
+            SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterOr}]});
+          else{
+            SubscriptionHandlers.WorkFlowsHandler.setFilter({$and: [{$or: filterOr}, filterCreatedBy]});
+          }
         }
         else {
-          SubscriptionHandlers.WorkFlowsHandler.setFilter({});
+          if(_.isEmpty(filterCreatedBy))
+            SubscriptionHandlers.WorkFlowsHandler.setFilter({});
+          else{
+            SubscriptionHandlers.WorkFlowsHandler.setFilter(filterCreatedBy);
+          }
         }
       }
-    }
-    else {
-      SubscriptionHandlers.WorkFlowsHandler = Meteor.paginatedSubscribe('workFlows');
-    }
+
+
   })
 }
 
@@ -167,7 +206,18 @@ Template.workFlowListBox.helpers({
     else{
       return 'btn-default'
     }
+  },
+  users: function () {
+    return Meteor.users.find({inactive:{$ne: true}}).fetch()
+
   }
+  //userChanged: function () {
+  //  var self = this;
+  //  return function (value) {
+  //    addTag.call(self, value);
+  //    Template.instance().$('input[type=hidden]').data().select2.clear();
+  //  }
+  //}
 })
 
 Template.workFlowListBox.events({
@@ -189,6 +239,10 @@ Template.workFlowListBox.events({
   },
   'click #confirmPlacementFilter': function(){
     reactPlacementConfirm.set(!reactPlacementConfirm.get())
+    reload();
+  },
+  'change #userId': function(e, ctx){
+    reactCreatedBy.set(e.target.value);
     reload();
   }
 })
@@ -233,3 +287,38 @@ Template.workFlowsListItem.helpers({
     return this.status === 'canceled';
   }
 })
+//
+//Template.select2.rendered = function () {
+//  if (this.data && _.isArray(this.data.options)) {
+//    var options = this.data.options;
+//    Template.instance().$('#input').select2({
+//      data: options,
+//      multiple: this.data.multi,
+//      allowClear: true,
+//      placeholder: this.data.title,
+//      initSelection: this.data.initSelection
+//    });
+//  }
+//  if (this.data && _.isFunction(this.data.options)) {
+//    Meteor.autorun(_.bind(function () {
+//      var options = this.data.options();
+//      if (_.isArray(options)) {
+//        Template.instance().$('#input').select2({
+//          data: options,
+//          allowClear: true
+//        });
+//      }
+//    }, this));
+//  }
+//};
+//
+//Template.select2.created = function () {
+//  this.data.selected = this.data.multi ? [] : null;
+//};
+//
+//Template.select2.events({
+//  'change #input': function (e, ctx) {
+//    ctx.data.selected = e.val;
+//    ctx.data && ctx.data.onSelected && ctx.data.onSelected(ctx.data.selected);
+//  }
+//});
