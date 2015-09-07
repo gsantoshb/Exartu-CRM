@@ -40,12 +40,19 @@
                                 Confirm placement
                             </button>
                         </div>
-                        <!--<div class="filter-item">-->
-                            <!--<div class="filter-title">-->
-                                <!--Created by-->
-                            <!--</div>-->
-                            <!---->
-                        <!--</div>-->
+                        <div class="filter-item">
+                            <div class="filter-title">
+                                Created by
+                            </div>
+                            <div>
+                                <select id="userId" class="form-control">
+                                    <option value="" selected="{{isUserSelected}}">--{{_ "select"}}--</option>
+                                    {{#each users}}
+                                       <option value="{{_id}}" selected="{{isUserSelected}}">{{displayUserName _id}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -120,12 +127,12 @@
     <div class="list-item network-list-item select-div" style="cursor:pointer">
         <div class="row" style="width:100%;margin:0">
             <div class="list-item-cell col-md-1 col-xs-1" style="flex:none;margin-left:0">
-                <a class="item-icon item-icon-workFlows" href="workFlow/{{_id}}">
+                <a class="item-icon item-icon-workFlows" href="/workFlow/{{_id}}">
                     <i class="glyphicon glyphicon-random"></i>
                 </a>
             </div>
             <div class="list-item-cell col-md-4 col-xs-4" style="flex:none;margin-left:0;padding-left: 0">
-                <a class="item-title single" href="workFlow/{{_id}}" style="color:#000000">
+                <a class="item-title single" href="/workFlow/{{_id}}" style="color:#000000">
                     {{getWorkFlowType}}
                 </a>
             </div>

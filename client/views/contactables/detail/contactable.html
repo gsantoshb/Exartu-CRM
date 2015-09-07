@@ -134,9 +134,11 @@
             {{else}}
                 {{#if phone.value}}
                      <li>
-                         <a href="{{contactMethodTypePrefix phone.type}}{{phone.value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a>
                          {{#if twilioSetUp}}
-                            <a class="twilio-call pointer">Call</a>
+                             <a class="twilio-call pointer hidden-xs"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a>
+                             <a class="visible-xs" href="{{contactMethodTypePrefix phone.type}}{{phone.value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a>
+                         {{else}}
+                             <a href="{{contactMethodTypePrefix phone.type}}{{phone.value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a>
                          {{/if}}
                      </li>
                 {{/if}}

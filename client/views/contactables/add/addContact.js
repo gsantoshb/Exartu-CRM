@@ -180,12 +180,21 @@ AutoForm.hooks({
         return false;
       }
       else {
-        Meteor.call('getContactableById', insertDoc.client, function (err, res) {
-          contact.Contact = {client: res._id, clientName: res.displayName, status: res.Client.status}
+        if(insertDoc.client) {
+          Meteor.call('getContactableById', insertDoc.client, function (err, res) {
+            contact.Contact = {client: res._id, clientName: res.displayName, status: res.Client.status}
+            Meteor.call('addContactable', contact, function (err, res) {
+              Router.go('/contactable/' + res);
+            })
+
+          })
+        }
+        else{
           Meteor.call('addContactable', contact, function (err, res) {
             Router.go('/contactable/' + res);
           })
-        })
+        }
+
         return false;
       }
     }
