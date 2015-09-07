@@ -244,13 +244,27 @@
                     <span>{{formattedDate dateCreated "fromNow"}}</span><br>
                 </div>
                 <div class="list-item-cell item-overflow placements-item-overflow">
-                    <a href="#">
+                    <a href="#" id="more-menu" data-toggle="dropdown">
                         <span class="ico-more">
                           <span class="dot-1"></span>
                           <span class="dot-2"></span>
                           <span class="dot-3"></span>
                         </span>
                     </a>
+
+                    <ul class="dropdown-menu" role="menu">
+                        {{#if isActivePlacement}}
+                          <li>
+                             <a id="delete-placement" type="button" title="Delete placement"
+                               >{{_ "Delete placement"}}</a>
+                          </li>
+                        {{else}}
+                          <li>
+                              <a id="active-placement" type="button" title="Active placement"
+                                        >{{_ "Active placement"}}</a>
+                          </li>
+                        {{/if}}
+                    </ul>
                 </div>
             </div>
             <!-- /.list-item-cell -->
