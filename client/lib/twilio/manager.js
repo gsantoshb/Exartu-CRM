@@ -1,4 +1,15 @@
 TwilioManager = {};
+
+Meteor.startup(function () {
+  Meteor.autorun(function () {
+    if (!Meteor.userId()){
+      return;
+    }
+    $.cachedScript( "https://static.twilio.com/libs/twiliojs/1.2/twilio.js" ).done(function( script, textStatus ) {
+      TwilioManager.setupTwilioDevice();
+    });
+  });
+});
 currentTwilioConnection = new ReactiveVar();
 
 _.extend(TwilioManager, {
