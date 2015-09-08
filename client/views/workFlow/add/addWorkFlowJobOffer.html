@@ -9,54 +9,126 @@
                            style="position: absolute; left: 20px;"><i class="fa fa-long-arrow-left"></i> {{_ "Go Back"}}
                         </a>
                     </div>
-                    <div class="add-box-content">
                         <div class="add-box-head">
                             <!--<a class="btn btn-default pull-left goBack" href="#" style="position: absolute; left: 20px;"><i class="fa fa-long-arrow-left"></i>Back</a>-->
                             <div class="add-item-icon"><i class="glyphicon glyphicon-random"></i></div>
 
                         </div>
 
-                        Job:
-                        <h5>
-                            <input type="text" style="width:100%" disabled value="{{jobDisplayName}}">
-                        </h5>
-                        <!--{{> afFieldInput  name='job' placeholder="Search job" class="form-control" type="afSearch"  getCollection=getJobs selectionChanged=jobChanged }}-->
-                        <!--{{getId}}-->
-                        <br>
-                        {{#each placementsByJob}}
-                            <section class="box-type-2">
-                                <div class="box-type-2-content">
-                                    <!--<div class="row">-->
-                                    <div class="row">
-                                        <div class="col-md-1">
-                                            <a class="item-icon item-icon-network" href="/contactable/{{employee}}">
-                                                <i class="icon-profile-business-man"></i>
-                                            </a>
+                        <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><h3>Details:</h3></div>
+                                <div class="panel-body no-padding">
+                                    <div style="margin-right: 60px;margin-left:60px">
+                                    {{#with job}}
+                                        <h4>Job:</h4>
+                                        <div class="row" style="margin-bottom: 10px">
+                                            <div class="col-md-1">
+                                                <a class="item-icon item-icon-jobs" href="/job/{{_id}}" ><i class="icon-briefcase-2"></i></a>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <h4>
+                                                    {{displayName}}
+                                                </h4>
+                                            </div>
                                         </div>
-                                        <div class="col-md-9">
-                                            <h4>
-                                                {{employeeDisplayName}}
-                                            </h4>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <h5>
-                                                <span class="item-label-2"> {{getCandidateStatus}}</span>
-                                            </h5>
-                                        </div>
+                                    {{/with}}
                                     </div>
-                                    <div class="wysiwyg-text-align-left margin-top-15">
-                                        {{#if phone}}
-                                            <a href="callto:{{phone}}"><span class="round-icon-container"><i
-                                                    class="fa fa-phone"></i></span> {{phone}}</a>
-                                        {{else}}
-                                            <span class="wysiwyg-color-red"
-                                                  title="This employee will be skipped from the work flow">No phone</span>
-                                        {{/if}}
-                                    </div>
-                                    <!--</div>-->
+
                                 </div>
-                            </section>
-                        {{/each}}
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-8 col-md-offset-2">
+                            <!--<div class="box-type-3">-->
+                            <!--<div class="box-type-2-content">-->
+                            <!---->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <div class="box-type-2">
+                                <ul class="list-type-7" style="padding-right: 60px">
+                                    {{#each placementsByJob}}
+                                        <li class="margin-top-15">
+                                            <div class="row">
+                                                <div class="col-md-1">
+                                                    <a class="item-icon item-icon-network" href="/contactable/{{employeeId}}" >
+                                                        <i class="icon-profile-business-man"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <h4>
+                                                        {{employeeDisplayName}}
+                                                    </h4>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <h5>
+                                                        <div class="margin-top-15">
+                                                            {{#if response}}
+                                                                <span class="label {{getResponseClass}}">{{getResponse}}</span>
+                                                            {{else}}
+                                                                <span class="label label-default">Not called</span>
+                                                            {{/if}}
+                                                        </div>
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div class="wysiwyg-text-align-left margin-top-15" >
+                                                {{#if phone}}
+                                                    <a href="callto:{{phone}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone}}</a>
+                                                {{else}}
+                                                    <span class="wysiwyg-color-red" title="This employee will be skipped from the work flow">No phone</span>
+                                                {{/if}}
+                                            </div>
+                                        </li>
+
+                                    {{/each}}
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+                        <!--Job:-->
+                        <!--<h5>-->
+                            <!--<input type="text" style="width:100%" disabled value="{{jobDisplayName}}">-->
+                        <!--</h5>-->
+                        <!--&lt;!&ndash;{{> afFieldInput  name='job' placeholder="Search job" class="form-control" type="afSearch"  getCollection=getJobs selectionChanged=jobChanged }}&ndash;&gt;-->
+                        <!--&lt;!&ndash;{{getId}}&ndash;&gt;-->
+                        <!--<br>-->
+                        <!--{{#each placementsByJob}}-->
+                            <!--<section class="box-type-2">-->
+                                <!--<div class="box-type-2-content">-->
+                                    <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+                                    <!--<div class="row">-->
+                                        <!--<div class="col-md-1">-->
+                                            <!--<a class="item-icon item-icon-network" href="/contactable/{{employee}}">-->
+                                                <!--<i class="icon-profile-business-man"></i>-->
+                                            <!--</a>-->
+                                        <!--</div>-->
+                                        <!--<div class="col-md-9">-->
+                                            <!--<h4>-->
+                                                <!--{{employeeDisplayName}}-->
+                                            <!--</h4>-->
+                                        <!--</div>-->
+                                        <!--<div class="col-md-2">-->
+                                            <!--<h5>-->
+                                                <!--<span class="item-label-2"> {{getCandidateStatus}}</span>-->
+                                            <!--</h5>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="wysiwyg-text-align-left margin-top-15">-->
+                                        <!--{{#if phone}}-->
+                                            <!--<a href="callto:{{phone}}"><span class="round-icon-container"><i-->
+                                                    <!--class="fa fa-phone"></i></span> {{phone}}</a>-->
+                                        <!--{{else}}-->
+                                            <!--<span class="wysiwyg-color-red"-->
+                                                  <!--title="This employee will be skipped from the work flow">No phone</span>-->
+                                        <!--{{/if}}-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                <!--</div>-->
+                            <!--</section>-->
+                        <!--{{/each}}-->
                         <div class="form-group text-center top-30">
                             <button id="saveWorkflow" class="btn btn-success btn-lg" disabled="{{hasNoPlacement}}">
                                 Start
@@ -70,7 +142,7 @@
                             {{/if}}
 
                         </div>
-                    </div>
+
                 </div>
             </div>
         </div>

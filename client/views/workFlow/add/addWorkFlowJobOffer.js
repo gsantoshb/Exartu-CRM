@@ -61,6 +61,11 @@ Template.addWorkFlow.helpers({
     if(job.get()){
       return job.get().displayName;
     }
+  },
+  'job': function(){
+    if(job.get()){
+      return job.get();
+    }
   }
 })
 
