@@ -25,7 +25,7 @@
                     {{#if contactable}}
                         <a href="/contactable/{{contactable._id}}">Navigate to details for {{incomingName}} </a>
 
-                        {{>entityActivities entityId=contactable._id}}
+                        {{>incomingCallActivities entityId=contactable._id}}
                     {{else}}
                        <h4>
                            Add number to contacts

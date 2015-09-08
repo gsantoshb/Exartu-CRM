@@ -7,8 +7,39 @@ Template.entityActivities.onDestroyed(function () {
 });
 
 Template.entityActivities.helpers({
+  getCollection: function () {
+    return Activities;
+  },
+  getHandlerName: function () {
+    return 'entityActivities'
+  }
+});
+
+Template.incomingCallActivities.onCreated(function () {
+  this.handler = Meteor.paginatedSubscribe('incomingCall', {pubArguments: this.data.entityId || Session.get('entityId'), options: {sort: {'data.dateCreated': -1}}});
+});
+
+Template.incomingCallActivities.onDestroyed(function () {
+  this.handler.stop();
+});
+
+Template.incomingCallActivities.helpers({
+  getCollection: function () {
+    return IncomingCallActivities;
+  },
+  getHandlerName: function () {
+    return 'incomingCall'
+  }
+});
+
+
+
+Template.showActivities.helpers({
+  getHandlerName: function () {
+    return this.handlerName;
+  },
   activities: function () {
-    return Activities.find({},{sort: {'data.dateCreated': -1}});
+    return this.collection.find({},{sort: {'data.dateCreated': -1}});
   },
   getTemplateForActivity: function () {
     switch (this.type) {
