@@ -103,6 +103,7 @@ Router.map(function () {
       console.log('=============================');
       console.log('this.request.body', this.request.body);
       console.log('=============================');
+      var resp = new Twilio.TwimlResponse();
 
       // if no one picked up send to voice mail
       if (_.include(['no-answer', 'busy'], this.request.body.DialCallStatus)) {
@@ -115,7 +116,6 @@ Router.map(function () {
         });
 
 
-        var resp = new Twilio.TwimlResponse();
         resp = resp.say('All our representatives are busy at the moment. Please leave a message', {
           voice: 'woman',
           language: 'en-us'
@@ -123,7 +123,6 @@ Router.map(function () {
         resp = resp.record({
           action: 'newVoiceMessage'
         });
-        response.end(resp.toString(), {type: 'xml', plain: true});
       }else{
         Calls.update({
           twCallId: this.request.body.CallSid
@@ -134,6 +133,7 @@ Router.map(function () {
           }
         });
       }
+      response.end(resp.toString(), {type: 'xml', plain: true});
     }
   });
 
