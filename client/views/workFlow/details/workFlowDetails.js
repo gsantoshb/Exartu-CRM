@@ -58,42 +58,43 @@ Template.workFlowDetails.helpers({
     }
   },
   'getResponseClass': function(){
-    if(this.response === "Error"){
-      return "label-danger";
-    }
-    else if(this.response === "NotIntrested"){
-      return "label-danger";
-    }
-    else if(this.response === "Answer machine"){
-      return "label-warning";
-    }
-    else if(this.response === "retry 1"){
-      return "label-primary"
-    }
-    else if(this.response === "retry 2"){
-      return "label-primary"
-    }
-    else if(this.response === "retry 3"){
-      return "label-primary"
-    }
-    else if(this.response === "Answered"){
-      return "label-primary";
-    }
-    else if(this.response === "NoAnswer"){
-      return "label-warning";
-    }
-    else if(this.response === "Intrested"){
-      return "label-success";
-    }
-    else if(this.response === "Confirmed"){
-      return "label-success";
-    }
-    else if(this.response === "NoConfirmed"){
-      return "label-danger";
-    }
-    else if(this.response === "Canceled"){
-      return "label-danger";
-    }
+    //if(this.response === "Error"){
+    //  return "label-danger";
+    //}
+    //else if(this.response === "NotIntrested"){
+    //  return "label-danger";
+    //}
+    //else if(this.response === "Answer machine"){
+    //  return "label-warning";
+    //}
+    //else if(this.response === "retry 1"){
+    //  return "label-primary"
+    //}
+    //else if(this.response === "retry 2"){
+    //  return "label-primary"
+    //}
+    //else if(this.response === "retry 3"){
+    //  return "label-primary"
+    //}
+    //else if(this.response === "Answered"){
+    //  return "label-primary";
+    //}
+    //else if(this.response === "NoAnswer"){
+    //  return "label-warning";
+    //}
+    //else if(this.response === "Intrested"){
+    //  return "label-success";
+    //}
+    //else if(this.response === "Confirmed"){
+    //  return "label-success";
+    //}
+    //else if(this.response === "NoConfirmed"){
+    //  return "label-danger";
+    //}
+    //else if(this.response === "Canceled"){
+    //  return "label-danger";
+    //}
+    return "label-default"
 
   },
   'getResponse': function(){
