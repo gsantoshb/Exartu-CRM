@@ -16,5 +16,14 @@ Meteor.methods({
       console.log('err',err);
       throw new Meteor.Error(err.message);
     }
+  },
+  resumeWorkFlow: function(workFlowId){
+    try{
+      return WorkFlowManager.resumeWorkFlow(workFlowId);
+    }
+    catch(err){
+      console.log('err',err);
+      throw new Meteor.Error(err.message);
+    }
   }
 })

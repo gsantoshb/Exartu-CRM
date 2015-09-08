@@ -79,14 +79,12 @@
                         </div>
                     </div>
                         {{#if isCanceled}}
-                           <div class="col-md-2 col-md-offset-8">
-                               <button class="btn btn-default disabled"  style="float:right">Canceled</button>
-                           </div>
+                            <div class="col-md-2 col-md-offset-8">
+                                <button id="resume-workflow" class="btn btn-success"  style="float:right">Resume</button>
+                            </div>
                         {{else}}
                             {{#if isFinished}}
-                                <div class="col-md-2 col-md-offset-8">
-                                    <button class="btn btn-default disabled"  style="float:right">Finished</button>
-                                </div>
+
                             {{else}}
                                <div class="col-md-2 col-md-offset-8">
                                  <button id="cancel-workflow" class="btn btn-danger"  style="float:right">Cancel</button>

@@ -101,7 +101,6 @@ WorkFlowManager = {
       }
       }
     })
-
   },
   cancelWorkFlow: function(workFlowId){
     WorkFlows.update({_id: workFlowId},{$set:{status: "canceled"}});
@@ -114,5 +113,16 @@ WorkFlowManager = {
       }
     })
     WorkFlows.update({_id: workFlowId}, {$set:workFlow});
+  },
+  resumeWorkFlow: function(workFlowId){
+    WorkFlows.update({_id: workFlowId},{$set:{status: "resumed"}});
+    var w = WorkFlows.findOne({_id:workFlowId});
+    if(w.type === Enums.workFlowTypes.jobOffer) {
+      WorkFlowManager.makeCalls(w.userId, w._id);
+    }
+    else if(w.type === Enums.workFlowTypes.placementConfirm){
+      WorkFlowManager.makeCallsPlacementConfirm(w.userId, w._id);
+
+    }
   }
 }
