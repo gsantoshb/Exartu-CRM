@@ -142,5 +142,10 @@ Template.workFlowDetails.events({
     Meteor.call('cancelWorkFlow', this._id, function(err, res){
 
     });
+  },
+  'click #resume-workflow': function(){
+    Meteor.call('resumeWorkFlow', this._id, function(err, res){
+
+    })
   }
 })

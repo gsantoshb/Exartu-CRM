@@ -334,7 +334,6 @@ Template.placementsBox.events({
     Meteor.call('updatePlacement', this.placementId, {$set:{activeStatus:lkActive._id}}, function(){
     })
   }
-
 })
 
 
